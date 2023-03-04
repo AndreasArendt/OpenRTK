@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Quelldateien\RinexReader">
+      <UniqueIdentifier>{59e87aeb-452b-48e0-8143-80933bf25469}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\RinexReader">
+      <UniqueIdentifier>{6e8d427d-d82d-4828-9937-93ae5e412140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\RinexReader\RinexObservations">
+      <UniqueIdentifier>{9ee174c2-0438-41ca-ac60-e749d48bf5f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\RinexReader\RinexObservations">
+      <UniqueIdentifier>{f3229612-24fe-4c4d-a086-5330f5e65d9a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="OpenRTK.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexReader\RinexParser.cpp">
+      <Filter>Quelldateien\RinexReader</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexEpoch.cpp">
+      <Filter>Quelldateien\RinexReader</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexReader\RinexObservation.cpp">
+      <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
+    </ClCompile>
+    <ClCompile Include="ObservationDefinition.cpp">
+      <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
+    </ClCompile>
+    <ClCompile Include="CodeObservation.cpp">
+      <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
+    </ClCompile>
+    <ClCompile Include="PhaseObservation.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RinexReader\RinexParser.hpp">
+      <Filter>Headerdateien\RinexReader</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexReaderState.hpp">
+      <Filter>Headerdateien\RinexReader</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexEpoch.hpp">
+      <Filter>Headerdateien\RinexReader</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexReader\RinexObservation.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="ObservationDefinition.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="SvSystem.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="ObservationType.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="ObservationBand.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="ObservationAttribute.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeObservation.hpp">
+      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
+    </ClInclude>
+    <ClInclude Include="PhaseObservation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
