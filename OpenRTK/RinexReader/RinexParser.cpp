@@ -111,16 +111,12 @@ void RinexParser::ReadEpochObservation(std::string line)
         }
     
         StartIndex += 16;
-    }
-       
-
-    //C05                  39727071.733 6                  39727073.220 6                  39727070.532 6                          .043 6                          .068 6                         -.066 6                 206869335.37706                 168098310.59406                 159964503.24606                        36.250                          38.250                          40.500
-    //C21  21927037.632 8  21927035.210 8  21927035.982 8  21927032.988 8  21927034.490 8 - 1030.572 8 - 1021.178 8 - 769.555 8 - 829.766 8 - 789.647 8                 115227360.20308 114179826.33808  86046401.85808  92780455.63908  88291084.04408                        50.750          53.000          53.250          52.250          52.500
+    }       
 }
 
 void RinexParser::ReadObservationTypes(std::string line)
 {
-    // SYS / # / OBS TYPES definition is: A1 2X,I3 13(1X,A3) [SvSystem (optional)][Type,Band,Attribute]    
+    // SYS / # / OBS TYPES definition is: A1 2X,I3 13(1X,A3) [SvSystem (optional)][number of ObsTypes][Type,Band,Attribute]    
     static SvSystem svSystem = SvSystem::UNKNOWN; //keep svSystem in case is empty!
     if (!isblank(line[0]))
     {
