@@ -42,10 +42,13 @@
     <ClCompile Include="ObservationDefinition.cpp">
       <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
     </ClCompile>
-    <ClCompile Include="CodeObservation.cpp">
+    <ClCompile Include="Observations\CodeObservation.cpp">
       <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
     </ClCompile>
-    <ClCompile Include="PhaseObservation.cpp">
+    <ClCompile Include="Observations\PhaseObservation.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Observations\DopplerObservation.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,10 +80,13 @@
     <ClInclude Include="ObservationAttribute.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="CodeObservation.hpp">
+    <ClInclude Include="Observations\CodeObservation.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="PhaseObservation.hpp">
+    <ClInclude Include="Observations\PhaseObservation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Observations\DopplerObservation.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

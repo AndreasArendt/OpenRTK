@@ -1,8 +1,5 @@
 #include "RinexEpoch.hpp"
 #include "RinexReader/RinexObservation.hpp"
-#include <vector>
-
-std::vector<RinexObservation> _RinexObservations;
 
 RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs)
 {

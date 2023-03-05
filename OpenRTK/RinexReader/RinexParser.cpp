@@ -12,8 +12,9 @@
 #include "../ObservationBand.hpp"
 #include "../ObservationAttribute.hpp"
 #include "../ObservationDefinition.hpp"
-#include "../CodeObservation.hpp"
-#include "../PhaseObservation.hpp"
+#include "../Observations/CodeObservation.hpp"
+#include "../Observations/DopplerObservation.h"
+#include "../Observations/PhaseObservation.hpp"
 
 #include <string>
 #include <unordered_map>
@@ -62,7 +63,7 @@ void RinexParser::ReadEpochObservation(std::string line)
     // See 6.7 in rinex standard how observations are formatted    
     for (size_t i = 0; i < SvObsDefinitions.size(); i++)
     {         
-        // HACK! sometimes data is shorter?!
+        // less data avaibale in observation as in specified Header
         if (line.length() < StartIndex + 14)
         {
             continue;
@@ -95,7 +96,10 @@ void RinexParser::ReadEpochObservation(std::string line)
                 break;
             }
             case ObservationType::Doppler:
-            {                
+            {         
+                double doppler = std::stod(data);
+                DopplerObservation dObs = DopplerObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, doppler);
+                _Epochs.begin()->AddObservation(dObs);
                 break;
             }
             case ObservationType::RawSignalStrength:
