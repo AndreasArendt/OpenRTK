@@ -119,25 +119,25 @@ void RinexObservationParser::ReadObservationTypes(std::string line)
 {
     // SYS / # / OBS TYPES definition is: A1 2X,I3 13(1X,A3) [SvSystem (optional)][number of ObsTypes][Type,Band,Attribute]    
     SvSystem svSystem = SvSystem::UNKNOWN; //keep svSystem in case is empty!
-    if (!isblank(line[0]))
+    if (!std::isspace(line[0]))
     {
         svSystem = static_cast<SvSystem>(line[0]);        
     }    
-        
-    int idx = 7;
-    std::string obsDef = "";
     
-    while (!isblank(line[idx]) && idx <= 57) //max 58 chars allowed according to rinex 3.05        
+    std::string obsDef = "";
+
+    for (auto it = std::begin(line) + 7; it != std::end(line) && !std::isspace(*it); it += 4)    
     {
-        obsDef = line.substr(idx, 3);
-        
-        ObservationType obsType = static_cast<ObservationType>(obsDef[0]);
-        ObservationBand obsBand = static_cast<ObservationBand>(obsDef[1]);
-        ObservationAttribute obsAttribute = static_cast<ObservationAttribute>(obsDef[2]);
+        // Extract the observation definition from the input line
+        std::string obsDef(it, it + 3);
 
-        _ObservationDefinitions[svSystem].push_back(*(new ObservationDefinition(obsType, obsBand, obsAttribute)));
+        // Convert the observation type, band and attribute
+        auto obsType = static_cast<ObservationType>(obsDef[0]);
+        auto obsBand = static_cast<ObservationBand>(obsDef[1]);
+        auto obsAttribute = static_cast<ObservationAttribute>(obsDef[2]);
 
-        idx = idx + 4;
+        // Add a new ObservationDefinition object        
+        _ObservationDefinitions[svSystem].emplace_back(obsType, obsBand, obsAttribute); 
     }
 }
 
