@@ -56,10 +56,10 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
         
     unsigned int StartIndex = 3; //offset of first observation
     
-    std::vector<ObservationDefinition> SvObsDefinitions = _ObservationDefinitions[svSystem];
+    const auto& SvObsDefinitions = _ObservationDefinitions[svSystem];
 
     // See 6.7 in rinex standard how observations are formatted    
-    for (size_t i = 0; i < SvObsDefinitions.size(); i++)
+    for (const auto& obsDef : SvObsDefinitions)
     {         
         // less data avaibale in observation as in specified Header
         if (line.length() < StartIndex + 14)
@@ -76,26 +76,27 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
             continue;
         }
 
-        switch (SvObsDefinitions.at(i).GetObservationType())
+        switch (obsDef.GetObservationType())
         {            
             case ObservationType::Code: //Pseudorange
             {   
                 double psuedorange = std::stod(data);                    
-                CodeObservation cObs = CodeObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, psuedorange);
+                CodeObservation cObs = CodeObservation(obsDef.GetObservationBand(), svSystem, svNumber, psuedorange);
                 _Epochs.back().AddCodeObservation(cObs);                
-                break;
+                break;                
+
             }
             case ObservationType::Phase: //Carrierphase
             {
                 double phase = std::stod(data);                                
-                PhaseObservation pObs = PhaseObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, phase);
+                PhaseObservation pObs = PhaseObservation(obsDef.GetObservationBand(), svSystem, svNumber, phase);
                 _Epochs.back().AddPhaseObservation(pObs);
                 break;
             }
             case ObservationType::Doppler:
             {         
                 double doppler = std::stod(data);
-                DopplerObservation dObs = DopplerObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, doppler);
+                DopplerObservation dObs = DopplerObservation(obsDef.GetObservationBand(), svSystem, svNumber, doppler);
                 _Epochs.back().AddDopplerObservation(dObs);
                 break;
             }
