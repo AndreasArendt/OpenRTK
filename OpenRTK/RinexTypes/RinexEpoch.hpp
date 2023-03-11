@@ -36,6 +36,8 @@ class RinexEpoch
         void AddCodeObservation(CodeObservation& observation);
         void AddPhaseObservation(PhaseObservation& observation);
         void AddDopplerObservation(DopplerObservation& observation);		
+
+        double ConvertEpochTimeToUTC();
 };
 
 
