@@ -141,26 +141,26 @@
   <ItemGroup>
     <ClCompile Include="Observations\DopplerObservation.cpp" />
     <ClCompile Include="Observations\CodeObservation.cpp" />
-    <ClCompile Include="ObservationDefinition.cpp" />
+    <ClCompile Include="RinexTypes\ObservationDefinition.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
     <ClCompile Include="Observations\PhaseObservation.cpp" />
-    <ClCompile Include="RinexEpoch.cpp" />
+    <ClCompile Include="RinexTypes\RinexEpoch.cpp" />
     <ClCompile Include="Observations\RinexObservation.cpp" />
-    <ClCompile Include="RinexReader\RinexParser.cpp" />
+    <ClCompile Include="RinexReader\RinexObservationParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Observations\DopplerObservation.hpp" />
     <ClInclude Include="Observations\CodeObservation.hpp" />
-    <ClInclude Include="ObservationAttribute.hpp" />
-    <ClInclude Include="ObservationBand.hpp" />
-    <ClInclude Include="ObservationDefinition.hpp" />
-    <ClInclude Include="ObservationType.hpp" />
+    <ClInclude Include="RinexTypes\ObservationAttribute.hpp" />
+    <ClInclude Include="RinexTypes\ObservationBand.hpp" />
+    <ClInclude Include="RinexTypes\ObservationDefinition.hpp" />
+    <ClInclude Include="RinexTypes\ObservationType.hpp" />
     <ClInclude Include="Observations\PhaseObservation.hpp" />
-    <ClInclude Include="RinexEpoch.hpp" />
-    <ClInclude Include="RinexReaderState.hpp" />
+    <ClInclude Include="RinexTypes\RinexEpoch.hpp" />
+    <ClInclude Include="RinexReader\RinexReaderState.hpp" />
     <ClInclude Include="Observations\RinexObservation.hpp" />
-    <ClInclude Include="RinexReader\RinexParser.hpp" />
-    <ClInclude Include="SvSystem.hpp" />
+    <ClInclude Include="RinexReader\RinexObservationParser.hpp" />
+    <ClInclude Include="RinexTypes\SvSystem.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

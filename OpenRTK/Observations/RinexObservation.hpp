@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "../ObservationBand.hpp"
-#include "../SvSystem.hpp"
+#include "../RinexTypes/ObservationBand.hpp"
+#include "../RinexTypes/SvSystem.hpp"
 
 #include <stdio.h>
 #include <string>

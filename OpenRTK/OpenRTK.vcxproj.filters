@@ -30,16 +30,16 @@
     <ClCompile Include="OpenRTK.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexReader\RinexParser.cpp">
+    <ClCompile Include="RinexReader\RinexObservationParser.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
-    <ClCompile Include="RinexEpoch.cpp">
+    <ClCompile Include="RinexTypes\RinexEpoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
     <ClCompile Include="Observations\RinexObservation.cpp">
       <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
     </ClCompile>
-    <ClCompile Include="ObservationDefinition.cpp">
+    <ClCompile Include="RinexTypes\ObservationDefinition.cpp">
       <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
     </ClCompile>
     <ClCompile Include="Observations\CodeObservation.cpp">
@@ -53,31 +53,31 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RinexReader\RinexParser.hpp">
+    <ClInclude Include="RinexReader\RinexObservationParser.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
-    <ClInclude Include="RinexReaderState.hpp">
+    <ClInclude Include="RinexReader\RinexReaderState.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
-    <ClInclude Include="RinexEpoch.hpp">
+    <ClInclude Include="RinexTypes\RinexEpoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
     <ClInclude Include="Observations\RinexObservation.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="ObservationDefinition.hpp">
+    <ClInclude Include="RinexTypes\ObservationDefinition.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="SvSystem.hpp">
+    <ClInclude Include="RinexTypes\SvSystem.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="ObservationType.hpp">
+    <ClInclude Include="RinexTypes\ObservationType.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="ObservationBand.hpp">
+    <ClInclude Include="RinexTypes\ObservationBand.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="ObservationAttribute.hpp">
+    <ClInclude Include="RinexTypes\ObservationAttribute.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
     <ClInclude Include="Observations\CodeObservation.hpp">

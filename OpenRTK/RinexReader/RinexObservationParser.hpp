@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../RinexEpoch.hpp"
+#include "../RinexTypes/RinexEpoch.hpp"
 
 #include <stdio.h>
 #include <string>
@@ -17,7 +17,7 @@
 #include <iostream>
 #include <vector>
 
-class RinexParser {
+class RinexObservationParser {
     
 private:    
     void ReadEpochHeader(std::string line);
@@ -32,8 +32,8 @@ public:
     std::vector<RinexEpoch> const& Epochs() const { return _Epochs; }
 
     // ctor & dtor
-    RinexParser();
-    ~RinexParser();
+    RinexObservationParser();
+    ~RinexObservationParser();
         
     //functions
     void ParseFile(std::string path);

@@ -1,6 +1,6 @@
 #pragma once
 #include "../Observations/RinexObservation.hpp"
-#include "../ObservationBand.hpp"
+#include "../RinexTypes/ObservationBand.hpp"
 
 class PhaseObservation : public RinexObservation
 {

@@ -5,12 +5,12 @@
 //  Created by Andreas Arendt on 11.06.22.
 //
 
-#include "RinexParser.hpp"
-#include "../RinexReaderState.hpp"
-#include "../ObservationType.hpp"
-#include "../ObservationBand.hpp"
-#include "../ObservationAttribute.hpp"
-#include "../ObservationDefinition.hpp"
+#include "RinexObservationParser.hpp"
+#include "RinexReaderState.hpp"
+#include "../RinexTypes/ObservationType.hpp"
+#include "../RinexTypes/ObservationBand.hpp"
+#include "../RinexTypes/ObservationAttribute.hpp"
+#include "../RinexTypes/ObservationDefinition.hpp"
 #include "../Observations/CodeObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
@@ -24,15 +24,15 @@ std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDef
 
 RinexReaderState _RinexReaderState = RinexReaderState::IDLE;
 
-RinexParser::RinexParser()
+RinexObservationParser::RinexObservationParser()
 {    
 }
 
-RinexParser::~RinexParser()
+RinexObservationParser::~RinexObservationParser()
 {    
 }
 
-void RinexParser::ReadEpochHeader(std::string line)
+void RinexObservationParser::ReadEpochHeader(std::string line)
 {
     //0 2    7  10 13 15 17          2931
     //> 2019 01 25 03 24 30.0000000  0 24
@@ -48,7 +48,7 @@ void RinexParser::ReadEpochHeader(std::string line)
     _Epochs.emplace_back(year, month, day, hour, minute, second, epochFlag, numberSVs);
 }
 
-void RinexParser::ReadEpochObservation(std::string line)
+void RinexObservationParser::ReadEpochObservation(std::string line)
 {
     static SvSystem svSystem = static_cast<SvSystem>(line[0]);
     int svNumber = std::stoi(line.substr(1, 2));
@@ -116,7 +116,7 @@ void RinexParser::ReadEpochObservation(std::string line)
     }       
 }
 
-void RinexParser::ReadObservationTypes(std::string line)
+void RinexObservationParser::ReadObservationTypes(std::string line)
 {
     // SYS / # / OBS TYPES definition is: A1 2X,I3 13(1X,A3) [SvSystem (optional)][number of ObsTypes][Type,Band,Attribute]    
     static SvSystem svSystem = SvSystem::UNKNOWN; //keep svSystem in case is empty!
@@ -142,7 +142,7 @@ void RinexParser::ReadObservationTypes(std::string line)
     }
 }
 
-void RinexParser::ParseLine(std::string line)
+void RinexObservationParser::ParseLine(std::string line)
 {
     switch (_RinexReaderState)
     {
@@ -199,7 +199,7 @@ void RinexParser::ParseLine(std::string line)
     }
 }
 
-void RinexParser::ParseFile(std::string path)
+void RinexObservationParser::ParseFile(std::string path)
 {
     std::ifstream infile(path);
     
