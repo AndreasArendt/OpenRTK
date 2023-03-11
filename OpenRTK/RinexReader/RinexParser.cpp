@@ -7,13 +7,12 @@
 
 #include "RinexParser.hpp"
 #include "../RinexReaderState.hpp"
-#include "../RinexEpoch.hpp"
 #include "../ObservationType.hpp"
 #include "../ObservationBand.hpp"
 #include "../ObservationAttribute.hpp"
 #include "../ObservationDefinition.hpp"
 #include "../Observations/CodeObservation.hpp"
-#include "../Observations/DopplerObservation.h"
+#include "../Observations/DopplerObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
 
 #include <string>
@@ -21,7 +20,6 @@
 
 #define OBS_TYPE_DEFINITION "SYS / # / OBS TYPES"
 
-std::vector<RinexEpoch> _Epochs;
 std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
 
 RinexReaderState _RinexReaderState = RinexReaderState::IDLE;
@@ -84,7 +82,7 @@ void RinexParser::ReadEpochObservation(std::string line)
             {   
                 double psuedorange = std::stod(data);                    
                 CodeObservation cObs = CodeObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, psuedorange);
-                _Epochs.begin()->AddObservation(cObs);                    
+                _Epochs.begin()->AddCodeObservation(cObs);                    
                 
                 break;
             }
@@ -92,14 +90,14 @@ void RinexParser::ReadEpochObservation(std::string line)
             {
                 double phase = std::stod(data);                                
                 PhaseObservation pObs = PhaseObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, phase);
-                _Epochs.begin()->AddObservation(pObs);
+                _Epochs.begin()->AddPhaseObservation(pObs);
                 break;
             }
             case ObservationType::Doppler:
             {         
                 double doppler = std::stod(data);
                 DopplerObservation dObs = DopplerObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, doppler);
-                _Epochs.begin()->AddObservation(dObs);
+                _Epochs.begin()->AddDopplerObservation(dObs);
                 break;
             }
             case ObservationType::RawSignalStrength:
@@ -209,6 +207,6 @@ void RinexParser::ParseFile(std::string path)
     while (std::getline(infile, line))
     {
         this->ParseLine(line);
-        std::cout << line << std::endl;
+        //std::cout << line << std::endl;
     }
 }

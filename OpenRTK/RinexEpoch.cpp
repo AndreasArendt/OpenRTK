@@ -1,5 +1,4 @@
 #include "RinexEpoch.hpp"
-#include "RinexReader/RinexObservation.hpp"
 
 RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs)
 {
@@ -15,9 +14,19 @@ RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, doubl
     this->isSpecialEvent = epochFlag < 2; // Special Event are >=2; 0 | 1 are invalid/valid)
 }
 
-void RinexEpoch::AddObservation(RinexObservation& observation)
+void RinexEpoch::AddCodeObservation(CodeObservation& observation)
 {
-    _RinexObservations.emplace_back(observation);
+    _CodeObservations.emplace_back(observation);
+}
+
+void RinexEpoch::AddPhaseObservation(PhaseObservation& observation)
+{
+    _PhaseObservations.emplace_back(observation);
+}
+
+void RinexEpoch::AddDopplerObservation(DopplerObservation& observation)
+{
+    _DopplerObservations.emplace_back(observation);
 }
 
 RinexEpoch::~RinexEpoch()

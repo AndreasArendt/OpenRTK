@@ -1,6 +1,8 @@
 #pragma once
 
-#include "RinexReader/RinexObservation.hpp"
+#include "./Observations/CodeObservation.hpp"
+#include "./Observations/PhaseObservation.hpp"
+#include "./Observations/DopplerObservation.hpp"
 
 #include <vector>
 
@@ -15,16 +17,28 @@ class RinexEpoch
         double second;
         int epochFlag;
         int numberSVs;
+                
+        std::vector<CodeObservation> _CodeObservations;
+        std::vector<PhaseObservation> _PhaseObservations;
+        std::vector<DopplerObservation> _DopplerObservations;
         
-        std::vector<RinexObservation> _RinexObservations;
-
 	public:
         bool isSpecialEvent;
+        
+        // getters
+        std::vector<CodeObservation> const& CodeObservations() const { return _CodeObservations; }
+        std::vector<PhaseObservation> const& PhaseObservations() const { return _PhaseObservations; }
+        std::vector<DopplerObservation> const& DopplerObservations() const { return _DopplerObservations; }
 
-        std::vector<RinexObservation> const& Observations() const { return _RinexObservations; }
-
+        // ctor & Dtor
 		RinexEpoch(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs);
-        void AddObservation(RinexObservation& observation);
-		~RinexEpoch();
+        ~RinexEpoch();
+
+        // functions
+        void AddCodeObservation(CodeObservation& observation);
+        void AddPhaseObservation(PhaseObservation& observation);
+        void AddDopplerObservation(DopplerObservation& observation);		
 };
+
+
 

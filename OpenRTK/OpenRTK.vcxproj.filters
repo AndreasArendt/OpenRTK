@@ -36,7 +36,7 @@
     <ClCompile Include="RinexEpoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
-    <ClCompile Include="RinexReader\RinexObservation.cpp">
+    <ClCompile Include="Observations\RinexObservation.cpp">
       <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
     </ClCompile>
     <ClCompile Include="ObservationDefinition.cpp">
@@ -62,7 +62,7 @@
     <ClInclude Include="RinexEpoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
-    <ClInclude Include="RinexReader\RinexObservation.hpp">
+    <ClInclude Include="Observations\RinexObservation.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
     <ClInclude Include="ObservationDefinition.hpp">
@@ -86,7 +86,7 @@
     <ClInclude Include="Observations\PhaseObservation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Observations\DopplerObservation.h">
+    <ClInclude Include="Observations\DopplerObservation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

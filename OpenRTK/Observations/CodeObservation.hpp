@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../RinexReader/RinexObservation.hpp"
+#include "../Observations/RinexObservation.hpp"
 #include "../ObservationBand.hpp"
 
 class CodeObservation : public RinexObservation 
