@@ -16,15 +16,21 @@
 
 #include <string>
 
-#define RINEX_VERSION_DEFINITION "RINEX VERSION / TYPE"
-#define OBS_TYPE_DEFINITION "SYS / # / OBS TYPES"
+#define RINEX_VERSION_DEFINITION         "RINEX VERSION / TYPE"
+#define RINEX_APPROX_POSITION_DEFINITION "APPROX POSITION XYZ"
+#define RINEX_ANTENNA_DELTA_DEFINITION   "ANTENNA: DELTA H/E/N"
+#define RINEX_OBS_TYPE_DEFINITION        "SYS / # / OBS TYPES"
 
 RinexObservationParser::RinexObservationParser()
 {    
 }
 
 RinexObservationParser::~RinexObservationParser()
-{    
+{            
+    this->_Epochs.clear();
+    this->_ObservationDefinitions.clear();    
+    this->_AntennaOffset.reset();
+    this->_ApproximateMarkerPosition.reset();
 }
 
 void RinexObservationParser::ReadEpochHeader(std::string line)
@@ -152,7 +158,23 @@ void RinexObservationParser::ParseLine(std::string line)
                 std::string str = line.substr(0, 9);
                 this->_Version = ltrim(str);
             }
-            else if( (line.find(OBS_TYPE_DEFINITION) != std::string::npos) ) // read all observation types from rnx header
+            else if ((line.find(RINEX_APPROX_POSITION_DEFINITION) != std::string::npos)) // approximate position
+            {
+                double x = std::stod(line.substr(0, 14));
+                double y = std::stod(line.substr(14, 14));
+                double z = std::stod(line.substr(28, 14));
+                
+                this->_ApproximateMarkerPosition = std::make_unique<ECEF_Position>(x, y, z);
+            }
+            else if ((line.find(RINEX_ANTENNA_DELTA_DEFINITION) != std::string::npos)) // antenna phase center offset
+            {
+                double x = std::stod(line.substr(0, 14));
+                double y = std::stod(line.substr(14, 14));
+                double z = std::stod(line.substr(28, 14));
+
+                this->_AntennaOffset = std::make_unique<Position>(x, y, z);
+            }
+            else if( (line.find(RINEX_OBS_TYPE_DEFINITION) != std::string::npos) ) // read all observation types from rnx header
             {
                 _RinexReaderState = RinexReaderState::PARSE_OBS_TYPES;
                 this->ReadObservationTypes(line);
@@ -162,7 +184,7 @@ void RinexObservationParser::ParseLine(std::string line)
         }        
         case RinexReaderState::PARSE_OBS_TYPES:
         {
-            if ((line.find(OBS_TYPE_DEFINITION) != std::string::npos)) // read all observation types from rnx header
+            if ((line.find(RINEX_OBS_TYPE_DEFINITION) != std::string::npos)) // read all observation types from rnx header
             {
                 this->ReadObservationTypes(line);
             }

@@ -10,6 +10,7 @@
 #include "../RinexTypes/RinexEpoch.hpp"
 #include "../RinexTypes/ObservationDefinition.hpp"
 #include "./RinexReaderState.hpp"
+#include "../Transformations/ECEF_Position.hpp"
 
 #include <stdio.h>
 #include <string>
@@ -32,12 +33,16 @@ private:
     std::vector<RinexEpoch> _Epochs;
     std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
     RinexReaderState _RinexReaderState = RinexReaderState::PARSE_HEADER;
+    std::unique_ptr<ECEF_Position> _ApproximateMarkerPosition;
+    std::unique_ptr<Position> _AntennaOffset;
 
 public:
     //getters
     std::vector<RinexEpoch> const& Epochs() const { return _Epochs; }
     std::string const& Version() const { return _Version; }
-
+    std::unique_ptr<ECEF_Position> const& ApproximateMarkerPosition() const { return _ApproximateMarkerPosition; }
+    std::unique_ptr<Position> const& AntennaOffset() const { return _AntennaOffset; }
+        
     // ctor & dtor
     RinexObservationParser();
     ~RinexObservationParser();
