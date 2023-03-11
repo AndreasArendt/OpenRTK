@@ -11,7 +11,7 @@ RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, doubl
     this->epochFlag = epochFlag;
     this->numberSVs = numberSVs;
 
-    this->isSpecialEvent = epochFlag < 2; // Special Event are >=2; 0 | 1 are invalid/valid)
+    this->isSpecialEvent = epochFlag >= 2; // Special Event are >=2; 0 | 1 are invalid/valid)
 }
 
 void RinexEpoch::AddCodeObservation(CodeObservation& observation)

@@ -74,7 +74,7 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
             {   
                 double psuedorange = std::stod(data);                    
                 CodeObservation cObs = CodeObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, psuedorange);
-                _Epochs.begin()->AddCodeObservation(cObs);                    
+                _Epochs.back().AddCodeObservation(cObs);
                 
                 break;
             }
@@ -82,14 +82,14 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
             {
                 double phase = std::stod(data);                                
                 PhaseObservation pObs = PhaseObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, phase);
-                _Epochs.begin()->AddPhaseObservation(pObs);
+                _Epochs.back().AddPhaseObservation(pObs);
                 break;
             }
             case ObservationType::Doppler:
             {         
                 double doppler = std::stod(data);
                 DopplerObservation dObs = DopplerObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, doppler);
-                _Epochs.begin()->AddDopplerObservation(dObs);
+                _Epochs.back().AddDopplerObservation(dObs);
                 break;
             }
             case ObservationType::RawSignalStrength:
