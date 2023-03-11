@@ -6,23 +6,16 @@
 //
 
 #include "RinexObservationParser.hpp"
-#include "RinexReaderState.hpp"
 #include "../RinexTypes/ObservationType.hpp"
 #include "../RinexTypes/ObservationBand.hpp"
 #include "../RinexTypes/ObservationAttribute.hpp"
-#include "../RinexTypes/ObservationDefinition.hpp"
 #include "../Observations/CodeObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
 
 #include <string>
-#include <unordered_map>
 
 #define OBS_TYPE_DEFINITION "SYS / # / OBS TYPES"
-
-std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
-
-RinexReaderState _RinexReaderState = RinexReaderState::IDLE;
 
 RinexObservationParser::RinexObservationParser()
 {    
@@ -50,11 +43,10 @@ void RinexObservationParser::ReadEpochHeader(std::string line)
 
 void RinexObservationParser::ReadEpochObservation(std::string line)
 {
-    static SvSystem svSystem = static_cast<SvSystem>(line[0]);
+    SvSystem svSystem = static_cast<SvSystem>(line[0]);
     int svNumber = std::stoi(line.substr(1, 2));
-
-    int dataCount = 0;
-    int StartIndex = 3; //offset of first observation
+        
+    unsigned int StartIndex = 3; //offset of first observation
     
     std::vector<ObservationDefinition> SvObsDefinitions = _ObservationDefinitions[svSystem];
 
@@ -119,7 +111,7 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
 void RinexObservationParser::ReadObservationTypes(std::string line)
 {
     // SYS / # / OBS TYPES definition is: A1 2X,I3 13(1X,A3) [SvSystem (optional)][number of ObsTypes][Type,Band,Attribute]    
-    static SvSystem svSystem = SvSystem::UNKNOWN; //keep svSystem in case is empty!
+    SvSystem svSystem = SvSystem::UNKNOWN; //keep svSystem in case is empty!
     if (!isblank(line[0]))
     {
         svSystem = static_cast<SvSystem>(line[0]);        

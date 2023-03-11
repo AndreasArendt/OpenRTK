@@ -8,6 +8,8 @@
 #pragma once
 
 #include "../RinexTypes/RinexEpoch.hpp"
+#include "../RinexTypes/ObservationDefinition.hpp"
+#include "./RinexReaderState.hpp"
 
 #include <stdio.h>
 #include <string>
@@ -16,6 +18,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 
 class RinexObservationParser {
     
@@ -26,6 +29,8 @@ private:
     void ParseLine(std::string line);
     
     std::vector<RinexEpoch> _Epochs;
+    std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
+    RinexReaderState _RinexReaderState = RinexReaderState::IDLE;
 
 public:
     //getters
