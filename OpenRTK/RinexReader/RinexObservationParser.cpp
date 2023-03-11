@@ -12,9 +12,11 @@
 #include "../Observations/CodeObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
+#include "../Utils/strim.hpp"
 
 #include <string>
 
+#define RINEX_VERSION_DEFINITION "RINEX VERSION / TYPE"
 #define OBS_TYPE_DEFINITION "SYS / # / OBS TYPES"
 
 RinexObservationParser::RinexObservationParser()
@@ -74,8 +76,7 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
             {   
                 double psuedorange = std::stod(data);                    
                 CodeObservation cObs = CodeObservation(SvObsDefinitions.at(i).GetObservationBand(), svSystem, svNumber, psuedorange);
-                _Epochs.back().AddCodeObservation(cObs);
-                
+                _Epochs.back().AddCodeObservation(cObs);                
                 break;
             }
             case ObservationType::Phase: //Carrierphase
@@ -138,13 +139,18 @@ void RinexObservationParser::ParseLine(std::string line)
 {
     switch (_RinexReaderState)
     {
-        case RinexReaderState::IDLE:
+        case RinexReaderState::PARSE_HEADER:
         {
             // new Epoch Found
             if (line[0] == '>')
             {
                 _RinexReaderState = RinexReaderState::PARSE_EPOCH;
                 this->ReadEpochHeader(line);
+            }
+            else if ((line.find(RINEX_VERSION_DEFINITION) != std::string::npos)) // read rinex file version
+            {
+                std::string str = line.substr(0, 9);
+                this->_Version = ltrim(str);
             }
             else if( (line.find(OBS_TYPE_DEFINITION) != std::string::npos) ) // read all observation types from rnx header
             {
@@ -162,7 +168,7 @@ void RinexObservationParser::ParseLine(std::string line)
             }
             else
             {
-                _RinexReaderState = RinexReaderState::IDLE;
+                _RinexReaderState = RinexReaderState::PARSE_HEADER;
             }
             break;
         }
@@ -176,7 +182,7 @@ void RinexObservationParser::ParseLine(std::string line)
                 // Check if current Epoch is Special Event
                 if (_Epochs.begin()->isSpecialEvent)
                 {
-                    _RinexReaderState = RinexReaderState::IDLE; // TODO AA: currently no handling for special events!
+                    _RinexReaderState = RinexReaderState::PARSE_HEADER; // TODO AA: currently no handling for special events!
                 }
             }
             else

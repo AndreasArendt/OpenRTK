@@ -161,6 +161,7 @@
     <ClInclude Include="Observations\RinexObservation.hpp" />
     <ClInclude Include="RinexReader\RinexObservationParser.hpp" />
     <ClInclude Include="RinexTypes\SvSystem.hpp" />
+    <ClInclude Include="Utils\strim.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

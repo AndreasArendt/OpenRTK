@@ -28,13 +28,15 @@ private:
     void ReadObservationTypes(std::string line);
     void ParseLine(std::string line);
     
+    std::string _Version;
     std::vector<RinexEpoch> _Epochs;
     std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
-    RinexReaderState _RinexReaderState = RinexReaderState::IDLE;
+    RinexReaderState _RinexReaderState = RinexReaderState::PARSE_HEADER;
 
 public:
     //getters
     std::vector<RinexEpoch> const& Epochs() const { return _Epochs; }
+    std::string const& Version() const { return _Version; }
 
     // ctor & dtor
     RinexObservationParser();
