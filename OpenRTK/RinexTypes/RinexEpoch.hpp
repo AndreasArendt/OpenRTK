@@ -3,6 +3,7 @@
 #include "../Observations/CodeObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
+#include "../Observations/SignalStrengthObservation.hpp"
 
 #include <vector>
 #include <chrono>
@@ -19,6 +20,7 @@ class RinexEpoch
         std::vector<CodeObservation> _CodeObservations;
         std::vector<PhaseObservation> _PhaseObservations;
         std::vector<DopplerObservation> _DopplerObservations;
+        std::vector<SignalStrengthObservation> _SnrObservations;
         
 	public:
         bool isSpecialEvent;
@@ -27,6 +29,7 @@ class RinexEpoch
         std::vector<CodeObservation> const& CodeObservations() const { return _CodeObservations; }
         std::vector<PhaseObservation> const& PhaseObservations() const { return _PhaseObservations; }
         std::vector<DopplerObservation> const& DopplerObservations() const { return _DopplerObservations; }
+        std::vector<SignalStrengthObservation> const& SnrObservations() const { return _SnrObservations; }
 
         // ctor & Dtor
         RinexEpoch(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs);
@@ -36,6 +39,7 @@ class RinexEpoch
         void AddCodeObservation(CodeObservation& observation);
         void AddPhaseObservation(PhaseObservation& observation);
         void AddDopplerObservation(DopplerObservation& observation);		
+        void AddSnrObservation(SignalStrengthObservation& observation);
 
         double ConvertEpochTimeToUTC();
 };

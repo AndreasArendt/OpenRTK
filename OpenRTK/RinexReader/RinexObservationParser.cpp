@@ -12,6 +12,7 @@
 #include "../Observations/CodeObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
+#include "../Observations/SignalStrengthObservation.hpp"
 #include "../Utils/strim.hpp"
 
 #include <string>
@@ -114,7 +115,10 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
                 break;
             }
             case ObservationType::RawSignalStrength:
-            {                
+            {   
+                double snr = std::stod(data);
+                SignalStrengthObservation dObs = SignalStrengthObservation(obsDef.GetObservationBand(), svSystem, svNumber, snr);
+                _Epochs.back().AddSnrObservation(dObs);                
                 break;
             }
             case ObservationType::ReceiverChannelNumber:

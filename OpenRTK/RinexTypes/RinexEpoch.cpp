@@ -25,17 +25,22 @@ RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, doubl
 
 void RinexEpoch::AddCodeObservation(CodeObservation& observation)
 {
-    _CodeObservations.emplace_back(observation);
+    this->_CodeObservations.emplace_back(observation);
 }
 
 void RinexEpoch::AddPhaseObservation(PhaseObservation& observation)
 {
-    _PhaseObservations.emplace_back(observation);
+    this->_PhaseObservations.emplace_back(observation);
 }
 
 void RinexEpoch::AddDopplerObservation(DopplerObservation& observation)
 {
-    _DopplerObservations.emplace_back(observation);
+    this->_DopplerObservations.emplace_back(observation);
+}
+
+void RinexEpoch::AddSnrObservation(SignalStrengthObservation& observation)
+{
+    this->_SnrObservations.emplace_back(observation);
 }
 
 /**

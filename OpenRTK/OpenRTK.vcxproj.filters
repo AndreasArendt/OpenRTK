@@ -51,6 +51,9 @@
     <ClCompile Include="Observations\DopplerObservation.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Observations\SignalStrengthObservation.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexReader\RinexObservationParser.hpp">
@@ -96,6 +99,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Transformations\Position.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Observations\SignalStrengthObservation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -147,8 +147,10 @@
     <ClCompile Include="RinexTypes\RinexEpoch.cpp" />
     <ClCompile Include="Observations\RinexObservation.cpp" />
     <ClCompile Include="RinexReader\RinexObservationParser.cpp" />
+    <ClCompile Include="Observations\SignalStrengthObservation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Observations\SignalStrengthObservation.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
     <ClInclude Include="Observations\DopplerObservation.hpp" />
     <ClInclude Include="Observations\CodeObservation.hpp" />
