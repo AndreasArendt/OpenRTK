@@ -33,20 +33,33 @@ RinexObservationParser::~RinexObservationParser()
     this->_ApproximateMarkerPosition.reset();
 }
 
-void RinexObservationParser::ReadEpochHeader(std::string line)
-{
-    //0 2    7  10 13 15 17          2931
-    //> 2019 01 25 03 24 30.0000000  0 24
-    int year = std::stoi( line.substr(2, 4) );
-    int month = std::stoi( line.substr(7, 2) );
-    int day = std::stoi( line.substr(10, 2) );
-    int hour = std::stoi( line.substr(13, 2) );
-    int minute = std::stoi( line.substr(16, 2) );
-    double second = std::stod( line.substr(19, 10) );
-    int epochFlag = std::stoi(line.substr(31, 1));
-    int numberSVs = std::stoi( line.substr(33, 2) );
-    
-    _Epochs.emplace_back(year, month, day, hour, minute, second, epochFlag, numberSVs);
+void RinexObservationParser::ReadEpochHeader(std::string line) {
+    // Check if input line has the expected length
+    if (line.length() < 33)
+    {
+        std::cerr << "Error: Invalid epoch header line: " << line << std::endl;
+        return;
+    }
+
+    try
+    {
+        // Parse substrings to integers/double
+        int year = std::stoi(line.substr(2, 4));
+        int month = std::stoi(line.substr(7, 2));
+        int day = std::stoi(line.substr(10, 2));
+        int hour = std::stoi(line.substr(13, 2));
+        int minute = std::stoi(line.substr(16, 2));
+        double second = std::stod(line.substr(19, 10));
+        int epochFlag = std::stoi(line.substr(31, 1));
+        int numberSVs = std::stoi(line.substr(33, 2));
+
+        // Create new Epoch object and add it to the _Epochs vector
+        _Epochs.emplace_back(year, month, day, hour, minute, second, epochFlag, numberSVs);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error: Invalid epoch header line: " << line << std::endl;
+    }
 }
 
 void RinexObservationParser::ReadEpochObservation(std::string line)
