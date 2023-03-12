@@ -15,8 +15,6 @@
 #include "../Observations/SignalStrengthObservation.hpp"
 #include "../Utils/strim.hpp"
 
-#include <string>
-
 #define RINEX_VERSION_DEFINITION         "RINEX VERSION / TYPE"
 #define RINEX_APPROX_POSITION_DEFINITION "APPROX POSITION XYZ"
 #define RINEX_ANTENNA_DELTA_DEFINITION   "ANTENNA: DELTA H/E/N"

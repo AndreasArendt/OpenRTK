@@ -12,8 +12,6 @@
 #include "./RinexReaderState.hpp"
 #include "../Transformations/ECEF_Position.hpp"
 
-#include <stdio.h>
-#include <string>
 #include <sstream>
 #include <string>
 #include <fstream>
