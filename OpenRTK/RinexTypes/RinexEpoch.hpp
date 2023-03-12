@@ -13,7 +13,7 @@ class RinexEpoch
 	private:
         int _EpochFlag;
         int _NumberSVs;
-        bool _IsSpecialEvent = false;
+        bool _IsSpecialEvent;
 
         std::chrono::system_clock::time_point _EpochTime;
 
@@ -23,13 +23,13 @@ class RinexEpoch
         std::vector<SignalStrengthObservation> _SnrObservations;
         
 	public:
-        bool isSpecialEvent;
-        
         // getters
-        std::vector<CodeObservation> const& CodeObservations() const { return _CodeObservations; }
-        std::vector<PhaseObservation> const& PhaseObservations() const { return _PhaseObservations; }
-        std::vector<DopplerObservation> const& DopplerObservations() const { return _DopplerObservations; }
-        std::vector<SignalStrengthObservation> const& SnrObservations() const { return _SnrObservations; }
+        std::vector<CodeObservation> const& CodeObservations() const { return this->_CodeObservations; }
+        std::vector<PhaseObservation> const& PhaseObservations() const { return this->_PhaseObservations; }
+        std::vector<DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }
+        std::vector<SignalStrengthObservation> const& SnrObservations() const { return this->_SnrObservations; }
+        
+        bool IsSpecialEvent() const { return _IsSpecialEvent; }
 
         // ctor & Dtor
         RinexEpoch(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs);

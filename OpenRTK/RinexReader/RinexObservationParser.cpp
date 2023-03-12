@@ -97,7 +97,7 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
                 double psuedorange = std::stod(data);                    
                 CodeObservation cObs = CodeObservation(obsDef.GetObservationBand(), svSystem, svNumber, psuedorange);
                 _Epochs.back().AddCodeObservation(cObs);                
-                break;                
+                break;              
 
             }
             case ObservationType::Phase: //Carrierphase
@@ -220,7 +220,7 @@ void RinexObservationParser::ParseLine(std::string line)
                 this->ReadEpochHeader(line);
 
                 // Check if current Epoch is Special Event
-                if (_Epochs.begin()->isSpecialEvent)
+                if (_Epochs.back().IsSpecialEvent())
                 {
                     _RinexReaderState = RinexReaderState::PARSE_HEADER; // TODO AA: currently no handling for special events!
                 }
