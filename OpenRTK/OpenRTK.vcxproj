@@ -141,16 +141,18 @@
   <ItemGroup>
     <ClCompile Include="Observations\DopplerObservation.cpp" />
     <ClCompile Include="Observations\CodeObservation.cpp" />
+    <ClCompile Include="RinexNavParser.cpp" />
     <ClCompile Include="RinexTypes\ObservationDefinition.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
     <ClCompile Include="Observations\PhaseObservation.cpp" />
     <ClCompile Include="RinexTypes\RinexEpoch.cpp" />
     <ClCompile Include="Observations\RinexObservation.cpp" />
-    <ClCompile Include="RinexObsParser\RinexObservationParser.cpp" />
+    <ClCompile Include="RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="Observations\SignalStrengthObservation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Observations\SignalStrengthObservation.hpp" />
+    <ClInclude Include="RinexNavParser.h" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
     <ClInclude Include="Observations\DopplerObservation.hpp" />
     <ClInclude Include="Observations\CodeObservation.hpp" />
@@ -162,7 +164,7 @@
     <ClInclude Include="RinexTypes\RinexEpoch.hpp" />
     <ClInclude Include="RinexObsParser\RinexReaderState.hpp" />
     <ClInclude Include="Observations\RinexObservation.hpp" />
-    <ClInclude Include="RinexObsParser\RinexObservationParser.hpp" />
+    <ClInclude Include="RinexObsParser\RinexObsParser.hpp" />
     <ClInclude Include="RinexTypes\SvSystem.hpp" />
     <ClInclude Include="Transformations\Position.hpp" />
     <ClInclude Include="Utils\strim.hpp" />

@@ -21,7 +21,7 @@
 #include <vector>
 #include <unordered_map>
 
-class RinexObservationParser {
+class RinexObsParser {
     
 private:    
     void ReadEpochHeader(std::string line);
@@ -44,8 +44,8 @@ public:
     std::unique_ptr<Position> const& AntennaOffset() const { return _AntennaOffset; }
         
     // ctor & dtor
-    RinexObservationParser();
-    ~RinexObservationParser();
+    RinexObsParser();
+    ~RinexObsParser();
         
     //functions
     void ParseFile(std::string path);

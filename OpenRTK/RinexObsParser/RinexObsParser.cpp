@@ -5,7 +5,7 @@
 //  Created by Andreas Arendt on 11.06.22.
 //
 
-#include "RinexObservationParser.hpp"
+#include "RinexObsParser.hpp"
 #include "../RinexTypes/ObservationType.hpp"
 #include "../RinexTypes/ObservationBand.hpp"
 #include "../RinexTypes/ObservationAttribute.hpp"
@@ -22,11 +22,11 @@
 #define RINEX_ANTENNA_DELTA_DEFINITION   "ANTENNA: DELTA H/E/N"
 #define RINEX_OBS_TYPE_DEFINITION        "SYS / # / OBS TYPES"
 
-RinexObservationParser::RinexObservationParser()
+RinexObsParser::RinexObsParser()
 {    
 }
 
-RinexObservationParser::~RinexObservationParser()
+RinexObsParser::~RinexObsParser()
 {            
     this->_Epochs.clear();
     this->_ObservationDefinitions.clear();    
@@ -34,7 +34,7 @@ RinexObservationParser::~RinexObservationParser()
     this->_ApproximateMarkerPosition.reset();
 }
 
-void RinexObservationParser::ReadEpochHeader(std::string line) {
+void RinexObsParser::ReadEpochHeader(std::string line) {
     // Check if input line has the expected length
     if (line.length() < 33)
     {
@@ -63,7 +63,7 @@ void RinexObservationParser::ReadEpochHeader(std::string line) {
     }
 }
 
-void RinexObservationParser::ReadEpochObservation(std::string line)
+void RinexObsParser::ReadEpochObservation(std::string line)
 {
     SvSystem svSystem = static_cast<SvSystem>(line[0]);
     int svNumber = std::stoi(line.substr(1, 2));
@@ -133,7 +133,7 @@ void RinexObservationParser::ReadEpochObservation(std::string line)
     }       
 }
 
-void RinexObservationParser::ReadObservationTypes(std::string line)
+void RinexObsParser::ReadObservationTypes(std::string line)
 {
     // SYS / # / OBS TYPES definition is: A1 2X,I3 13(1X,A3) [SvSystem (optional)][number of ObsTypes][Type,Band,Attribute]    
     SvSystem svSystem = SvSystem::UNKNOWN; //keep svSystem in case is empty!
@@ -159,7 +159,7 @@ void RinexObservationParser::ReadObservationTypes(std::string line)
     }
 }
 
-void RinexObservationParser::ParseLine(std::string line)
+void RinexObsParser::ParseLine(std::string line)
 {
     switch (_RinexReaderState)
     {
@@ -237,7 +237,7 @@ void RinexObservationParser::ParseLine(std::string line)
     }
 }
 
-void RinexObservationParser::ParseFile(std::string path)
+void RinexObsParser::ParseFile(std::string path)
 {
     std::ifstream infile(path);
     
