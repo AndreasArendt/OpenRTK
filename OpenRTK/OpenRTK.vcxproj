@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RinexTypes\IonosphericCorrection.cpp" />
     <ClCompile Include="Observations\DopplerObservation.cpp" />
     <ClCompile Include="Observations\CodeObservation.cpp" />
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp" />
@@ -151,8 +152,10 @@
     <ClCompile Include="Observations\SignalStrengthObservation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RinexTypes\IonosphericCorrection.hpp" />
     <ClInclude Include="Observations\SignalStrengthObservation.hpp" />
     <ClInclude Include="RinexNavParser\RinexNavParser.hpp" />
+    <ClInclude Include="RinexTypes\IonosphericCorrectionParameter.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
     <ClInclude Include="Observations\DopplerObservation.hpp" />
     <ClInclude Include="Observations\CodeObservation.hpp" />

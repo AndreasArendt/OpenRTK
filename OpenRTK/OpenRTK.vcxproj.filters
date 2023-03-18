@@ -30,9 +30,6 @@
     <ClCompile Include="OpenRTK.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexReader\RinexObservationParser.cpp">
-      <Filter>Quelldateien\RinexReader</Filter>
-    </ClCompile>
     <ClCompile Include="RinexTypes\RinexEpoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
@@ -54,14 +51,17 @@
     <ClCompile Include="Observations\SignalStrengthObservation.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RinexNavParser\RinexNavParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexObsParser\RinexObsParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexTypes\IonosphericCorrection.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RinexReader\RinexObservationParser.hpp">
-      <Filter>Headerdateien\RinexReader</Filter>
-    </ClInclude>
-    <ClInclude Include="RinexReader\RinexReaderState.hpp">
-      <Filter>Headerdateien\RinexReader</Filter>
-    </ClInclude>
     <ClInclude Include="RinexTypes\RinexEpoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
@@ -102,6 +102,21 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Observations\SignalStrengthObservation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexNavParser\RinexNavParser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexObsParser\RinexReaderState.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexObsParser\RinexObsParser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexTypes\IonosphericCorrectionParameter.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexTypes\IonosphericCorrection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
