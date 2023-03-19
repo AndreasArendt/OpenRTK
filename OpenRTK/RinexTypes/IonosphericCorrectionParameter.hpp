@@ -5,7 +5,7 @@
 
 enum IonosphericCorrectionParameter
 {
-	UNKNOWN = 0,
+	IONOPARAM_UNKNOWN = 0,
 	GAL,	// Galileo AI0-AI2
 	GPSA,	// GPS Alpha0-Alpha3
 	GPSB,   // GPS beta0-beta3

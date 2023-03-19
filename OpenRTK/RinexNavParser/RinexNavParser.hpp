@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../RinexTypes/IonosphericCorrection.hpp"
+#include "../RinexTypes/TimeSystemCorrection.hpp"
 
 #include <string>
 #include <vector>
@@ -11,14 +12,18 @@ private:
 	std::string _Version;
 	std::string _Type;
 	std::vector<IonosphericCorrection> _IonosphericCorrections;
+	std::vector<TimeSystemCorrection> _TimeSystemCorrections;
 
 	void ParseLine(std::string line);
+	void ParseIonoCorrDefinition(std::string line);
+	void ParseTimeDiffDefinition(std::string line);
 
 public:
 	// getters
 	std::string const& Version() const { return this->_Version; }	
 	std::string const& Type() const { return this->_Type; }
 	std::vector<IonosphericCorrection> const& IonosphericCorrections() const { return this->_IonosphericCorrections; }
+	std::vector<TimeSystemCorrection> const& TimeSystemCorrections() const { return this->_TimeSystemCorrections; }
 
 	// ctor & dtor
 	RinexNavParser();
