@@ -8,8 +8,8 @@ private:
 	TimeDifferenceType _TimeDifference = TimeDifferenceType::TDIFF_UNKNOWN;
 	double _a0 = 0.0;
 	double _a1 = 0.0;
-	int _T = 0.0;		// reference time for polynomial
-	int _W = 0.0;		// reference week number	
+	int _T = 0;		// reference time for polynomial
+	int _W = 0;		// reference week number	
 
 public:
 	// getters

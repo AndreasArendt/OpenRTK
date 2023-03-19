@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../RinexTypes/RinexEpoch.hpp"
+#include "../RinexTypes/Epoch/RinexEpoch.hpp"
 #include "../RinexTypes/ObservationDefinition.hpp"
 #include "./RinexReaderState.hpp"
 #include "../Transformations/ECEF_Position.hpp"

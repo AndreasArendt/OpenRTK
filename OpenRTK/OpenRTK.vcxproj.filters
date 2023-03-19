@@ -30,7 +30,7 @@
     <ClCompile Include="OpenRTK.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\RinexEpoch.cpp">
+    <ClCompile Include="RinexTypes\Epoch\RinexEpoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
     <ClCompile Include="Observations\RinexObservation.cpp">
@@ -60,9 +60,15 @@
     <ClCompile Include="RinexTypes\IonosphericCorrection.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RinexTypes\RinexEpoch.hpp">
+    <ClInclude Include="RinexTypes\Epoch\RinexEpoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
     <ClInclude Include="Observations\RinexObservation.hpp">
@@ -123,6 +129,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexTypes\TimeSystemCorrection.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexTypes\Epoch\ObsEpoch.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

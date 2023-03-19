@@ -139,6 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp" />
+    <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp" />
     <ClCompile Include="RinexTypes\IonosphericCorrection.cpp" />
     <ClCompile Include="Observations\DopplerObservation.cpp" />
     <ClCompile Include="Observations\CodeObservation.cpp" />
@@ -146,12 +148,14 @@
     <ClCompile Include="RinexTypes\ObservationDefinition.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
     <ClCompile Include="Observations\PhaseObservation.cpp" />
-    <ClCompile Include="RinexTypes\RinexEpoch.cpp" />
+    <ClCompile Include="RinexTypes\Epoch\RinexEpoch.cpp" />
     <ClCompile Include="Observations\RinexObservation.cpp" />
     <ClCompile Include="RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="Observations\SignalStrengthObservation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp" />
+    <ClInclude Include="RinexTypes\Epoch\ObsEpoch.hpp" />
     <ClInclude Include="RinexTypes\IonosphericCorrection.hpp" />
     <ClInclude Include="Observations\SignalStrengthObservation.hpp" />
     <ClInclude Include="RinexNavParser\RinexNavParser.hpp" />
@@ -166,7 +170,7 @@
     <ClInclude Include="RinexTypes\ObservationDefinition.hpp" />
     <ClInclude Include="RinexTypes\ObservationType.hpp" />
     <ClInclude Include="Observations\PhaseObservation.hpp" />
-    <ClInclude Include="RinexTypes\RinexEpoch.hpp" />
+    <ClInclude Include="RinexTypes\Epoch\RinexEpoch.hpp" />
     <ClInclude Include="RinexObsParser\RinexReaderState.hpp" />
     <ClInclude Include="Observations\RinexObservation.hpp" />
     <ClInclude Include="RinexObsParser\RinexObsParser.hpp" />
