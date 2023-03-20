@@ -57,9 +57,6 @@
     <ClCompile Include="RinexObsParser\RinexObsParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\IonosphericCorrection.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

@@ -140,7 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp" />
-    <ClCompile Include="RinexTypes\IonosphericCorrection.cpp" />
     <ClCompile Include="Observations\DopplerObservation.cpp" />
     <ClCompile Include="Observations\CodeObservation.cpp" />
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp" />

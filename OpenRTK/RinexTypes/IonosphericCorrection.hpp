@@ -27,8 +27,23 @@ public:
 	void AddTimeMark(char timemark);
 
 	// ctor & dtor
-	IonosphericCorrection(IonosphericCorrectionParameter ionoCorrectionPatam);
-	~IonosphericCorrection();	
+	IonosphericCorrection(IonosphericCorrectionParameter ionoCorrectionPatam, char timemark, double ab0, double ab1, double ab2, double ab3) :
+		_IonosphericCorrectionParameter(ionoCorrectionPatam),
+		_TimeMark(timemark),
+		_alphabeta0(ab0),
+		_alphabeta1(ab1),
+		_alphabeta2(ab2),
+		_alphabeta3(ab3) { }
+
+	IonosphericCorrection(IonosphericCorrectionParameter ionoCorrectionPatam, char timemark, double ab0, double ab1, double ab2) :
+		_IonosphericCorrectionParameter(ionoCorrectionPatam),
+		_TimeMark(timemark),
+		_alphabeta0(ab0),
+		_alphabeta1(ab1),
+		_alphabeta2(ab2),
+		_alphabeta3(0) { }
+
+	~IonosphericCorrection() { }
 
 };
 

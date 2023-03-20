@@ -24,8 +24,7 @@ void RinexNavParser::ParseIonoCorrDefinition(std::string line)
 {
 	std::string ionospheric_corr = line.substr(0, 4);
 	IonosphericCorrectionParameter iono_param = IonosphericCorrectionParameterMap()[rtrim(ionospheric_corr)];
-	auto ionosphericCorrection = IonosphericCorrection(iono_param);
-
+	
 	// extract ionospheric correction parameters
 	double alphabeta0 = stod(line.substr(5, 12));
 	double alphabeta1 = stod(line.substr(17, 12));
@@ -34,17 +33,13 @@ void RinexNavParser::ParseIonoCorrDefinition(std::string line)
 	char timeMark = line.at(54);
 
 	if (iono_param == IonosphericCorrectionParameter::GAL)
-	{
-		ionosphericCorrection.AddAlphaBeta(alphabeta0, alphabeta1, alphabeta2);
+	{	
+		this->_IonosphericCorrections.emplace_back(iono_param, timeMark, alphabeta0, alphabeta1, alphabeta2);
 	}
 	else
 	{
-		ionosphericCorrection.AddAlphaBeta(alphabeta0, alphabeta1, alphabeta2, alphabeta3);
-	}
-
-	ionosphericCorrection.AddTimeMark(timeMark);
-
-	this->_IonosphericCorrections.push_back(ionosphericCorrection);
+		this->_IonosphericCorrections.emplace_back(iono_param, timeMark, alphabeta0, alphabeta1, alphabeta2, alphabeta3);
+	}		
 }
 
 void RinexNavParser::ParseTimeDiffDefinition(std::string line)
