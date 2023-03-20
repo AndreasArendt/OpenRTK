@@ -30,7 +30,7 @@
     <ClCompile Include="OpenRTK.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\Epoch\RinexEpoch.cpp">
+    <ClCompile Include="RinexTypes\Epoch\Epoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
     <ClCompile Include="Observations\RinexObservation.cpp">
@@ -63,12 +63,9 @@
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RinexTypes\Epoch\RinexEpoch.hpp">
+    <ClInclude Include="RinexTypes\Epoch\Epoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
     <ClInclude Include="Observations\RinexObservation.hpp">

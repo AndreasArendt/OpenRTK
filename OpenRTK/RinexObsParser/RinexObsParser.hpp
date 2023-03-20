@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../RinexTypes/Epoch/RinexEpoch.hpp"
+#include "../RinexTypes/Epoch/ObsEpoch.hpp"
 #include "../RinexTypes/ObservationDefinition.hpp"
 #include "./RinexReaderState.hpp"
 #include "../Transformations/ECEF_Position.hpp"
@@ -28,7 +28,7 @@ private:
     void ParseLine(std::string line);
     
     std::string _Version;
-    std::vector<RinexEpoch> _Epochs;
+    std::vector<ObsEpoch> _Epochs;
     std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
     RinexReaderState _RinexReaderState = RinexReaderState::PARSE_HEADER;
     std::unique_ptr<ECEF_Position> _ApproximateMarkerPosition;
@@ -36,7 +36,7 @@ private:
 
 public:
     //getters
-    std::vector<RinexEpoch> const& Epochs() const { return _Epochs; }
+    std::vector<ObsEpoch> const& Epochs() const { return _Epochs; }
     std::string const& Version() const { return _Version; }
     std::unique_ptr<ECEF_Position> const& ApproximateMarkerPosition() const { return _ApproximateMarkerPosition; }
     std::unique_ptr<Position> const& AntennaOffset() const { return _AntennaOffset; }

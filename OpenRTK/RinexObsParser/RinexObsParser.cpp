@@ -63,9 +63,9 @@ void RinexObsParser::ReadEpochHeader(std::string line) {
 
 void RinexObsParser::ReadEpochObservation(std::string line)
 {
-    SvSystem svSystem = static_cast<SvSystem>(line[0]);
+    SvSystem svSystem = static_cast<SvSystem>(line[0]);    
     int svNumber = std::stoi(line.substr(1, 2));
-        
+    
     unsigned int StartIndex = 3; //offset of first observation
     
     const auto& SvObsDefinitions = _ObservationDefinitions[svSystem];
@@ -238,7 +238,8 @@ void RinexObsParser::ParseLine(std::string line)
 void RinexObsParser::ParseFile(std::string path)
 {
     std::ifstream infile(path);
-    
+    this->_RinexReaderState = RinexReaderState::PARSE_HEADER;
+
     std::string line;
     while (std::getline(infile, line))
     {

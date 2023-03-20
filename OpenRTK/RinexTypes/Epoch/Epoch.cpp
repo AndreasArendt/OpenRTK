@@ -1,10 +1,7 @@
-#include "RinexEpoch.hpp"
+#include "Epoch.hpp"
 
-RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs)
+Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
     : _EpochTime{} 
-    , _EpochFlag{ epochFlag }
-    , _NumberSVs{ numberSVs }
-    , _IsSpecialEvent{ epochFlag >= 2 }
 {
     // Compute the number of seconds since the epoch
     int epochSeconds = static_cast<int>(second);
@@ -23,38 +20,18 @@ RinexEpoch::RinexEpoch(int year, int month, int day, int hour, int minute, doubl
     this->_EpochTime = std::chrono::system_clock::from_time_t(timeSinceEpoch);
 }
 
-void RinexEpoch::AddCodeObservation(CodeObservation& observation)
-{
-    this->_CodeObservations.emplace_back(observation);
-}
-
-void RinexEpoch::AddPhaseObservation(PhaseObservation& observation)
-{
-    this->_PhaseObservations.emplace_back(observation);
-}
-
-void RinexEpoch::AddDopplerObservation(DopplerObservation& observation)
-{
-    this->_DopplerObservations.emplace_back(observation);
-}
-
-void RinexEpoch::AddSnrObservation(SignalStrengthObservation& observation)
-{
-    this->_SnrObservations.emplace_back(observation);
-}
-
 /**
 
     @brief Converts the epoch time to UTC in seconds.
     @return The epoch time converted to UTC in seconds.
     */
-double RinexEpoch::ConvertEpochTimeToUTC()
+double Epoch::ConvertEpochTimeToUTC()
 {
     auto duration_since_epoch = this->_EpochTime.time_since_epoch();
     return std::chrono::duration<double>(duration_since_epoch).count();
 }
 
-RinexEpoch::~RinexEpoch()
+Epoch::~Epoch()
 {
 
 }

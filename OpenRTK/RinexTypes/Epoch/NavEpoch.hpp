@@ -1,5 +1,8 @@
 #pragma once
-class NavEpoch
+
+#include "Epoch.hpp"
+
+class NavEpoch : public Epoch
 {
 };
 
