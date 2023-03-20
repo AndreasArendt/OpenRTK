@@ -1,7 +1,6 @@
 #include "Epoch.hpp"
 
-Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
-    : _EpochTime{} 
+Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)    
 {
     // Compute the number of seconds since the epoch
     int epochSeconds = static_cast<int>(second);

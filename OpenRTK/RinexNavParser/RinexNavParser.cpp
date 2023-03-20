@@ -10,6 +10,7 @@
 #define RINEX_VERSION_DEFINITION		  "RINEX VERSION / TYPE"
 #define RINEX_IONOSPHERIC_CORR_DEFINITION "IONOSPHERIC CORR"
 #define RINEX_TIME_SYSTEM_DIFF_DEFINITION "TIME SYSTEM CORR"
+#define RINEX_END_OF_HEADER_DEFINITION    "END OF HEADER"
 
 RinexNavParser::RinexNavParser()
 {	
@@ -72,11 +73,23 @@ void RinexNavParser::ParseLine(std::string line)
 	{
 		this->ParseTimeDiffDefinition(line);
 	}
+	else if (line.find(RINEX_END_OF_HEADER_DEFINITION) != std::string::npos)
+	{
+		this->_RinexHeaderParsed = true;
+	}
+	else if (_RinexHeaderParsed)
+	{
+		// Parse Epochs
+		//this->_Epochs.emplace_back();
+		double a0 = stod(line.substr(5, 17));
+
+	}
 }
 
 void RinexNavParser::ParseFile(std::string path)
 {
 	std::ifstream infile(path);
+	this->_RinexHeaderParsed = false;
 
 	std::string line;
 	while (std::getline(infile, line))

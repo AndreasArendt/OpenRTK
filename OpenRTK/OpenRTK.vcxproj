@@ -139,17 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp" />
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp" />
-    <ClCompile Include="Observations\DopplerObservation.cpp" />
-    <ClCompile Include="Observations\CodeObservation.cpp" />
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp" />
     <ClCompile Include="RinexTypes\ObservationDefinition.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
-    <ClCompile Include="Observations\PhaseObservation.cpp" />
     <ClCompile Include="RinexTypes\Epoch\Epoch.cpp" />
-    <ClCompile Include="Observations\RinexObservation.cpp" />
     <ClCompile Include="RinexObsParser\RinexObsParser.cpp" />
-    <ClCompile Include="Observations\SignalStrengthObservation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp" />
@@ -158,6 +154,7 @@
     <ClInclude Include="Observations\SignalStrengthObservation.hpp" />
     <ClInclude Include="RinexNavParser\RinexNavParser.hpp" />
     <ClInclude Include="RinexTypes\IonosphericCorrectionParameter.hpp" />
+    <ClInclude Include="RinexTypes\Satellite.hpp" />
     <ClInclude Include="RinexTypes\TimeDifferenceType.hpp" />
     <ClInclude Include="RinexTypes\TimeSystemCorrection.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />

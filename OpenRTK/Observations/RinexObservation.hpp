@@ -8,7 +8,7 @@
 #pragma once
 
 #include "../RinexTypes/ObservationBand.hpp"
-#include "../RinexTypes/SvSystem.hpp"
+#include "../RinexTypes/Satellite.hpp"
 
 #include <stdio.h>
 #include <string>
@@ -16,10 +16,9 @@
 class RinexObservation {
     private:
         ObservationBand _ObservationBand;
-        SvSystem _SvSystem;
-        int _SvNumber;
+        Satellite _Satellite;
 
     public:
-        RinexObservation(ObservationBand obsBand, SvSystem svSystem, int svNumber);
-        ~RinexObservation();
+        RinexObservation(ObservationBand obsBand, Satellite& satellite) : _ObservationBand(obsBand), _Satellite(satellite) { }
+        ~RinexObservation() { }
 };

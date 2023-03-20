@@ -9,7 +9,7 @@ private:
 	double _Doppler__Hz;
 
 public:
-	DopplerObservation(ObservationBand obsBand, SvSystem svSystem, int svNumber, double doppler);
-	~DopplerObservation();
+	DopplerObservation(ObservationBand obsBand, Satellite& satellite, double doppler) : RinexObservation(obsBand, satellite), _Doppler__Hz(doppler) { }
+	~DopplerObservation() { }
 };
 

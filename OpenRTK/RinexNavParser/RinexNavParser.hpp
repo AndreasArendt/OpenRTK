@@ -4,6 +4,8 @@
 #include "../RinexTypes/TimeSystemCorrection.hpp"
 
 #include <string>
+#include "../RinexTypes/Epoch/NavEpoch.hpp"
+
 #include <vector>
 
 class RinexNavParser
@@ -13,6 +15,9 @@ private:
 	std::string _Type;
 	std::vector<IonosphericCorrection> _IonosphericCorrections;
 	std::vector<TimeSystemCorrection> _TimeSystemCorrections;
+	std::vector<NavEpoch> _Epochs;
+
+	bool _RinexHeaderParsed = false;
 
 	void ParseLine(std::string line);
 	void ParseIonoCorrDefinition(std::string line);

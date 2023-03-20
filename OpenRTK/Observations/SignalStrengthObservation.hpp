@@ -8,6 +8,6 @@ private:
 	double _SNR;
 
 public:
-	SignalStrengthObservation(ObservationBand obsBand, SvSystem svSystem, int svNumber, double carrierphase);
-	~SignalStrengthObservation();
+	SignalStrengthObservation(ObservationBand obsBand, Satellite& satellite, double snr) : RinexObservation(obsBand, satellite), _SNR(snr) { }
+	~SignalStrengthObservation() { }
 };

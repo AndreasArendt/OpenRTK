@@ -8,6 +8,6 @@ private:
 	double _Carrierphase__Cycles;
 
 public:
-	PhaseObservation(ObservationBand obsBand, SvSystem svSystem, int svNumber, double carrierphase);
-	~PhaseObservation();
+	PhaseObservation(ObservationBand obsBand, Satellite& satellite, double carrierphase) : RinexObservation(obsBand, satellite), _Carrierphase__Cycles(carrierphase) { }
+	~PhaseObservation() { }
 };

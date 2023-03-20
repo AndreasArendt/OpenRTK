@@ -13,10 +13,12 @@ private:
 	ObservationAttribute _ObservationAttribute = ObservationAttribute::Channel_Unknown;
 
 public:
-	ObservationDefinition(ObservationType obsType, ObservationBand obsBand, ObservationAttribute obsAttribute);
-	~ObservationDefinition();	
-
+	// getters
 	const ObservationType& GetObservationType() const { return _ObservationType; }
 	const ObservationBand& GetObservationBand() const { return _ObservationBand; }
+	
+	// ctor & dtor
+	ObservationDefinition(ObservationType obsType, ObservationBand obsBand, ObservationAttribute obsAttribute);
+	~ObservationDefinition();	
 };
 

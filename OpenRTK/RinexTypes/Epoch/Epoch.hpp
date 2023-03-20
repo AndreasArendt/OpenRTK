@@ -20,7 +20,7 @@ class Epoch
         double ConvertEpochTimeToUTC();
 
         // ctor & Dtor
-        Epoch(int year, int month, int day, int hour, int minute, double second); //, int epochFlag, int numberSVs);
+        Epoch(int year, int month, int day, int hour, int minute, double second);
         ~Epoch();
 };
 

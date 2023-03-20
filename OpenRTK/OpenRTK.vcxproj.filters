@@ -33,23 +33,8 @@
     <ClCompile Include="RinexTypes\Epoch\Epoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
-    <ClCompile Include="Observations\RinexObservation.cpp">
-      <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
-    </ClCompile>
     <ClCompile Include="RinexTypes\ObservationDefinition.cpp">
       <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
-    </ClCompile>
-    <ClCompile Include="Observations\CodeObservation.cpp">
-      <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
-    </ClCompile>
-    <ClCompile Include="Observations\PhaseObservation.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Observations\DopplerObservation.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="Observations\SignalStrengthObservation.cpp">
-      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp">
       <Filter>Quelldateien</Filter>
@@ -58,6 +43,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -129,6 +117,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexTypes\Satellite.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
