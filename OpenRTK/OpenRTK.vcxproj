@@ -148,6 +148,7 @@
     <ClCompile Include="RinexObsParser\RinexObsParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RinexNavParser\NavEpochParsingState.hpp" />
     <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp" />
     <ClInclude Include="RinexTypes\Epoch\ObsEpoch.hpp" />
     <ClInclude Include="RinexTypes\IonosphericCorrection.hpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="RinexObsParser\RinexObsParser.hpp" />
     <ClInclude Include="RinexTypes\SvSystem.hpp" />
     <ClInclude Include="Transformations\Position.hpp" />
+    <ClInclude Include="Utils\astring.hpp" />
     <ClInclude Include="Utils\strim.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

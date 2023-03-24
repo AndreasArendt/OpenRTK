@@ -15,6 +15,7 @@
 #include "../Observations/PhaseObservation.hpp"
 #include "../Observations/SignalStrengthObservation.hpp"
 #include "../Utils/strim.hpp"
+#include "../Utils/astring.hpp"
 
 #define RINEX_VERSION_DEFINITION         "RINEX VERSION / TYPE"
 #define RINEX_APPROX_POSITION_DEFINITION "APPROX POSITION XYZ"
@@ -44,14 +45,14 @@ void RinexObsParser::ReadEpochHeader(std::string line) {
     try
     {
         // Parse substrings to integers/double
-        int year = std::stoi(line.substr(2, 4));
-        int month = std::stoi(line.substr(7, 2));
-        int day = std::stoi(line.substr(10, 2));
-        int hour = std::stoi(line.substr(13, 2));
-        int minute = std::stoi(line.substr(16, 2));
-        double second = std::stod(line.substr(19, 10));
-        int epochFlag = std::stoi(line.substr(31, 1));
-        int numberSVs = std::stoi(line.substr(33, 2));
+        int year = parseInt(line.substr(2, 4));
+        int month = parseInt(line.substr(7, 2));
+        int day = parseInt(line.substr(10, 2));
+        int hour = parseInt(line.substr(13, 2));
+        int minute = parseInt(line.substr(16, 2));
+        double second = parseDouble(line.substr(19, 10));
+        int epochFlag = parseInt(line.substr(31, 1));
+        int numberSVs = parseInt(line.substr(33, 2));
 
         // Create new Epoch object and add it to the _Epochs vector
         _Epochs.emplace_back(year, month, day, hour, minute, second, epochFlag, numberSVs);
@@ -90,28 +91,28 @@ void RinexObsParser::ReadEpochObservation(std::string line)
         {            
             case ObservationType::Code: //Pseudorange
             {   
-                double psuedorange = std::stod(data);                    
+                double psuedorange = parseDouble(data);                    
                 CodeObservation cObs = CodeObservation(obsDef.GetObservationBand(), satellite, psuedorange);
                 _Epochs.back().AddCodeObservation(cObs);                
                 break;  
             }
             case ObservationType::Phase: //Carrierphase
             {
-                double phase = std::stod(data);                                
+                double phase = parseDouble(data);                                
                 PhaseObservation pObs = PhaseObservation(obsDef.GetObservationBand(), satellite, phase);
                 _Epochs.back().AddPhaseObservation(pObs);
                 break;
             }
             case ObservationType::Doppler:
             {         
-                double doppler = std::stod(data);
+                double doppler = parseDouble(data);
                 DopplerObservation dObs = DopplerObservation(obsDef.GetObservationBand(), satellite, doppler);
                 _Epochs.back().AddDopplerObservation(dObs);
                 break;
             }
             case ObservationType::RawSignalStrength:
             {   
-                double snr = std::stod(data);
+                double snr = parseDouble(data);
                 SignalStrengthObservation dObs = SignalStrengthObservation(obsDef.GetObservationBand(), satellite, snr);
                 _Epochs.back().AddSnrObservation(dObs);                
                 break;
@@ -173,17 +174,17 @@ void RinexObsParser::ParseLine(std::string line)
             }
             else if ((line.find(RINEX_APPROX_POSITION_DEFINITION) != std::string::npos)) // approximate position
             {
-                double x = std::stod(line.substr(0, 14));
-                double y = std::stod(line.substr(14, 14));
-                double z = std::stod(line.substr(28, 14));
+                double x = parseDouble(line.substr(0, 14));
+                double y = parseDouble(line.substr(14, 14));
+                double z = parseDouble(line.substr(28, 14));
                 
                 this->_ApproximateMarkerPosition = std::make_unique<ECEF_Position>(x, y, z);
             }
             else if ((line.find(RINEX_ANTENNA_DELTA_DEFINITION) != std::string::npos)) // antenna phase center offset
             {
-                double x = std::stod(line.substr(0, 14));
-                double y = std::stod(line.substr(14, 14));
-                double z = std::stod(line.substr(28, 14));
+                double x = parseDouble(line.substr(0, 14));
+                double y = parseDouble(line.substr(14, 14));
+                double z = parseDouble(line.substr(28, 14));
 
                 this->_AntennaOffset = std::make_unique<Position>(x, y, z);
             }

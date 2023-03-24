@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SvSystem.hpp"
+#include "../Utils/astring.hpp"
 
 #include <string>
 
@@ -20,7 +21,7 @@ public:
 	Satellite(std::string satStr)
 	{
 		this->_SvSystem = static_cast<SvSystem>(satStr.at(0));
-		this->_SvNumber = std::stoi(satStr.substr(1, 2));
+		this->_SvNumber = parseInt(satStr.substr(1, 2));
 	}
 
 	~Satellite() { }

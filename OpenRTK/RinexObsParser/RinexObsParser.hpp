@@ -33,7 +33,7 @@ private:
     RinexReaderState _RinexReaderState = RinexReaderState::PARSE_HEADER;
     std::unique_ptr<ECEF_Position> _ApproximateMarkerPosition;
     std::unique_ptr<Position> _AntennaOffset;
-
+        
 public:
     //getters
     std::vector<ObsEpoch> const& Epochs() const { return _Epochs; }
