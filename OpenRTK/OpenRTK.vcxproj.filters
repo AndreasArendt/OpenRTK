@@ -48,6 +48,18 @@
     <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="NavData\GpsNavData.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="NavData\GlonasNavData.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="NavData\GalileoNavData.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="NavData\BeidouNavData.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexTypes\Epoch\Epoch.hpp">
@@ -126,6 +138,21 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Utils\astring.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NavData\NavData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NavData\GpsNavData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NavData\GlonasNavData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NavData\GalileoNavData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="NavData\BeidouNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

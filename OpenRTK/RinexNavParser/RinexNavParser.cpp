@@ -3,6 +3,10 @@
 #include "../Utils/astring.hpp"
 #include "../RinexTypes/IonosphericCorrectionParameter.hpp"
 #include "../RinexTypes/TimeDifferenceType.hpp"
+#include "../NavData/BeidouNavData.hpp"
+#include "../NavData/GlonasNavData.hpp"
+#include "../NavData/GpsNavData.hpp"
+#include "../NavData/GalileoNavData.hpp"
 
 #include <sstream>
 #include <fstream>
@@ -100,8 +104,10 @@ void RinexNavParser::ParseLine(std::string line)
 				double clockBias = parseDouble(line.substr(23, 19));
 				double clockDrift = parseDouble(line.substr(42, 19));
 				double clockDriftRate = parseDouble(line.substr(61, 19));
-
-				this->_Epochs.back().AddClockErrors(clockBias, clockDrift, clockDriftRate);
+				
+				this->_Epochs.back().NavigationData().emplace_back(new GalileoNavData);
+				this->_Epochs.back().NavigationData().emplace_back(new GpsNavData);				
+				
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_1;
 				break;
 			}
@@ -112,7 +118,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double DeltaN__radDs = parseDouble(line.substr(42, 19));
 				double M0__rad = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_1(IODE_IssueOfData, Crs__m, DeltaN__radDs, M0__rad);
+				//this->_Epochs.back().AddOrbit_1(IODE_IssueOfData, Crs__m, DeltaN__radDs, M0__rad);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_2;
 				break;
 			}
@@ -123,7 +129,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double Cus__rad = parseDouble(line.substr(42, 19));
 				double SqrtA___sqrtm = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_2(Cuc__rad, Eccentricity, Cus__rad, SqrtA___sqrtm);
+				//this->_Epochs.back().AddOrbit_2(Cuc__rad, Eccentricity, Cus__rad, SqrtA___sqrtm);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_3;
 				break;
 			}
@@ -134,7 +140,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double Omega0__rad = parseDouble(line.substr(42, 19));
 				double Cis__rad = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_3(Toe__s, Cic__rad, Omega0__rad, Cis__rad);
+				//this->_Epochs.back().AddOrbit_3(Toe__s, Cic__rad, Omega0__rad, Cis__rad);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_4;
 				break;
 			}
@@ -145,7 +151,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double Omega__rad = parseDouble(line.substr(42, 19));
 				double Omega_dot__radDs = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_4(i0__rad, Crc__m, Omega__rad, Omega_dot__radDs);
+				//this->_Epochs.back().AddOrbit_4(i0__rad, Crc__m, Omega__rad, Omega_dot__radDs);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_5;
 				break;
 			}
@@ -156,7 +162,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double GpsWeek = parseDouble(line.substr(42, 19));
 				double L2P_DataFlag = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_5(Idot__radDs, CodesOnL2, GpsWeek, L2P_DataFlag);
+				//this->_Epochs.back().AddOrbit_5(Idot__radDs, CodesOnL2, GpsWeek, L2P_DataFlag);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_6;
 				break;
 			}
@@ -167,7 +173,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double TGD__s = parseDouble(line.substr(42, 19));
 				double IODC = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_6(SvAccuracy__m, SvHealth, TGD__s, IODC);
+				//this->_Epochs.back().AddOrbit_6(SvAccuracy__m, SvHealth, TGD__s, IODC);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_7;
 				break;
 			}
@@ -178,7 +184,7 @@ void RinexNavParser::ParseLine(std::string line)
 				double Spare0 = parseDouble(line.substr(42, 19));
 				double Spare1 = parseDouble(line.substr(61, 19));
 
-				this->_Epochs.back().AddOrbit_7(TransmissiontimeOfMessage, FitInterval__hrs, Spare0, Spare1);
+				//this->_Epochs.back().AddOrbit_7(TransmissiontimeOfMessage, FitInterval__hrs, Spare0, Spare1);
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 				break;
 			}

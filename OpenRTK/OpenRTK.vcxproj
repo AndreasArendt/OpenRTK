@@ -139,6 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="NavData\BeidouNavData.cpp" />
+    <ClCompile Include="NavData\GalileoNavData.cpp" />
+    <ClCompile Include="NavData\GlonasNavData.cpp" />
+    <ClCompile Include="NavData\GpsNavData.cpp" />
     <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp" />
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp" />
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp" />
@@ -148,6 +152,11 @@
     <ClCompile Include="RinexObsParser\RinexObsParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NavData\BeidouNavData.hpp" />
+    <ClInclude Include="NavData\GalileoNavData.hpp" />
+    <ClInclude Include="NavData\GlonasNavData.hpp" />
+    <ClInclude Include="NavData\GpsNavData.hpp" />
+    <ClInclude Include="NavData\NavData.hpp" />
     <ClInclude Include="RinexNavParser\NavEpochParsingState.hpp" />
     <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp" />
     <ClInclude Include="RinexTypes\Epoch\ObsEpoch.hpp" />
