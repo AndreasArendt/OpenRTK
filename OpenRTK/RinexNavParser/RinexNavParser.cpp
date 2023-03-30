@@ -24,6 +24,9 @@ RinexNavParser::RinexNavParser()
 RinexNavParser::~RinexNavParser()
 {
 	this->_IonosphericCorrections.clear();
+	this->_IonosphericCorrections.clear();
+	this-> _TimeSystemCorrections.clear();
+	//this->_Epochs.clear();
 }
 
 void RinexNavParser::ParseIonoCorrDefinition(std::string line)
@@ -105,8 +108,8 @@ void RinexNavParser::ParseLine(std::string line)
 				double clockDrift = parseDouble(line.substr(42, 19));
 				double clockDriftRate = parseDouble(line.substr(61, 19));
 				
-				this->_Epochs.back().NavigationData().emplace_back(new GalileoNavData);
-				this->_Epochs.back().NavigationData().emplace_back(new GpsNavData);				
+				this->_Epochs.back().NavigationData().emplace_back( std::make_unique<GalileoNavData>());
+				this->_Epochs.back().NavigationData().emplace_back(std::make_unique<GpsNavData>());
 				
 				_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_1;
 				break;
@@ -207,5 +210,5 @@ void RinexNavParser::ParseFile(std::string path)
 	{
 		this->ParseLine(line);
 		//std::cout << line << std::endl;
-	}
+	}	
 }

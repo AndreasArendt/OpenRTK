@@ -17,12 +17,25 @@ public:
 	int const& SvNumber() const { return this->_SvNumber; }
 	
 	// ctor & dtor
+	Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1) { }
 	Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _SvNumber(svNumber) { }
 	Satellite(std::string satStr)
 	{
 		this->_SvSystem = static_cast<SvSystem>(satStr.at(0));
 		this->_SvNumber = parseInt(satStr.substr(1, 2));
 	}
-
+		
 	~Satellite() { }
+
+	// Operator overloading
+	Satellite& operator=(const Satellite& other)
+	{
+		if (this != &other)
+		{
+			_SvSystem = other.SVSystem();
+			_SvNumber = other.SvNumber();
+		}			
+
+		return *this;		
+	}
 };

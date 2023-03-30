@@ -10,7 +10,7 @@ GpsNavData::~GpsNavData()
 
 }
 
-void GpsNavData::AddClockErrors(double data0, double data1, double data2)
+void GpsNavData::AddClockErrors(double data0, double data1, double data2) 
 {
 	_SV_ClockBias__s = data0;
 	_SV_ClockDrift__sDs = data1;
