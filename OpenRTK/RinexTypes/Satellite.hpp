@@ -38,4 +38,14 @@ public:
 
 		return *this;		
 	}
+
+	bool operator==(const Satellite& other) const
+	{
+		return (this->_SvSystem == other.SVSystem()) && (this->_SvNumber == other.SvNumber());
+	}
+
+	bool operator!=(const Satellite& other) const	
+	{
+		return (this->_SvSystem != other.SVSystem()) || (this->_SvNumber != other.SvNumber());
+	}
 };

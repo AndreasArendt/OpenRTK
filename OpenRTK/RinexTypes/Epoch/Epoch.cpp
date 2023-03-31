@@ -30,6 +30,16 @@ double Epoch::ConvertEpochTimeToUTC()
     return std::chrono::duration<double>(duration_since_epoch).count();
 }
 
+bool Epoch::operator==(const Epoch& other) const
+{
+    return _EpochTime == other.EpochTime();
+}
+
+bool Epoch::operator!=(const Epoch& other) const
+{
+    return _EpochTime != other.EpochTime();
+}
+
 Epoch::~Epoch()
 {
 

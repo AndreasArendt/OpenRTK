@@ -10,5 +10,6 @@ enum NavEpochParsingState
 	NavEpochParsingState_ORBIT_4,
 	NavEpochParsingState_ORBIT_5,
 	NavEpochParsingState_ORBIT_6,
-	NavEpochParsingState_ORBIT_7
+	NavEpochParsingState_ORBIT_7,
+	NavEPochParsingState_SKIP
 };

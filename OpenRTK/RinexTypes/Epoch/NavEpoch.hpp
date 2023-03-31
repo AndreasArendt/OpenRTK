@@ -16,7 +16,7 @@ private:
 
 public:
 	// getters
-	Satellite const& SVs() const { return this->_Satellite;  }	
+	Satellite const& Sat() const { return this->_Satellite;  }	
 	std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
 	
 	//setters
