@@ -33,9 +33,6 @@
     <ClCompile Include="RinexTypes\Epoch\Epoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\ObservationDefinition.cpp">
-      <Filter>Quelldateien\RinexReader\RinexObservations</Filter>
-    </ClCompile>
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

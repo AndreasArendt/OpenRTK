@@ -146,7 +146,6 @@
     <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp" />
     <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp" />
     <ClCompile Include="RinexNavParser\RinexNavParser.cpp" />
-    <ClCompile Include="RinexTypes\ObservationDefinition.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
     <ClCompile Include="RinexTypes\Epoch\Epoch.cpp" />
     <ClCompile Include="RinexObsParser\RinexObsParser.cpp" />

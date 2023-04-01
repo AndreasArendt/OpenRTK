@@ -18,7 +18,8 @@ public:
 	const ObservationBand& GetObservationBand() const { return _ObservationBand; }
 	
 	// ctor & dtor
-	ObservationDefinition(ObservationType obsType, ObservationBand obsBand, ObservationAttribute obsAttribute);
-	~ObservationDefinition();	
+	ObservationDefinition(ObservationType obsType, ObservationBand obsBand, ObservationAttribute obsAttribute) :
+		_ObservationType(obsType), _ObservationBand(obsBand), _ObservationAttribute(obsAttribute) { }
+	~ObservationDefinition() { }
 };
 
