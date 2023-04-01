@@ -164,5 +164,8 @@
     <ClInclude Include="PrecisePositioning\Ephemeris.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Transformations\Kepler.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
