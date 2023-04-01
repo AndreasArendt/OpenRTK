@@ -7,19 +7,18 @@
 
 #pragma once
 
+#include "../RinexParser.hpp"
 #include "../RinexTypes/Epoch/ObsEpoch.hpp"
 #include "../RinexTypes/ObservationDefinition.hpp"
 #include "./RinexReaderState.hpp"
-#include "../Transformations/ECEF_Position.hpp"
+#include "../../Transformations/ECEF_Position.hpp"
 
-#include <sstream>
 #include <string>
-#include <fstream>
 #include <iostream>
 #include <vector>
 #include <unordered_map>
 
-class RinexObsParser {
+class RinexObsParser : RinexParser {
     
 private:    
     void ReadEpochHeader(std::string line);
@@ -46,5 +45,5 @@ public:
     ~RinexObsParser();
         
     //functions
-    void ParseFile(std::string path);
+    void ParseFile(std::string path) override;
 };

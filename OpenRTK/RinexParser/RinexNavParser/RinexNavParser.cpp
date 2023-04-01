@@ -1,6 +1,6 @@
 #include "RinexNavParser.hpp"
-#include "../Utils/strim.hpp"
-#include "../Utils/astring.hpp"
+#include "../../Utils/strim.hpp"
+#include "../../Utils/astring.hpp"
 #include "../RinexTypes/IonosphericCorrectionParameter.hpp"
 #include "../RinexTypes/TimeDifferenceType.hpp"
 #include "../NavData/BeidouNavData.hpp"
@@ -247,14 +247,7 @@ void RinexNavParser::ParseLine(std::string line)
 }
 
 void RinexNavParser::ParseFile(std::string path)
-{
-	std::ifstream infile(path);
+{	
 	this->_RinexHeaderParsed = false;
-
-	std::string line;
-	while (std::getline(infile, line))
-	{
-		this->ParseLine(line);
-		//std::cout << line << std::endl;
-	}
+	RinexParser::ParseFile(path);
 }

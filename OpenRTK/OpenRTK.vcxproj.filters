@@ -30,63 +30,66 @@
     <ClCompile Include="OpenRTK.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\Epoch\Epoch.cpp">
+    <ClCompile Include="RinexParser\RinexTypes\Epoch\Epoch.cpp">
       <Filter>Quelldateien\RinexReader</Filter>
     </ClCompile>
-    <ClCompile Include="RinexNavParser\RinexNavParser.cpp">
+    <ClCompile Include="RinexParser\RinexNavParser\RinexNavParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexObsParser\RinexObsParser.cpp">
+    <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\Epoch\ObsEpoch.cpp">
+    <ClCompile Include="RinexParser\RinexTypes\Epoch\ObsEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexTypes\Epoch\NavEpoch.cpp">
+    <ClCompile Include="RinexParser\RinexTypes\Epoch\NavEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="NavData\GpsNavData.cpp">
+    <ClCompile Include="RinexParser\NavData\GpsNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="NavData\GlonasNavData.cpp">
+    <ClCompile Include="RinexParser\NavData\GlonasNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="NavData\GalileoNavData.cpp">
+    <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="NavData\BeidouNavData.cpp">
+    <ClCompile Include="RinexParser\NavData\BeidouNavData.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexParser\RinexParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RinexTypes\Epoch\Epoch.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
     </ClInclude>
-    <ClInclude Include="Observations\RinexObservation.hpp">
+    <ClInclude Include="RinexParser\Observations\RinexObservation.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\ObservationDefinition.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\ObservationDefinition.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\SvSystem.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\SvSystem.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\ObservationType.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\ObservationType.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\ObservationBand.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\ObservationBand.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\ObservationAttribute.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\ObservationAttribute.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="Observations\CodeObservation.hpp">
+    <ClInclude Include="RinexParser\Observations\CodeObservation.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="Observations\PhaseObservation.hpp">
+    <ClInclude Include="RinexParser\Observations\PhaseObservation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Observations\DopplerObservation.hpp">
+    <ClInclude Include="RinexParser\Observations\DopplerObservation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Utils\strim.hpp">
@@ -98,58 +101,61 @@
     <ClInclude Include="Transformations\Position.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Observations\SignalStrengthObservation.hpp">
+    <ClInclude Include="RinexParser\Observations\SignalStrengthObservation.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexNavParser\RinexNavParser.hpp">
+    <ClInclude Include="RinexParser\RinexNavParser\RinexNavParser.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexObsParser\RinexReaderState.hpp">
+    <ClInclude Include="RinexParser\RinexObsParser\RinexReaderState.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexObsParser\RinexObsParser.hpp">
+    <ClInclude Include="RinexParser\RinexObsParser\RinexObsParser.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\IonosphericCorrectionParameter.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\IonosphericCorrectionParameter.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\IonosphericCorrection.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\IonosphericCorrection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\TimeDifferenceType.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\TimeDifferenceType.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\TimeSystemCorrection.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\TimeSystemCorrection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\Epoch\ObsEpoch.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\Epoch\ObsEpoch.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\Epoch\NavEpoch.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\Epoch\NavEpoch.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexTypes\Satellite.hpp">
+    <ClInclude Include="RinexParser\RinexTypes\Satellite.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexNavParser\NavEpochParsingState.hpp">
+    <ClInclude Include="RinexParser\RinexNavParser\NavEpochParsingState.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Utils\astring.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="NavData\NavData.hpp">
+    <ClInclude Include="RinexParser\NavData\NavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="NavData\GpsNavData.hpp">
+    <ClInclude Include="RinexParser\NavData\GpsNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="NavData\GlonasNavData.hpp">
+    <ClInclude Include="RinexParser\NavData\GlonasNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="NavData\GalileoNavData.hpp">
+    <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="NavData\BeidouNavData.hpp">
+    <ClInclude Include="RinexParser\NavData\BeidouNavData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\RinexParser.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

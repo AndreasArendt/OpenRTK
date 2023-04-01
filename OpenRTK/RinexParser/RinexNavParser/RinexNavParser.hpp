@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../RinexParser.hpp"
 #include "../RinexTypes/IonosphericCorrection.hpp"
 #include "../RinexTypes/TimeSystemCorrection.hpp"
 #include "../RinexTypes/Epoch/NavEpoch.hpp"
@@ -8,7 +9,7 @@
 #include <string>
 #include <vector>
 
-class RinexNavParser
+class RinexNavParser : RinexParser
 {
 private:
 	std::string _Version;
@@ -37,6 +38,6 @@ public:
 	~RinexNavParser();
 
 	// public function
-	void ParseFile(std::string path);
+	void ParseFile(std::string path) override;
 };
 

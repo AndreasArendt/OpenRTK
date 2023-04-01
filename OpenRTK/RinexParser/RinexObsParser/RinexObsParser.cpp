@@ -14,8 +14,8 @@
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
 #include "../Observations/SignalStrengthObservation.hpp"
-#include "../Utils/strim.hpp"
-#include "../Utils/astring.hpp"
+#include "../../Utils/strim.hpp"
+#include "../../Utils/astring.hpp"
 
 #define RINEX_VERSION_DEFINITION         "RINEX VERSION / TYPE"
 #define RINEX_APPROX_POSITION_DEFINITION "APPROX POSITION XYZ"
@@ -234,14 +234,7 @@ void RinexObsParser::ParseLine(std::string line)
 }
 
 void RinexObsParser::ParseFile(std::string path)
-{
-    std::ifstream infile(path);
+{    
     this->_RinexReaderState = RinexReaderState::PARSE_HEADER;
-
-    std::string line;
-    while (std::getline(infile, line))
-    {
-        this->ParseLine(line);
-        //std::cout << line << std::endl;
-    }
+    RinexParser::ParseFile(path);
 }

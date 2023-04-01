@@ -1,8 +1,8 @@
 // OpenRTK.cpp: Definiert den Einstiegspunkt für die Anwendung.
 //
 
-#include "RinexObsParser/RinexObsParser.hpp"
-#include "RinexNavParser/RinexNavParser.hpp"
+#include "RinexParser/RinexObsParser/RinexObsParser.hpp"
+#include "RinexParser/RinexNavParser/RinexNavParser.hpp"
 
 using namespace std;
 
