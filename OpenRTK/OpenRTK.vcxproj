@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="PrecisePositioning\Ephemeris.cpp" />
     <ClCompile Include="RinexParser\RinexParser.cpp" />
     <ClCompile Include="RinexParser\NavData\BeidouNavData.cpp" />
     <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PrecisePositioning\Ephemeris.hpp" />
     <ClInclude Include="RinexParser\RinexParser.hpp" />
     <ClInclude Include="RinexParser\NavData\BeidouNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp" />

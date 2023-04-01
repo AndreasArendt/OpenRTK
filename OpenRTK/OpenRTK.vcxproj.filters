@@ -60,6 +60,9 @@
     <ClCompile Include="RinexParser\RinexParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PrecisePositioning\Ephemeris.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -156,6 +159,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\RinexParser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecisePositioning\Ephemeris.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
