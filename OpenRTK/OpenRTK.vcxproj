@@ -185,6 +185,7 @@
     <ClInclude Include="RinexParser\RinexTypes\SvSystem.hpp" />
     <ClInclude Include="Transformations\Kepler.hpp" />
     <ClInclude Include="Transformations\Position.hpp" />
+    <ClInclude Include="Transformations\Transformation.hpp" />
     <ClInclude Include="Utils\astring.hpp" />
     <ClInclude Include="Utils\strim.hpp" />
   </ItemGroup>

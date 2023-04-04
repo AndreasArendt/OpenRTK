@@ -167,5 +167,8 @@
     <ClInclude Include="Transformations\Kepler.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Transformations\Transformation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

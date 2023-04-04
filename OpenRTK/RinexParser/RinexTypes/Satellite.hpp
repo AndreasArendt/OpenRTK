@@ -2,6 +2,7 @@
 
 #include "SvSystem.hpp"
 #include "../../Utils/astring.hpp"
+#include "../../PrecisePositioning/Ephemeris.hpp"
 
 #include <string>
 
@@ -11,11 +12,13 @@ class Satellite
 private:
 	SvSystem _SvSystem;
 	int _SvNumber;
+	Ephemeris _Ephemeris;
 
 public:
 	SvSystem const& SVSystem() const { return this->_SvSystem;  }
 	int const& SvNumber() const { return this->_SvNumber; }
-	
+	Ephemeris const& Ephemeris() const { return this->_Ephemeris; }
+
 	// ctor & dtor
 	Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1) { }
 	Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _SvNumber(svNumber) { }
