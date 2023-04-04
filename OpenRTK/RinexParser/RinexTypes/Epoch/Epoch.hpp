@@ -20,8 +20,7 @@ class Epoch
         // functions
         double ConvertEpochTimeToUTC();
 
-        // ctor & Dtor
-        Epoch();
+        // ctor & Dtor        
         Epoch(int year, int month, int day, int hour, int minute, double second);
         ~Epoch();
 

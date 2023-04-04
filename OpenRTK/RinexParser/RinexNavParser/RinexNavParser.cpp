@@ -118,16 +118,19 @@ void RinexNavParser::ParseLine(std::string line)
 			double clockDrift = parseDouble(line.substr(42, 19));
 			double clockDriftRate = parseDouble(line.substr(61, 19));
 
-			// insert new Epoch if timestamp differs from latest epoch
-			auto searchEpoch = Epoch(year, month, day, hour, minute, second);
-			auto it = std::find_if(_Epochs.begin(), _Epochs.end(), [&](const NavEpoch& epoch)
+			// insert new Epoch if timestamp differs from latest epoch			
+			auto it = std::find_if(_Satellites.begin(), _Satellites.end(), [&](const Satellite& sat)
 				{
-					return (epoch == searchEpoch) && (epoch.Sat() == satellite);
+					return sat == satellite;
 				});
 
-			if (it == _Epochs.end())
+			if (it == _Satellites.end())
 			{
-				this->_Epochs.emplace_back(year, month, day, hour, minute, second, satellite);
+				this->_Satellites.emplace_back(satellite);
+			}
+			else
+			{	
+				it->addNavEpoch(year, month, day, hour, minute, second);				
 			}
 
 			switch (satellite.SVSystem())
