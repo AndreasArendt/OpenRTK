@@ -63,6 +63,9 @@
     <ClCompile Include="PrecisePositioning\Ephemeris.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">

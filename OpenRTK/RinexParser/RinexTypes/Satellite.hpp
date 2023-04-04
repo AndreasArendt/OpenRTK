@@ -3,8 +3,10 @@
 #include "SvSystem.hpp"
 #include "../../Utils/astring.hpp"
 #include "../../PrecisePositioning/Ephemeris.hpp"
+//#include "../RinexTypes/Epoch/Epoch.hpp"
 
 #include <string>
+#include <vector>
 
 class Satellite
 {
@@ -12,43 +14,24 @@ class Satellite
 private:
 	SvSystem _SvSystem;
 	int _SvNumber;
+	//std::vector<Epoch> _Epochs;
 	Ephemeris _Ephemeris;
 
 public:
 	SvSystem const& SVSystem() const { return this->_SvSystem;  }
 	int const& SvNumber() const { return this->_SvNumber; }
+	//std::vector<Epoch> const& Epochs() const { return this->_Epochs; } 
 	Ephemeris const& Ephemeris() const { return this->_Ephemeris; }
-
+	
 	// ctor & dtor
-	Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1) { }
-	Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _SvNumber(svNumber) { }
-	Satellite(std::string satStr)
-	{
-		this->_SvSystem = static_cast<SvSystem>(satStr.at(0));
-		this->_SvNumber = parseInt(satStr.substr(1, 2));
-	}
+	Satellite();
+	Satellite(SvSystem svSystem, int svNumber);
+	Satellite(std::string satStr);
 		
-	~Satellite() { }
+	~Satellite();
 
 	// Operator overloading
-	Satellite& operator=(const Satellite& other)
-	{
-		if (this != &other)
-		{
-			_SvSystem = other.SVSystem();
-			_SvNumber = other.SvNumber();
-		}			
-
-		return *this;		
-	}
-
-	bool operator==(const Satellite& other) const
-	{
-		return (this->_SvSystem == other.SVSystem()) && (this->_SvNumber == other.SvNumber());
-	}
-
-	bool operator!=(const Satellite& other) const	
-	{
-		return (this->_SvSystem != other.SVSystem()) || (this->_SvNumber != other.SvNumber());
-	}
+	Satellite& operator=(const Satellite& other);
+	bool operator==(const Satellite& other) const;
+	bool operator!=(const Satellite& other) const;
 };
