@@ -118,33 +118,33 @@ void RinexNavParser::ParseLine(std::string line)
 			double clockDrift = parseDouble(line.substr(42, 19));
 			double clockDriftRate = parseDouble(line.substr(61, 19));
 
+			auto navEpoch = NavEpoch(year, month, day, hour, minute, second);
+
 			// insert new Epoch if timestamp differs from latest epoch			
-			auto it = std::find_if(_Satellites.begin(), _Satellites.end(), [&](const Satellite& sat)
+			auto it = std::find_if(_NavEpochs.begin(), _NavEpochs.end(), [&](const NavEpoch& nav)
 				{
-					return sat == satellite;
+					return nav == navEpoch;
 				});
 
-			if (it == _Satellites.end())
+			if (it == _NavEpochs.end())
 			{
-				this->_Satellites.emplace_back(satellite);
-			}
-			else
-			{	
-				it->addNavEpoch(year, month, day, hour, minute, second);				
-			}
+				this->_NavEpochs.emplace_back(navEpoch);
+			}			
+
+			// TODO: fill nav Epoch
 
 			switch (satellite.SVSystem())
 			{
 			case SvSystem::GPS:
-			{
-				this->_Epochs.back().NavigationData().emplace_back(std::make_unique<GpsNavData>());
-				this->_Epochs.back().NavigationData().back()->AddClockErrors(clockBias, clockDrift, clockDriftRate);
+			{				
+				//it->NavEpochs().back()->NavigationData().emplace_back(std::make_unique<GpsNavData>());
+				//it->NavEpochs().back()->NavigationData().back()->AddClockErrors(clockBias, clockDrift, clockDriftRate);
 				break;
 			}
 			case SvSystem::GALILEO:
 			{
-				this->_Epochs.back().NavigationData().emplace_back(std::make_unique<GalileoNavData>());
-				this->_Epochs.back().NavigationData().back()->AddClockErrors(clockBias, clockDrift, clockDriftRate);
+				//it->NavEpochs().back()->NavigationData().emplace_back(std::make_unique<GalileoNavData>());
+				//it->NavEpochs().back()->NavigationData().back()->AddClockErrors(clockBias, clockDrift, clockDriftRate);
 				break;
 			}
 			case SvSystem::GLONASS:
@@ -170,7 +170,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_1(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_1(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_2;
 			break;
 		}
@@ -181,7 +181,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_2(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_2(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_3;
 			break;
 		}
@@ -192,7 +192,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_3(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_3(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_4;
 			break;
 		}
@@ -203,7 +203,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_4(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_4(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_5;
 			break;
 		}
@@ -214,7 +214,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_5(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_5(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_6;
 			break;
 		}
@@ -225,7 +225,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_6(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_6(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_7;
 			break;
 		}
@@ -236,7 +236,7 @@ void RinexNavParser::ParseLine(std::string line)
 			double data2 = parseDouble(line.substr(42, 19));
 			double data3 = parseDouble(line.substr(61, 19));
 
-			this->_Epochs.back().NavigationData().back()->AddOrbit_7(data0, data1, data2, data3);
+			//_Satellites.end()->NavEpochs().back()->NavigationData().back()->AddOrbit_7(data0, data1, data2, data3);
 			_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 			break;
 		}
@@ -250,7 +250,7 @@ void RinexNavParser::ParseLine(std::string line)
 }
 
 void RinexNavParser::ParseFile(std::string path)
-{	
+{
 	this->_RinexHeaderParsed = false;
 	RinexParser::ParseFile(path);
 }

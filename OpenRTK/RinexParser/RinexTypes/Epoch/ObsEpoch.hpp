@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Epoch.hpp"
+#include "../../Observations/CodeObservation.hpp"
+#include "../../Observations/PhaseObservation.hpp"
+#include "../../Observations/DopplerObservation.hpp"
+#include "../../Observations/SignalStrengthObservation.hpp"
 
 class ObsEpoch : public Epoch
 {

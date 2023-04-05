@@ -4,6 +4,7 @@
 #include "../RinexTypes/IonosphericCorrection.hpp"
 #include "../RinexTypes/TimeSystemCorrection.hpp"
 #include "../RinexTypes/Epoch/NavEpoch.hpp"
+#include "../RinexTypes/Satellite.hpp"
 #include "NavEpochParsingState.hpp"
 
 #include <string>
@@ -15,8 +16,8 @@ private:
 	std::string _Version;
 	std::string _Type;
 	std::vector<IonosphericCorrection> _IonosphericCorrections;
-	std::vector<TimeSystemCorrection> _TimeSystemCorrections;
-	std::vector<Satellite> _Satellites;
+	std::vector<TimeSystemCorrection> _TimeSystemCorrections;	
+	std::vector<NavEpoch> _NavEpochs;
 
 	bool _RinexHeaderParsed = false;
 	NavEpochParsingState _NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
@@ -31,7 +32,7 @@ public:
 	std::string const& Type() const { return this->_Type; }
 	std::vector<IonosphericCorrection> const& IonosphericCorrections() const { return this->_IonosphericCorrections; }
 	std::vector<TimeSystemCorrection> const& TimeSystemCorrections() const { return this->_TimeSystemCorrections; }
-	std::vector<Satellite> const& Satellites() const { return this->_Satellites; }
+	std::vector<NavEpoch> const& NavEpochs() const { return this->_NavEpochs; }
 
 	// ctor & dtor
 	RinexNavParser();
