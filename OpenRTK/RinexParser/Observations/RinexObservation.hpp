@@ -12,13 +12,19 @@
 
 #include <stdio.h>
 #include <string>
+#include <memory>
+#include <utility>
 
 class RinexObservation {
     private:
         ObservationBand _ObservationBand;
-        Satellite _Satellite;
+        std::unique_ptr<Satellite> _Satellite;
 
-    public:
-        RinexObservation(ObservationBand obsBand, Satellite& satellite) : _ObservationBand(obsBand), _Satellite(satellite) { }
+    public:              
+        RinexObservation() : _ObservationBand(ObservationBand::Band_Unkown), _Satellite() { }
+        RinexObservation(ObservationBand obsBand, std::unique_ptr<Satellite> satellite) : _ObservationBand(obsBand), _Satellite(std::move(satellite)) { }
         ~RinexObservation() { }
+
+        RinexObservation(const RinexObservation&) = delete;
+        RinexObservation& operator=(const RinexObservation&) = delete;
 };

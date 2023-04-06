@@ -8,6 +8,7 @@ private:
 	double _SNR;
 
 public:
-	SignalStrengthObservation(ObservationBand obsBand, Satellite& satellite, double snr) : RinexObservation(obsBand, satellite), _SNR(snr) { }
+	SignalStrengthObservation(const SignalStrengthObservation& other) : RinexObservation(), _SNR(other._SNR) { }
+	SignalStrengthObservation(ObservationBand obsBand, std::unique_ptr<Satellite> satellite, double snr) : RinexObservation(obsBand, std::move(satellite)), _SNR(snr) { }	
 	~SignalStrengthObservation() { }
 };

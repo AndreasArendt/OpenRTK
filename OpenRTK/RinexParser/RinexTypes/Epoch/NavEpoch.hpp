@@ -1,32 +1,33 @@
 #pragma once
 
 #include "Epoch.hpp"
-#include "../../NavData/NavData.hpp"
+#include "../../RinexTypes/Satellite.hpp"
 
 #include <vector>
 #include <memory>
 
 class NavEpoch : public Epoch
 {
-private:
-	std::vector<std::unique_ptr<NavData>> _NavigationData;
+private:	
+	std::vector<Satellite> _Satellites;
 
 public:
 	// getters	
-	std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
+	std::vector<Satellite> const& Satellites() const { return this->_Satellites; }
+		
+	// public functions
+	void addSatellite(const Satellite& sv);
 
-	//setters
-	std::vector<std::unique_ptr<NavData>>& NavigationData() { return this->_NavigationData; }
-
-	// ctor & dtor	
+	// ctor & dtor
+	NavEpoch();
 	NavEpoch(int year, int month, int day, int hour, int minute, double second);
 	~NavEpoch();
 
 	// Custom copy constructor
 	NavEpoch(const NavEpoch& other) : Epoch(other)
 	{
-		for (const auto& navData : other._NavigationData) {
-			_NavigationData.emplace_back(navData->clone());
+		for (const auto& sat : other._Satellites) {
+			_Satellites.emplace_back(sat);
 		}
 	}
 
@@ -35,9 +36,9 @@ public:
 	{
 		if (this != &other) {
 			Epoch::operator=(other);
-			_NavigationData.clear();
-			for (const auto& navData : other._NavigationData) {
-				_NavigationData.emplace_back(navData->clone());
+			_Satellites.clear();
+			for (const auto& sat : other._Satellites) {
+				_Satellites.emplace_back(sat);
 			}
 		}
 		return *this;

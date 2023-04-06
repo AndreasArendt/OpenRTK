@@ -22,6 +22,7 @@ private:
 	bool _RinexHeaderParsed = false;
 	NavEpochParsingState _NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 
+	void ParseEoch(std::string line);
 	void ParseLine(std::string line);
 	void ParseIonoCorrDefinition(std::string line);
 	void ParseTimeDiffDefinition(std::string line);

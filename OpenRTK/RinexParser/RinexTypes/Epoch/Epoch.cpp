@@ -1,5 +1,10 @@
 #include "Epoch.hpp"
 
+Epoch::Epoch()
+{
+
+}
+
 Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)    
 {
     // Compute the number of seconds since the epoch
