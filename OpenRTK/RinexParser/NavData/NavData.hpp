@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 class NavData
 {
 public:
@@ -14,8 +16,9 @@ public:
 	virtual void AddOrbit_6(double data0, double data1, double data2, double data3) = 0;
 	virtual void AddOrbit_7(double data0, double data1, double data2, double data3) = 0;
 
-	NavData(){ }
-	NavData(const NavData& other) = default;
-	virtual ~NavData() {}
+	
+	virtual std::unique_ptr<NavData> clone() const = 0;
+
+	virtual ~NavData() = default;	
 };
 

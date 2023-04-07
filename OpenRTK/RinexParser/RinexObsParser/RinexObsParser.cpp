@@ -67,8 +67,8 @@ void RinexObsParser::ReadEpochHeader(std::string line) {
 
 void RinexObsParser::ReadEpochObservation(std::string line)
 {       
-    auto satellite = std::make_unique<Satellite>(Satellite(line.substr(0, 3)));
-    const auto& SvObsDefinitions = _ObservationDefinitions.at(satellite->SVSystem());
+    auto satellite = Satellite(line.substr(0, 3));
+    const auto& SvObsDefinitions = _ObservationDefinitions.at(satellite.SVSystem());
     
     // See 6.7 in rinex standard how observations are formatted    
     unsigned int StartIndex = 3; //offset of first observation
@@ -94,28 +94,28 @@ void RinexObsParser::ReadEpochObservation(std::string line)
             case ObservationType::Code: //Pseudorange
             {   
                 double psuedorange = parseDouble(data);                    
-                CodeObservation cObs = CodeObservation(obsDef.GetObservationBand(), std::move(satellite), psuedorange);
+                CodeObservation cObs = CodeObservation(obsDef.GetObservationBand(), satellite, psuedorange);
                 _Epochs.back().AddCodeObservation(cObs);                
                 break;  
             }
             case ObservationType::Phase: //Carrierphase
             {
                 double phase = parseDouble(data);                                
-                PhaseObservation pObs = PhaseObservation(obsDef.GetObservationBand(), std::move(satellite), phase);
+                PhaseObservation pObs = PhaseObservation(obsDef.GetObservationBand(), satellite, phase);
                 _Epochs.back().AddPhaseObservation(pObs);
                 break;
             }
             case ObservationType::Doppler:
             {         
                 double doppler = parseDouble(data);
-                DopplerObservation dObs = DopplerObservation(obsDef.GetObservationBand(), std::move(satellite), doppler);
+                DopplerObservation dObs = DopplerObservation(obsDef.GetObservationBand(), satellite, doppler);
                 _Epochs.back().AddDopplerObservation(dObs);
                 break;
             }
             case ObservationType::RawSignalStrength:
             {   
                 double snr = parseDouble(data);
-                SignalStrengthObservation dObs = SignalStrengthObservation(obsDef.GetObservationBand(), std::move(satellite), snr);
+                SignalStrengthObservation dObs = SignalStrengthObservation(obsDef.GetObservationBand(), satellite, snr);
                 _Epochs.back().AddSnrObservation(dObs);                
                 break;
             }

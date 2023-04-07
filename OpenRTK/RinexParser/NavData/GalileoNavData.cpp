@@ -10,6 +10,11 @@ GalileoNavData::~GalileoNavData()
 
 }
 
+std::unique_ptr<NavData> GalileoNavData::clone() const
+{
+	return std::make_unique<GalileoNavData>(*this);
+}
+
 void GalileoNavData::AddClockErrors(double data0, double data1, double data2)
 {
 	_SV_ClockBias__s = data0;

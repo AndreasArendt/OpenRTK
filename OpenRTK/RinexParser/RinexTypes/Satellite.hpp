@@ -28,18 +28,15 @@ public:
     //template <typename... Args, std::enable_if_t<std::is_constructible_v<NavEpoch, Args...>, int> = 0>
     //void addNavEpoch(Args&&... args);
 
-    // ctor & dtor
-    Satellite() = default;
+    // ctor & dtor    
+    Satellite();
     Satellite(SvSystem svSystem, int svNumber);
     Satellite(std::string satStr);
-    ~Satellite();
     Satellite(const Satellite& other);
-
-    // move constructor and move assignment operator
-    Satellite(Satellite&& other) noexcept;
-    Satellite& operator=(Satellite&& other) noexcept;
+    ~Satellite();
 
     // Operator overloading
+    Satellite& operator=(Satellite& other) noexcept;
     bool operator==(const Satellite& other) const;
     bool operator!=(const Satellite& other) const;
 };

@@ -18,13 +18,9 @@
 class RinexObservation {
     private:
         ObservationBand _ObservationBand;
-        std::unique_ptr<Satellite> _Satellite;
+        Satellite _Satellite;
 
-    public:              
-        RinexObservation() : _ObservationBand(ObservationBand::Band_Unkown), _Satellite() { }
-        RinexObservation(ObservationBand obsBand, std::unique_ptr<Satellite> satellite) : _ObservationBand(obsBand), _Satellite(std::move(satellite)) { }
-        ~RinexObservation() { }
-
-        RinexObservation(const RinexObservation&) = delete;
-        RinexObservation& operator=(const RinexObservation&) = delete;
+    public:                      
+        RinexObservation(ObservationBand obsBand, Satellite satellite) : _ObservationBand(obsBand), _Satellite(satellite) { }
+        ~RinexObservation() { }                
 };

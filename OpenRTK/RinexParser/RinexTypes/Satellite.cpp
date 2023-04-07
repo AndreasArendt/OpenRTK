@@ -1,6 +1,11 @@
 #include "Satellite.hpp"
 #include "../../Utils/astring.hpp"
 
+Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)
+{
+
+}
+
 Satellite::Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _SvNumber(svNumber)
 {
 }
@@ -11,19 +16,19 @@ Satellite::Satellite(std::string satStr)
 	this->_SvNumber = parseInt(satStr.substr(1, 2));
 }
 
-Satellite::Satellite(Satellite&& other) noexcept :
-	_SvSystem(std::move(other._SvSystem)),
-	_SvNumber(std::move(other._SvNumber)),
-	_NavigationData(std::move(other._NavigationData)),
-	_Ephemeris(std::move(other._Ephemeris))
-{}
-
 Satellite::Satellite(const Satellite& other) :
-	_SvSystem(std::move(other._SvSystem)),
-	_SvNumber(std::move(other._SvNumber)),
-	_NavigationData(std::move(other._NavigationData)),
-	_Ephemeris(std::move(other._Ephemeris))
-{}
+	_SvSystem(other._SvSystem),
+	_SvNumber(other._SvNumber)
+{
+
+	/*_NavigationData(std::move(other._NavigationData)),
+	_Ephemeris(std::move(other._Ephemeris))*/
+
+	// Create new unique pointers and copy the underlying objects
+	for (const auto& ptr : other._NavigationData) {
+		this->_NavigationData.push_back(ptr->clone());
+	}
+}
 
 /*template <typename... Args, std::enable_if_t<std::is_constructible_v<NavEpoch, Args...>, int>>
 void Satellite::addNavEpoch(Args&&... args)
@@ -36,14 +41,19 @@ Satellite::~Satellite()
 	//this->_NavEpochs.clear();
 }
 
-Satellite& Satellite::operator=(Satellite&& other) noexcept
+Satellite& Satellite::operator=(Satellite& other) noexcept
 {
 	if (this != &other)
 	{
-		_SvSystem = std::move(other._SvSystem);
-		_SvNumber = std::move(other._SvNumber);
-		_NavigationData = std::move(other._NavigationData);
-		_Ephemeris = std::move(other._Ephemeris);
+		this->_SvSystem = other._SvSystem;
+		this->_SvNumber = other._SvNumber;
+		this->_Ephemeris = other._Ephemeris;
+		// Copy the vector of NavigationData
+		this->_NavigationData.clear(); // Clear current vector contents
+		for (const auto& navData : other._NavigationData)
+		{
+			this->_NavigationData.push_back(navData->clone());
+		}
 	}
 	return *this;
 }

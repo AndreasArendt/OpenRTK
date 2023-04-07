@@ -9,9 +9,8 @@ class CodeObservation : public RinexObservation
 private:
 	double _Pseudorange__m;
 
-public:		
-	CodeObservation(const CodeObservation& other) : RinexObservation(), _Pseudorange__m(other._Pseudorange__m) { }
-	CodeObservation(ObservationBand obsBand, std::unique_ptr<Satellite> satellite, double pseudorange) : RinexObservation(obsBand, std::move(satellite)), _Pseudorange__m(pseudorange) { }
+public:				
+	CodeObservation(ObservationBand obsBand, Satellite satellite, double pseudorange) : RinexObservation(obsBand, satellite), _Pseudorange__m(pseudorange) { }
 	~CodeObservation() { }
 };
 

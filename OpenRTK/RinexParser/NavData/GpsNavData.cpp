@@ -10,6 +10,11 @@ GpsNavData::~GpsNavData()
 
 }
 
+std::unique_ptr<NavData> GpsNavData::clone() const 
+{
+	return std::make_unique<GpsNavData>(*this);
+}
+
 void GpsNavData::AddClockErrors(double data0, double data1, double data2) 
 {
 	_SV_ClockBias__s = data0;
