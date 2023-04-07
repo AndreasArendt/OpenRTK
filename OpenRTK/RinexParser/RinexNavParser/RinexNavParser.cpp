@@ -63,12 +63,35 @@ void RinexNavParser::ParseTimeDiffDefinition(std::string line)
 	this->_TimeSystemCorrections.emplace_back(timeDifferenceType, a0, a1, t, w);
 }
 
-void RinexNavParser::ParseEoch(std::string line)
+std::unique_ptr<NavEpoch> RinexNavParser::TryAddNavEpoch(NavEpoch& ep)
 {
-	static NavEpoch* _currentEpoch = nullptr;
-	static std::unique_ptr<NavData> _currentNavData = nullptr;
-	static Satellite* _currentSatellite = nullptr;
+	std::unique_ptr<NavEpoch> currentEpoch;
 
+	// insert new Epoch if timestamp differs from latest epoch			
+	auto it = std::find_if(_NavEpochs.begin(), _NavEpochs.end(), [&](const NavEpoch& navEpoch)
+		{
+			return navEpoch == ep;
+		});
+
+	// check if this epoch already in vector
+	if (it == _NavEpochs.end())
+	{
+		this->_NavEpochs.emplace_back(ep);
+		currentEpoch = std::make_unique<NavEpoch>(this->_NavEpochs.back());
+	}
+	else
+	{
+		// current Epoch is where iterator points to
+		currentEpoch = std::make_unique<NavEpoch>(*it);
+	}
+
+	return currentEpoch;
+}
+
+void RinexNavParser::ParseEoch(std::string line)
+{	
+	static std::unique_ptr<NavData> _currentNavData = nullptr;
+	
 	switch (_NavEpochParsingState)
 	{
 	case NavEPochParsingState_SKIP:
@@ -83,48 +106,30 @@ void RinexNavParser::ParseEoch(std::string line)
 	case NavEpochParsingState_CLOCK_ERROR:
 	{
 		_currentNavData = nullptr;
-		_currentEpoch = nullptr;
-
+		
 		// set next parsing state
 		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_1;
 
 		// Parse Epochs
-		_currentSatellite = new Satellite(line.substr(0, 3));
+		auto satellite = new Satellite(line.substr(0, 3));
 		int year = parseInt(line.substr(4, 4));
 		int month = parseInt(line.substr(9, 2));
 		int day = parseInt(line.substr(12, 2));
 		int hour = parseInt(line.substr(15, 2));
 		int minute = parseInt(line.substr(18, 2));
 		double second = parseInt(line.substr(21, 2));
+		
+		auto epoch = NavEpoch(year, month, day, hour, minute, second);
 
 		// parse SV clock bias (seconds), SV clock drift (sec/sec) and SV clock drift rate (sec/sec2)
 		double clockBias = parseDouble(line.substr(23, 19));
 		double clockDrift = parseDouble(line.substr(42, 19));
 		double clockDriftRate = parseDouble(line.substr(61, 19));
-
-		auto thisEpoch = NavEpoch(year, month, day, hour, minute, second);
-
-		// insert new Epoch if timestamp differs from latest epoch			
-		auto it = std::find_if(_NavEpochs.begin(), _NavEpochs.end(), [&](const NavEpoch& navEpoch)
-			{
-				return navEpoch == thisEpoch;
-			});
 		
-		// check if this epoch already in vector
-		if (it == _NavEpochs.end())
-		{
-			this->_NavEpochs.emplace_back(thisEpoch);			
-			_currentEpoch = &this->_NavEpochs.back();
-		}
-		else
-		{
-			// current Epoch is where iterator points to
-			_currentEpoch = &(*it);
-		}
-				
-		_currentEpoch->addSatellite(*_currentSatellite);
+		this->_CurrentEpoch = this->TryAddNavEpoch(epoch);
+		this->_CurrentSatellite = this->_CurrentEpoch->TryAddSatellite(*satellite);
 
-		switch (_currentSatellite->SVSystem())
+		switch (this->_CurrentSatellite->SVSystem())
 		{
 		case SvSystem::GPS:
 		{	 			
@@ -228,7 +233,7 @@ void RinexNavParser::ParseEoch(std::string line)
 		double data3 = parseDouble(line.substr(61, 19));
 
 		_currentNavData->AddOrbit_7(data0, data1, data2, data3);				
-		_currentSatellite->addNavData(std::move(_currentNavData));
+		this->_CurrentSatellite->addNavData(std::move(_currentNavData));
 
 		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 		break;
@@ -237,7 +242,8 @@ void RinexNavParser::ParseEoch(std::string line)
 	{
 		_NavEpochParsingState = NavEpochParsingState::NavEPochParsingState_SKIP;
 		_currentNavData = nullptr;
-		_currentEpoch = nullptr;
+		this->_CurrentEpoch.reset();
+		this->_CurrentSatellite.reset();
 		break;
 	}
 	}

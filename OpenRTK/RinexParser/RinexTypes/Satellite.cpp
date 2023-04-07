@@ -27,13 +27,6 @@ Satellite::Satellite(const Satellite& other) :
 	}
 }
 
-//template <typename T, typename... Args>
-//void Satellite::addNavData(Args&&... args)
-//{
-//	static_assert(std::is_base_of<NavData, T>::value, "T must be a derived class of NavData");
-//	_NavigationData.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
-//}
-
 Satellite::~Satellite()
 {
 	this->_NavigationData.clear();

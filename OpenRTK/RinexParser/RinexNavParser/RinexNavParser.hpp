@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 class RinexNavParser : RinexParser
 {
@@ -18,14 +19,17 @@ private:
 	std::vector<IonosphericCorrection> _IonosphericCorrections;
 	std::vector<TimeSystemCorrection> _TimeSystemCorrections;	
 	std::vector<NavEpoch> _NavEpochs;
-
+		
 	bool _RinexHeaderParsed = false;
 	NavEpochParsingState _NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
+	std::unique_ptr<Satellite> _CurrentSatellite;
+	std::unique_ptr<NavEpoch> _CurrentEpoch;
 
 	void ParseEoch(std::string line);
 	void ParseLine(std::string line);
 	void ParseIonoCorrDefinition(std::string line);
 	void ParseTimeDiffDefinition(std::string line);
+	std::unique_ptr<NavEpoch> TryAddNavEpoch(NavEpoch& ep);
 
 public:
 	// getters
