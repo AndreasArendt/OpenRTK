@@ -141,9 +141,7 @@
   <ItemGroup>
     <ClCompile Include="PrecisePositioning\Ephemeris.cpp" />
     <ClCompile Include="RinexParser\RinexParser.cpp" />
-    <ClCompile Include="RinexParser\NavData\BeidouNavData.cpp" />
     <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp" />
-    <ClCompile Include="RinexParser\NavData\GlonasNavData.cpp" />
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Epoch\NavEpoch.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Epoch\ObsEpoch.cpp" />
@@ -156,9 +154,7 @@
   <ItemGroup>
     <ClInclude Include="PrecisePositioning\Ephemeris.hpp" />
     <ClInclude Include="RinexParser\RinexParser.hpp" />
-    <ClInclude Include="RinexParser\NavData\BeidouNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp" />
-    <ClInclude Include="RinexParser\NavData\GlonasNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\GpsNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\NavData.hpp" />
     <ClInclude Include="RinexParser\RinexNavParser\NavEpochParsingState.hpp" />

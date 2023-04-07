@@ -20,25 +20,23 @@ Satellite::Satellite(const Satellite& other) :
 	_SvSystem(other._SvSystem),
 	_SvNumber(other._SvNumber)
 {
-
-	/*_NavigationData(std::move(other._NavigationData)),
-	_Ephemeris(std::move(other._Ephemeris))*/
-
+	
 	// Create new unique pointers and copy the underlying objects
 	for (const auto& ptr : other._NavigationData) {
 		this->_NavigationData.push_back(ptr->clone());
 	}
 }
 
-/*template <typename... Args, std::enable_if_t<std::is_constructible_v<NavEpoch, Args...>, int>>
-void Satellite::addNavEpoch(Args&&... args)
-{
-	this->_NavEpochs.emplace_back(std::make_unique<NavEpoch>(std::forward<Args>(args)...));
-}*/
+//template <typename T, typename... Args>
+//void Satellite::addNavData(Args&&... args)
+//{
+//	static_assert(std::is_base_of<NavData, T>::value, "T must be a derived class of NavData");
+//	_NavigationData.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+//}
 
 Satellite::~Satellite()
 {
-	//this->_NavEpochs.clear();
+	this->_NavigationData.clear();
 }
 
 Satellite& Satellite::operator=(Satellite& other) noexcept

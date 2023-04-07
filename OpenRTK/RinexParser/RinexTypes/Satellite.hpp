@@ -3,6 +3,7 @@
 #include "SvSystem.hpp"
 #include "../../PrecisePositioning/Ephemeris.hpp"
 #include "../NavData/NavData.hpp"
+#include "../NavData/GpsNavData.hpp"
 
 #include <string>
 #include <vector>
@@ -24,9 +25,11 @@ public:
     std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
     Ephemeris const& Ephemeris() const { return this->_Ephemeris; }
 
-    // public functions
-    //template <typename... Args, std::enable_if_t<std::is_constructible_v<NavEpoch, Args...>, int> = 0>
-    //void addNavEpoch(Args&&... args);
+    // public functions    
+    void addNavData(std::unique_ptr<NavData> navdata)
+    {     
+        _NavigationData.push_back(std::move(navdata));
+    }
 
     // ctor & dtor    
     Satellite();

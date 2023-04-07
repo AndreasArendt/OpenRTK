@@ -48,13 +48,7 @@
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexParser\NavData\GlonasNavData.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="RinexParser\NavData\BeidouNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RinexParser\RinexParser.cpp">
@@ -152,13 +146,7 @@
     <ClInclude Include="RinexParser\NavData\GpsNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexParser\NavData\GlonasNavData.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="RinexParser\NavData\BeidouNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\RinexParser.hpp">
