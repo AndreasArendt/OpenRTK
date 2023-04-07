@@ -14,8 +14,7 @@ class Satellite
 private:
     SvSystem _SvSystem;
     int _SvNumber;
-
-    std::vector<std::unique_ptr<NavData>> _NavigationData;
+    std::vector<std::unique_ptr<NavData>> _NavigationData;    
     Ephemeris _Ephemeris;
 
 public:

@@ -89,7 +89,7 @@ void RinexNavParser::ParseEoch(std::string line)
 		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_1;
 
 		// Parse Epochs
-		auto _currentSatellite = new Satellite(line.substr(0, 3));
+		_currentSatellite = new Satellite(line.substr(0, 3));
 		int year = parseInt(line.substr(4, 4));
 		int month = parseInt(line.substr(9, 2));
 		int day = parseInt(line.substr(12, 2));
@@ -227,8 +227,7 @@ void RinexNavParser::ParseEoch(std::string line)
 		double data2 = parseDouble(line.substr(42, 19));
 		double data3 = parseDouble(line.substr(61, 19));
 
-		_currentNavData->AddOrbit_7(data0, data1, data2, data3);
-
+		_currentNavData->AddOrbit_7(data0, data1, data2, data3);				
 		_currentSatellite->addNavData(std::move(_currentNavData));
 
 		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
