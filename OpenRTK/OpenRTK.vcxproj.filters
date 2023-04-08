@@ -60,6 +60,9 @@
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RinexParser\NavData\NavData.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -159,6 +162,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Transformations\Transformation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\NavData\ENavOrbitNumber.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

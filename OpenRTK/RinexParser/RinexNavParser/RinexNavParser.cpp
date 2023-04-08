@@ -88,10 +88,47 @@ std::unique_ptr<NavEpoch> RinexNavParser::TryAddNavEpoch(NavEpoch& ep)
 	return currentEpoch;
 }
 
+void RinexNavParser::ParseOrbitData(std::string line)
+{
+	double data0 = parseDouble(line.substr(4, 19));
+	double data1 = parseDouble(line.substr(23, 19));
+	double data2 = parseDouble(line.substr(42, 19));
+	double data3 = parseDouble(line.substr(61, 19));
+	
+	this->_CurrentNavData->AddOrbit(this->_CurrentOrbitNumber, data0, data1, data2, data3);
+
+	// writing this explicitly for clarity
+	switch (this->_CurrentOrbitNumber)
+	{
+	case ENavOrbitNumber::ORBIT_1:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_2;
+		break;
+	case ENavOrbitNumber::ORBIT_2:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_3;
+		break;
+	case ENavOrbitNumber::ORBIT_3:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_4;
+		break;
+	case ENavOrbitNumber::ORBIT_4:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_5;
+		break;
+	case ENavOrbitNumber::ORBIT_5:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_6;
+		break;
+	case ENavOrbitNumber::ORBIT_6:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_7;
+		break;
+	case ENavOrbitNumber::ORBIT_7:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN; // this will be reset in parsing function
+		break;			
+	default:
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
+		break;
+	}		
+}
+
 void RinexNavParser::ParseEoch(std::string line)
 {	
-	static std::unique_ptr<NavData> _currentNavData = nullptr;
-	
 	switch (_NavEpochParsingState)
 	{
 	case NavEPochParsingState_SKIP:
@@ -105,10 +142,10 @@ void RinexNavParser::ParseEoch(std::string line)
 	case NavEpochParsingState_IDLE:
 	case NavEpochParsingState_CLOCK_ERROR:
 	{
-		_currentNavData = nullptr;
+		this->_CurrentNavData = nullptr;
 		
 		// set next parsing state
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_1;
+		this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;
 
 		// Parse Epochs
 		auto satellite = new Satellite(line.substr(0, 3));
@@ -133,14 +170,14 @@ void RinexNavParser::ParseEoch(std::string line)
 		{
 		case SvSystem::GPS:
 		{	 			
-			_currentNavData = std::make_unique<GpsNavData>();
-			_currentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
+			this->_CurrentNavData = std::make_unique<GpsNavData>();
+			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
 			break;
 		}
 		case SvSystem::GALILEO:
 		{
-			_currentNavData = std::make_unique<GalileoNavData>();			
-			_currentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
+			this->_CurrentNavData = std::make_unique<GalileoNavData>();
+			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
 			break;
 		}
 		case SvSystem::GLONASS:
@@ -152,96 +189,27 @@ void RinexNavParser::ParseEoch(std::string line)
 		case SvSystem::UNKNOWN:
 		default:
 		{
-			_NavEpochParsingState = NavEpochParsingState::NavEPochParsingState_SKIP;
+			this->_NavEpochParsingState = NavEpochParsingState::NavEPochParsingState_SKIP;
 			break;
 		}
 		}
 
 		break;
 	}
-	case NavEpochParsingState_ORBIT_1:
+	case NavEpochParsingState_ORBIT:
 	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
+		this->ParseOrbitData(line);
 
-		_currentNavData->AddOrbit_1(data0, data1, data2, data3);
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_2;
-		break;
-	}
-	case NavEpochParsingState_ORBIT_2:
-	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
-
-		_currentNavData->AddOrbit_2(data0, data1, data2, data3);
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_3;
-		break;
-	}
-	case NavEpochParsingState_ORBIT_3:
-	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
-
-		_currentNavData->AddOrbit_3(data0, data1, data2, data3);
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_4;
-		break;
-	}
-	case NavEpochParsingState_ORBIT_4:
-	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
-
-		_currentNavData->AddOrbit_4(data0, data1, data2, data3);
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_5;
-		break;
-	}
-	case NavEpochParsingState_ORBIT_5:
-	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
-
-		_currentNavData->AddOrbit_5(data0, data1, data2, data3);
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_6;
-		break;
-	}
-	case NavEpochParsingState_ORBIT_6:
-	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
-
-		_currentNavData->AddOrbit_6(data0, data1, data2, data3);
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT_7;
-		break;
-	}
-	case NavEpochParsingState_ORBIT_7:
-	{
-		double data0 = parseDouble(line.substr(4, 19));
-		double data1 = parseDouble(line.substr(23, 19));
-		double data2 = parseDouble(line.substr(42, 19));
-		double data3 = parseDouble(line.substr(61, 19));
-
-		_currentNavData->AddOrbit_7(data0, data1, data2, data3);				
-		this->_CurrentSatellite->addNavData(std::move(_currentNavData));
-
-		_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
+		if (this->_CurrentOrbitNumber == ENavOrbitNumber::ORBIT_UNKNOWN)
+		{
+			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
+		}		
 		break;
 	}
 	default:
 	{
-		_NavEpochParsingState = NavEpochParsingState::NavEPochParsingState_SKIP;
-		_currentNavData = nullptr;
+		this->_NavEpochParsingState = NavEpochParsingState::NavEPochParsingState_SKIP;
+		this->_CurrentNavData.reset();
 		this->_CurrentEpoch.reset();
 		this->_CurrentSatellite.reset();
 		break;

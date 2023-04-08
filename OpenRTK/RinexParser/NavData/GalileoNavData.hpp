@@ -54,9 +54,7 @@ private:
 	double _Spare2 = 0.0;
 	double _Spare3 = 0.0;
 
-public:
-	// Geerbt über NavData
-	void AddClockErrors(double data0, double data1, double data2);
+protected:
 	void AddOrbit_1(double data0, double data1, double data2, double data3);
 	void AddOrbit_2(double data0, double data1, double data2, double data3);
 	void AddOrbit_3(double data0, double data1, double data2, double data3);
@@ -64,6 +62,9 @@ public:
 	void AddOrbit_5(double data0, double data1, double data2, double data3);
 	void AddOrbit_6(double data0, double data1, double data2, double data3);
 	void AddOrbit_7(double data0, double data1, double data2, double data3);
+
+public:	
+	void AddClockErrors(double data0, double data1, double data2);
 
 	std::unique_ptr<NavData> clone() const override;
 

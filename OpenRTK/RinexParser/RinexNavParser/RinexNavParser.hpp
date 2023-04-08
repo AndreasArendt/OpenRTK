@@ -22,13 +22,17 @@ private:
 		
 	bool _RinexHeaderParsed = false;
 	NavEpochParsingState _NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
+
+	ENavOrbitNumber _CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
 	std::unique_ptr<Satellite> _CurrentSatellite;
 	std::unique_ptr<NavEpoch> _CurrentEpoch;
+	std::unique_ptr<NavData> _CurrentNavData;
 
 	void ParseEoch(std::string line);
 	void ParseLine(std::string line);
 	void ParseIonoCorrDefinition(std::string line);
 	void ParseTimeDiffDefinition(std::string line);
+	void ParseOrbitData(std::string line);
 	std::unique_ptr<NavEpoch> TryAddNavEpoch(NavEpoch& ep);
 
 public:
