@@ -90,13 +90,6 @@ std::unique_ptr<NavEpoch> RinexNavParser::TryAddNavEpoch(NavEpoch& ep)
 
 void RinexNavParser::ParseOrbitData(std::string line)
 {
-	double data0 = parseDouble(line.substr(4, 19));
-	double data1 = parseDouble(line.substr(23, 19));
-	double data2 = parseDouble(line.substr(42, 19));
-	double data3 = parseDouble(line.substr(61, 19));
-	
-	this->_CurrentNavData->AddOrbit(this->_CurrentOrbitNumber, data0, data1, data2, data3);
-
 	// writing this explicitly for clarity
 	switch (this->_CurrentOrbitNumber)
 	{
@@ -122,9 +115,16 @@ void RinexNavParser::ParseOrbitData(std::string line)
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN; // this will be reset in parsing function
 		break;			
 	default:
-		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_1;
 		break;
 	}		
+
+	double data0 = parseDouble(line.substr(4, 19));
+	double data1 = parseDouble(line.substr(23, 19));
+	double data2 = parseDouble(line.substr(42, 19));
+	double data3 = parseDouble(line.substr(61, 19));
+
+	this->_CurrentNavData->AddOrbit(this->_CurrentOrbitNumber, data0, data1, data2, data3);
 }
 
 void RinexNavParser::ParseEoch(std::string line)
@@ -143,10 +143,7 @@ void RinexNavParser::ParseEoch(std::string line)
 	case NavEpochParsingState_CLOCK_ERROR:
 	{
 		this->_CurrentNavData = nullptr;
-		
-		// set next parsing state
-		this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;
-
+				
 		// Parse Epochs
 		auto satellite = new Satellite(line.substr(0, 3));
 		int year = parseInt(line.substr(4, 4));
@@ -172,12 +169,16 @@ void RinexNavParser::ParseEoch(std::string line)
 		{	 			
 			this->_CurrentNavData = std::make_unique<GpsNavData>();
 			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
+			
+			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;
 			break;
 		}
 		case SvSystem::GALILEO:
 		{
 			this->_CurrentNavData = std::make_unique<GalileoNavData>();
 			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
+
+			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;
 			break;
 		}
 		case SvSystem::GLONASS:
@@ -197,11 +198,12 @@ void RinexNavParser::ParseEoch(std::string line)
 		break;
 	}
 	case NavEpochParsingState_ORBIT:
-	{
+	{		
 		this->ParseOrbitData(line);
 
 		if (this->_CurrentOrbitNumber == ENavOrbitNumber::ORBIT_UNKNOWN)
 		{
+			this->_CurrentSatellite->addNavData(std::move(this->_CurrentNavData));
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 		}		
 		break;
