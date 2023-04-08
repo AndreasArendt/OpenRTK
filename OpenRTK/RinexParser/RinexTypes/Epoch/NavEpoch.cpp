@@ -10,10 +10,8 @@ NavEpoch::NavEpoch(int year, int month, int day, int hour, int minute, double se
 	
 }
 
-std::unique_ptr<Satellite> NavEpoch::TryAddSatellite(const Satellite& sv)
+Satellite* NavEpoch::TryAddSatellite(const Satellite& sv)
 {
-    std::unique_ptr<Satellite> currentSatellite;
-
     auto it = std::find_if(this->_Satellites.begin(), this->_Satellites.end(), [&](const Satellite& sat)
         {
             return sat == sv;
@@ -22,14 +20,12 @@ std::unique_ptr<Satellite> NavEpoch::TryAddSatellite(const Satellite& sv)
     if (it == this->_Satellites.end())
     {
         this->_Satellites.push_back(sv);
-        currentSatellite = std::make_unique<Satellite>(this->_Satellites.back());
+        return &this->_Satellites.back();
     }
     else
     {
-        currentSatellite = std::make_unique<Satellite>(*it);
+        return &(*it);
     }
-
-    return currentSatellite;
 }
 
 NavEpoch::~NavEpoch()

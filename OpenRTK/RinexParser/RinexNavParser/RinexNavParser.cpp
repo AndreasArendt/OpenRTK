@@ -25,7 +25,7 @@ RinexNavParser::~RinexNavParser()
 	this->_IonosphericCorrections.clear();
 	this->_IonosphericCorrections.clear();
 	this->_TimeSystemCorrections.clear();
-	//this->_Epochs.clear();
+	this->_NavEpochs.clear();
 }
 
 void RinexNavParser::ParseIonoCorrDefinition(std::string line)
@@ -63,29 +63,22 @@ void RinexNavParser::ParseTimeDiffDefinition(std::string line)
 	this->_TimeSystemCorrections.emplace_back(timeDifferenceType, a0, a1, t, w);
 }
 
-std::unique_ptr<NavEpoch> RinexNavParser::TryAddNavEpoch(NavEpoch& ep)
+NavEpoch* RinexNavParser::TryAddNavEpoch(NavEpoch& ep)
 {
-	std::unique_ptr<NavEpoch> currentEpoch;
-
-	// insert new Epoch if timestamp differs from latest epoch			
 	auto it = std::find_if(_NavEpochs.begin(), _NavEpochs.end(), [&](const NavEpoch& navEpoch)
 		{
 			return navEpoch == ep;
 		});
 
-	// check if this epoch already in vector
 	if (it == _NavEpochs.end())
 	{
-		this->_NavEpochs.emplace_back(ep);
-		currentEpoch = std::make_unique<NavEpoch>(this->_NavEpochs.back());
+		_NavEpochs.push_back(ep);
+		return &_NavEpochs.back();
 	}
 	else
 	{
-		// current Epoch is where iterator points to
-		currentEpoch = std::make_unique<NavEpoch>(*it);
+		return &(*it);
 	}
-
-	return currentEpoch;
 }
 
 void RinexNavParser::ParseOrbitData(std::string line)
@@ -113,11 +106,11 @@ void RinexNavParser::ParseOrbitData(std::string line)
 		break;
 	case ENavOrbitNumber::ORBIT_7:
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN; // this will be reset in parsing function
-		break;			
+		break;
 	default:
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_1;
 		break;
-	}		
+	}
 
 	double data0 = parseDouble(line.substr(4, 19));
 	double data1 = parseDouble(line.substr(23, 19));
@@ -128,7 +121,7 @@ void RinexNavParser::ParseOrbitData(std::string line)
 }
 
 void RinexNavParser::ParseEoch(std::string line)
-{	
+{
 	switch (_NavEpochParsingState)
 	{
 	case NavEPochParsingState_SKIP:
@@ -141,35 +134,33 @@ void RinexNavParser::ParseEoch(std::string line)
 	}
 	case NavEpochParsingState_IDLE:
 	case NavEpochParsingState_CLOCK_ERROR:
-	{
-		this->_CurrentNavData = nullptr;
-				
+	{		
 		// Parse Epochs
-		auto satellite = new Satellite(line.substr(0, 3));
+		auto satellite = Satellite(line.substr(0, 3));
 		int year = parseInt(line.substr(4, 4));
 		int month = parseInt(line.substr(9, 2));
 		int day = parseInt(line.substr(12, 2));
 		int hour = parseInt(line.substr(15, 2));
 		int minute = parseInt(line.substr(18, 2));
 		double second = parseInt(line.substr(21, 2));
-		
+
 		auto epoch = NavEpoch(year, month, day, hour, minute, second);
 
 		// parse SV clock bias (seconds), SV clock drift (sec/sec) and SV clock drift rate (sec/sec2)
 		double clockBias = parseDouble(line.substr(23, 19));
 		double clockDrift = parseDouble(line.substr(42, 19));
 		double clockDriftRate = parseDouble(line.substr(61, 19));
-		
-		this->_CurrentEpoch = this->TryAddNavEpoch(epoch);
-		this->_CurrentSatellite = this->_CurrentEpoch->TryAddSatellite(*satellite);
+
+		auto _CurrentEpoch = this->TryAddNavEpoch(epoch);								
+		this->_CurrentSatellite = _CurrentEpoch->TryAddSatellite(satellite);
 
 		switch (this->_CurrentSatellite->SVSystem())
 		{
 		case SvSystem::GPS:
-		{	 			
+		{
 			this->_CurrentNavData = std::make_unique<GpsNavData>();
 			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
-			
+
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;
 			break;
 		}
@@ -198,22 +189,20 @@ void RinexNavParser::ParseEoch(std::string line)
 		break;
 	}
 	case NavEpochParsingState_ORBIT:
-	{		
+	{
 		this->ParseOrbitData(line);
 
 		if (this->_CurrentOrbitNumber == ENavOrbitNumber::ORBIT_UNKNOWN)
 		{
 			this->_CurrentSatellite->addNavData(std::move(this->_CurrentNavData));
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
-		}		
+		}
 		break;
 	}
 	default:
 	{
 		this->_NavEpochParsingState = NavEpochParsingState::NavEPochParsingState_SKIP;
 		this->_CurrentNavData.reset();
-		this->_CurrentEpoch.reset();
-		this->_CurrentSatellite.reset();
 		break;
 	}
 	}

@@ -16,7 +16,7 @@ public:
 	std::vector<Satellite> const& Satellites() const { return this->_Satellites; }
 		
 	// public functions
-	std::unique_ptr<Satellite> TryAddSatellite(const Satellite& sv);	
+	Satellite* TryAddSatellite(const Satellite& sv);
 
 	// ctor & dtor
 	NavEpoch();
