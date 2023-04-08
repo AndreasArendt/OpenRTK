@@ -19,7 +19,7 @@ Satellite::Satellite(const Satellite& other) :
 	_SvSystem(other._SvSystem),
 	_SvNumber(other._SvNumber)
 {
-	
+
 	// Create new unique pointers and copy the underlying objects
 	for (const auto& ptr : other._NavigationData) {
 		this->_NavigationData.push_back(ptr->clone());
@@ -34,6 +34,18 @@ Satellite::~Satellite()
 void Satellite::addNavData(std::unique_ptr<NavData> navdata)
 {
 	_NavigationData.push_back(std::move(navdata));
+}
+
+void Satellite::calcEphimeris()
+{
+	switch (this->_SvSystem)
+	{
+	case SvSystem::GALILEO:
+		this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
+		break;
+	default:
+		break;
+	}
 }
 
 Satellite& Satellite::operator=(Satellite& other) noexcept

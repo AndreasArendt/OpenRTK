@@ -26,6 +26,7 @@ public:
 
     // public functions    
     void addNavData(std::unique_ptr<NavData> navdata);
+    void calcEphimeris();
 
     // ctor & dtor    
     Satellite();
