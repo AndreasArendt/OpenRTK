@@ -26,6 +26,7 @@ RinexNavParser::~RinexNavParser()
 	this->_IonosphericCorrections.clear();
 	this->_TimeSystemCorrections.clear();
 	this->_NavEpochs.clear();
+	delete this->_CurrentSatellite;
 }
 
 void RinexNavParser::ParseIonoCorrDefinition(std::string line)
