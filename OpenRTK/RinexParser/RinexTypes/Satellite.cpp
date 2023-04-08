@@ -3,7 +3,6 @@
 
 Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)
 {
-
 }
 
 Satellite::Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _SvNumber(svNumber)
@@ -30,6 +29,11 @@ Satellite::Satellite(const Satellite& other) :
 Satellite::~Satellite()
 {
 	this->_NavigationData.clear();
+}
+
+void Satellite::addNavData(std::unique_ptr<NavData> navdata)
+{
+	_NavigationData.push_back(std::move(navdata));
 }
 
 Satellite& Satellite::operator=(Satellite& other) noexcept

@@ -25,10 +25,7 @@ public:
     Ephemeris const& Ephemeris() const { return this->_Ephemeris; }
 
     // public functions    
-    void addNavData(std::unique_ptr<NavData> navdata)
-    {     
-        _NavigationData.push_back(std::move(navdata));
-    }
+    void addNavData(std::unique_ptr<NavData> navdata);
 
     // ctor & dtor    
     Satellite();
