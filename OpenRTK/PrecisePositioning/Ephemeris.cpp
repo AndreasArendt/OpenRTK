@@ -4,12 +4,14 @@
 #include <cmath>
 #include <chrono>
 
+#include <iostream>
+
 void Ephemeris::CalcGalileoEphimeris(const std::vector<std::unique_ptr<NavData>>& navData)
 {	
 	auto nav = dynamic_cast<GalileoNavData*>(navData.begin()->get());
 	auto trans = Transformation();
    
-	double t = std::chrono::duration<double>(nav->EpochTime().time_since_epoch()).count();
+	double t = nav->getGST();
 
 	// Semo major Axis
 	double A = nav->SqrtA___sqrtm() * nav->SqrtA___sqrtm();
@@ -74,7 +76,7 @@ void Ephemeris::CalcGalileoEphimeris(const std::vector<std::unique_ptr<NavData>>
 	// GTRF coordinates of the SV antenna phase center position at time t
 	double x = x_prime * cos(OMEGA) - y_prime * cos(i) * sin(OMEGA);
 	double y = x_prime * sin(OMEGA) + y_prime * cos(i) * cos(OMEGA);
-	double z = y_prime * sin(i);
+	double z = y_prime * sin(i);		
 }
 
 Ephemeris::Ephemeris()

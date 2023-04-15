@@ -107,7 +107,9 @@ public:
 	// Orbit 7
 	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; }
 	
+	// functions
 	void AddClockErrors(double data0, double data1, double data2);
+	double getGST();
 
 	std::unique_ptr<NavData> clone() const override;
 
