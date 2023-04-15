@@ -1,6 +1,9 @@
 #include "Satellite.hpp"
 #include "../../Utils/astring.hpp"
 
+#include <iostream>
+#include <iomanip>
+
 Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)
 {
 }
@@ -42,6 +45,12 @@ void Satellite::calcEphimeris()
 	{
 	case SvSystem::GALILEO:
 		this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
+				
+		for (auto ephemeris : this->_Ephemeris.Position_E())
+		{
+			std::cout << std::fixed << std::setprecision(10) << "E" << this->SvNumber() << "," << ephemeris.x() << "," << ephemeris.y() << "," << ephemeris.z() << std::endl;
+		}
+
 		break;
 	default:
 		break;
