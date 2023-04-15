@@ -70,7 +70,7 @@ public:
 	std::unique_ptr<NavData> clone() const override;
 
 	// ctor & dtor
-	GpsNavData();	
+	GpsNavData(int year, int month, int day, int hour, int minute, double second);
 	~GpsNavData();
 };
 

@@ -24,8 +24,7 @@ RinexNavParser::~RinexNavParser()
 {
 	this->_IonosphericCorrections.clear();
 	this->_IonosphericCorrections.clear();
-	this->_TimeSystemCorrections.clear();
-	this->_NavEpochs.clear();
+	this->_TimeSystemCorrections.clear();	
 	delete this->_CurrentSatellite;
 }
 
@@ -62,24 +61,6 @@ void RinexNavParser::ParseTimeDiffDefinition(std::string line)
 	int w = parseInt(line.substr(46, 4));
 
 	this->_TimeSystemCorrections.emplace_back(timeDifferenceType, a0, a1, t, w);
-}
-
-NavEpoch* RinexNavParser::TryAddNavEpoch(NavEpoch& ep)
-{
-	auto it = std::find_if(_NavEpochs.begin(), _NavEpochs.end(), [&](const NavEpoch& navEpoch)
-		{
-			return navEpoch == ep;
-		});
-
-	if (it == _NavEpochs.end())
-	{
-		_NavEpochs.push_back(ep);
-		return &_NavEpochs.back();
-	}
-	else
-	{
-		return &(*it);
-	}
 }
 
 void RinexNavParser::ParseOrbitData(std::string line)
@@ -144,22 +125,32 @@ void RinexNavParser::ParseEoch(std::string line)
 		int hour = parseInt(line.substr(15, 2));
 		int minute = parseInt(line.substr(18, 2));
 		double second = parseInt(line.substr(21, 2));
-
-		auto epoch = NavEpoch(year, month, day, hour, minute, second);
-
+		
 		// parse SV clock bias (seconds), SV clock drift (sec/sec) and SV clock drift rate (sec/sec2)
 		double clockBias = parseDouble(line.substr(23, 19));
 		double clockDrift = parseDouble(line.substr(42, 19));
 		double clockDriftRate = parseDouble(line.substr(61, 19));
+				
+		auto it = std::find_if(this->_Satellites.begin(), this->_Satellites.end(), [&](Satellite& sv)
+			{
+				return satellite == sv;
+			});
 
-		auto _CurrentEpoch = this->TryAddNavEpoch(epoch);								
-		this->_CurrentSatellite = _CurrentEpoch->TryAddSatellite(satellite);
+		if (it == this->_Satellites.end())
+		{
+			this->_Satellites.push_back(satellite);
+			this->_CurrentSatellite = &this->_Satellites.back();
+		}
+		else
+		{
+			this->_CurrentSatellite = &(*it);
+		}
 
 		switch (this->_CurrentSatellite->SVSystem())
 		{
 		case SvSystem::GPS:
 		{
-			this->_CurrentNavData = std::make_unique<GpsNavData>();
+			this->_CurrentNavData = std::make_unique<GpsNavData>(year, month, day, hour, minute, second);
 			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
 
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;
@@ -167,7 +158,7 @@ void RinexNavParser::ParseEoch(std::string line)
 		}
 		case SvSystem::GALILEO:
 		{
-			this->_CurrentNavData = std::make_unique<GalileoNavData>();
+			this->_CurrentNavData = std::make_unique<GalileoNavData>(year, month, day, hour, minute, second);
 			this->_CurrentNavData->AddClockErrors(clockBias, clockDrift, clockDriftRate);
 
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_ORBIT;

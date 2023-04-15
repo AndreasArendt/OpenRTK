@@ -1,5 +1,9 @@
 #include "NavData.hpp"
 
+NavData::NavData(int year, int month, int day, int hour, int minute, double second) : _NavEpoch(year, month, day, hour, minute, second)
+{
+}
+
 void NavData::AddOrbit(ENavOrbitNumber orbitNumber, double data0, double data1, double data2, double data3)
 {
 	switch (orbitNumber)

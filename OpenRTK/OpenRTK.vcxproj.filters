@@ -42,9 +42,6 @@
     <ClCompile Include="RinexParser\RinexTypes\Epoch\ObsEpoch.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexParser\RinexTypes\Epoch\NavEpoch.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

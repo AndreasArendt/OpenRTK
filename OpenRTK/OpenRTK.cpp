@@ -25,19 +25,19 @@ int main()
 				return epoch.Satellites().
 			});*/
 
-	for (const NavEpoch& navEpoch : navParser->NavEpochs()) 
-	{
-		auto it = std::find_if(navEpoch.Satellites().begin(), navEpoch.Satellites().end(),
-			[=](const Satellite& satellite)
-			{
-				return satellite.SVSystem() == SvSystem::GALILEO;
-			});
-		if (it != navEpoch.Satellites().end()) 
-		{
-			auto firstGalileoSv = *it;
-			firstGalileoSv.calcEphimeris();
-		}
-	}
+	//for (const NavEpoch& navEpoch : navParser->NavEpochs()) 
+	//{
+	//	auto it = std::find_if(navEpoch.Satellites().begin(), navEpoch.Satellites().end(),
+	//		[=](const Satellite& satellite)
+	//		{
+	//			return satellite.SVSystem() == SvSystem::GALILEO;
+	//		});
+	//	if (it != navEpoch.Satellites().end()) 
+	//	{
+	//		auto firstGalileoSv = *it;
+	//		firstGalileoSv.calcEphimeris();
+	//	}
+	//}
 
 
 	return 0;

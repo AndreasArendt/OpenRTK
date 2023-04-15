@@ -144,7 +144,6 @@
     <ClCompile Include="RinexParser\RinexParser.cpp" />
     <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp" />
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp" />
-    <ClCompile Include="RinexParser\RinexTypes\Epoch\NavEpoch.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Epoch\ObsEpoch.cpp" />
     <ClCompile Include="RinexParser\RinexNavParser\RinexNavParser.cpp" />
     <ClCompile Include="OpenRTK.cpp" />

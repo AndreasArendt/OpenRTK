@@ -111,7 +111,7 @@ public:
 
 	std::unique_ptr<NavData> clone() const override;
 
-	GalileoNavData();		
+	GalileoNavData(int year, int month, int day, int hour, int minute, double second);
 	~GalileoNavData();
 };
 
