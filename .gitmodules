@@ -1,3 +1,0 @@
-[submodule "OpenRTK/libs/eigen"]
-	path = OpenRTK/libs/eigen
-	url = https://gitlab.com/libeigen/eigen.git
