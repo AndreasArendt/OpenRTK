@@ -2,13 +2,14 @@
 #include "../Transformations/Transformation.hpp"
 
 #include <cmath>
+#include <chrono>
 
 void Ephemeris::CalcGalileoEphimeris(const std::vector<std::unique_ptr<NavData>>& navData)
 {	
 	auto nav = dynamic_cast<GalileoNavData*>(navData.begin()->get());
 	auto trans = Transformation();
    
-	double t = 0;
+	double t = std::chrono::duration<double>(nav->EpochTime().time_since_epoch()).count();
 
 	// Semo major Axis
 	double A = nav->SqrtA___sqrtm() * nav->SqrtA___sqrtm();

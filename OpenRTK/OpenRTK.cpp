@@ -18,27 +18,11 @@ int main()
 
 	std::unique_ptr<RinexNavParser> navParser = std::make_unique<RinexNavParser>();
 	navParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20230690000_01D_MN.nav");
-
-	/*auto galileoEpoch =
-		std::find_if(navParser->NavEpochs().begin(), navParser->NavEpochs().end(), [=](NavEpoch& epoch)
-			{
-				return epoch.Satellites().
-			});*/
-
-	//for (const NavEpoch& navEpoch : navParser->NavEpochs()) 
-	//{
-	//	auto it = std::find_if(navEpoch.Satellites().begin(), navEpoch.Satellites().end(),
-	//		[=](const Satellite& satellite)
-	//		{
-	//			return satellite.SVSystem() == SvSystem::GALILEO;
-	//		});
-	//	if (it != navEpoch.Satellites().end()) 
-	//	{
-	//		auto firstGalileoSv = *it;
-	//		firstGalileoSv.calcEphimeris();
-	//	}
-	//}
-
+	
+	for (Satellite sv : navParser->Satellites())
+	{
+		sv.calcEphimeris();
+	}
 
 	return 0;
 }
