@@ -35,7 +35,6 @@ void Ephemeris::CalcGalileoEphimeris(const std::vector<std::unique_ptr<NavData>>
 	}
 
 	// true anomaly
-
 	double sqrt_1_e2 = sqrt(1 - nav->Eccentricity() * nav->Eccentricity());
 	double sinE = sin(E);
 	double minus_ecosE_plus_1 = -nav->Eccentricity() * cos(E) + 1;
@@ -76,8 +75,6 @@ void Ephemeris::CalcGalileoEphimeris(const std::vector<std::unique_ptr<NavData>>
 	double x = x_prime * cos(OMEGA) - y_prime * cos(i) * sin(OMEGA);
 	double y = x_prime * sin(OMEGA) + y_prime * cos(i) * cos(OMEGA);
 	double z = y_prime * sin(i);
-
-
 }
 
 Ephemeris::Ephemeris()
