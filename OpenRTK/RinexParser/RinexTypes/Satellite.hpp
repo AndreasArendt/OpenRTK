@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SvSystem.hpp"
-#include "../../PrecisePositioning/Ephemeris.hpp"
+#include "../../PrecisePositioning/Ephemeris/Ephemeris.hpp"
 #include "../NavData/NavData.hpp"
 #include "../NavData/GpsNavData.hpp"
 
@@ -15,14 +15,14 @@ private:
     SvSystem _SvSystem;
     int _SvNumber;
     std::vector<std::unique_ptr<NavData>> _NavigationData;    
-    Ephemeris _Ephemeris;
+    std::vector<Ephemeris> _Ephemeris;
 
 public:
     // getters
     SvSystem const& SVSystem() const { return this->_SvSystem; }
     int const& SvNumber() const { return this->_SvNumber; }
     std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
-    Ephemeris const& Ephemeris() const { return this->_Ephemeris; }
+    std::vector<Ephemeris> const& Ephemeris() const { return this->_Ephemeris; }
 
     // public functions    
     void addNavData(std::unique_ptr<NavData> navdata);

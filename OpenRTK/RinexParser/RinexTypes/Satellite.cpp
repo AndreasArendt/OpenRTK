@@ -1,5 +1,6 @@
 #include "Satellite.hpp"
 #include "../../Utils/astring.hpp"
+#include "../../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
 
 #include <iostream>
 #include <iomanip>
@@ -44,12 +45,19 @@ void Satellite::calcEphimeris()
 	switch (this->_SvSystem)
 	{
 	case SvSystem::GALILEO:
-		this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
+		for (auto& nav : this->_NavigationData)
+		{
+			auto eph = GalileoEphemeris();
+			eph.CalcEphemeris((*nav.get()));
+			this->_Ephemeris.emplace_back(eph);
+		}
+
+		/*this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
 				
 		for (auto ephemeris : this->_Ephemeris.Position_E())
 		{
 			std::cout << std::fixed << std::setprecision(10) << "E" << this->SvNumber() << "," << ephemeris.x() << "," << ephemeris.y() << "," << ephemeris.z() << std::endl;
-		}
+		}*/
 
 		break;
 	default:

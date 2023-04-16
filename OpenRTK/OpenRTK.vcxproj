@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PrecisePositioning\Ephemeris.cpp" />
+    <ClCompile Include="PrecisePositioning\Ephemeris\GalileoEphemeris.cpp" />
     <ClCompile Include="RinexParser\NavData\NavData.cpp" />
     <ClCompile Include="RinexParser\RinexParser.cpp" />
     <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp" />
@@ -152,7 +152,8 @@
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PrecisePositioning\Ephemeris.hpp" />
+    <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp" />
+    <ClInclude Include="PrecisePositioning\Ephemeris\Ephemeris.hpp" />
     <ClInclude Include="RinexParser\RinexParser.hpp" />
     <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\GpsNavData.hpp" />
