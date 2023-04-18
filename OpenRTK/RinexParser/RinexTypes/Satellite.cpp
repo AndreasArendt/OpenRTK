@@ -55,17 +55,16 @@ void Satellite::calcEphimeris()
 		for (auto& nav : this->_NavigationData)
 		{
 			auto eph = std::make_unique<GalileoEphemeris>();
+			
+			auto duration_since_epoch = nav.get()->EpochTime().time_since_epoch();
+			double utc = std::chrono::duration<double>(duration_since_epoch).count();
+						
 			eph->CalcEphemeris(*nav.get());
-			this->_Ephemeris.push_back(std::move(eph));			
-		}
-				
-		/*this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
-				
-		for (auto ephemeris : this->_Ephemeris.Position_E())
-		{
-			std::cout << std::fixed << std::setprecision(10) << "E" << this->SvNumber() << "," << ephemeris.x() << "," << ephemeris.y() << "," << ephemeris.z() << std::endl;
-		}*/
+			
+			std::cout << std::fixed << std::setprecision(10) << "E" << this->SvNumber() << "," << utc << "," << eph->Position_E().x() << "," << eph->Position_E().y() << "," << eph->Position_E().z() << std::endl;
 
+			this->_Ephemeris.push_back(std::move(eph));
+		}
 		break;
 	default:
 		break;

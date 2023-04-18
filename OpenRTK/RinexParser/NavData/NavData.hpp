@@ -22,8 +22,8 @@ private:
 
 public:
 	// getters
-	virtual std::chrono::system_clock::time_point const& EpochTime() const { return this->_NavEpoch.EpochTime(); }
-
+	std::chrono::system_clock::time_point const& EpochTime() const { return this->_NavEpoch.EpochTime(); }
+	
 	// functions
 	virtual void AddClockErrors(double data0, double data1, double data2) = 0;
 	void AddOrbit(ENavOrbitNumber orbitNumber, double data0, double data1, double data2, double data3);

@@ -82,20 +82,29 @@ void GalileoNavData::AddOrbit_7(double data0, double data1, double data2, double
 
 double GalileoNavData::getGST()
 {
-	// Convert TOC to seconds since epoch
-	std::time_t toc_time_t = std::chrono::system_clock::to_time_t( this->EpochTime());
-	double toc_seconds = std::difftime(toc_time_t, 0);
+	// GAL week = GST week + 1024 + n * 4096
+	// t.time+=(time_t)86400*7*week+(int)sec;
+	// t.sec = sec - (int)sec;
 
-	// Convert TOE to seconds of GPS week
-	double toe_gps = this->_Toe__s - std::floor(this->_Toe__s / 604800) * 604800;
+	double week = this->_GalWeek + 1024 + 0 * 4096; // n:=GAL time rollovers (0)
+	double sec = 86400 * 7 * week + this->_Toe__s;
 
-	// Calculate t_GPS
-	double t_gps = toc_seconds - toe_gps;
-	if (t_gps < -302400) t_gps += 604800;
-	else if (t_gps > 302400) t_gps -= 604800;
+	return sec;
 
-	// Calculate GST
-	double gst = t_gps + 14.0; // Difference between GPS and Galileo Time is 14s
+	//// Convert TOC to seconds since epoch
+	//std::time_t toc_time_t = std::chrono::system_clock::to_time_t( this->EpochTime());
+	//double toc_seconds = std::difftime(toc_time_t, 0);
+	
+	//// Convert TOE to seconds of GPS week
+	//double toe_gps = this->_Toe__s - std::floor(this->_Toe__s / 604800) * 604800;
 
-	return gst;
+	//// Calculate t_GPS
+	//double t_gps = toc_seconds - toe_gps;
+	//if (t_gps < -302400) t_gps += 604800;
+	//else if (t_gps > 302400) t_gps -= 604800;
+
+	//// Calculate GST
+	//double gst = t_gps + 14.0; // Difference between GPS and Galileo Time is 14s
+
+	//return gst;
 }

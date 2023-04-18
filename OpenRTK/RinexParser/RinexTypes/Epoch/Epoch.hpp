@@ -13,7 +13,7 @@ class Epoch
         std::chrono::system_clock::time_point const& EpochTime() const { return this->_EpochTime; }
 
         // functions
-        double ConvertEpochTimeToUTC();
+        virtual double ConvertEpochTimeToUTC();
 
         // ctor & Dtor                
         Epoch();
