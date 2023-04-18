@@ -52,12 +52,11 @@ void Satellite::calcEphimeris()
 	switch (this->_SvSystem)
 	{
 	case SvSystem::GALILEO:
-		//for (auto& nav : this->_NavigationData)
+		for (auto& nav : this->_NavigationData)
 		{
-			//auto eph = std::make_unique<GalileoEphemeris>();
-			//eph->CalcEphemeris(*nav.get());
-			//this->_Ephemeris.push_back(std::move(eph));
-			this->_Ephemeris.emplace_back(std::make_unique<GalileoEphemeris>());
+			auto eph = std::make_unique<GalileoEphemeris>();
+			eph->CalcEphemeris(*nav.get());
+			this->_Ephemeris.push_back(std::move(eph));			
 		}
 				
 		/*this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
