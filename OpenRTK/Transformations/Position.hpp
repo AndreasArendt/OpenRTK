@@ -13,7 +13,7 @@ public:
 	double const& z() const { return _z__m; }
 
 	// ctor & dtor
-	Position() {};
+	Position() {}
 	Position(double x, double y, double z) : _x__m(x), _y__m(y), _z__m(z) {}
 	~Position() {}
 };

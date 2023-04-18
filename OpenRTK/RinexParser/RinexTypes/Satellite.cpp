@@ -23,16 +23,23 @@ Satellite::Satellite(const Satellite& other) :
 	_SvSystem(other._SvSystem),
 	_SvNumber(other._SvNumber)
 {
-
 	// Create new unique pointers and copy the underlying objects
-	for (const auto& ptr : other._NavigationData) {
-		this->_NavigationData.push_back(ptr->clone());
+	for (const auto& ptr : other._NavigationData) 
+	{
+		this->_NavigationData.push_back(ptr->clone());		
 	}
+
+	for (const auto& ptr : other._Ephemeris) 
+	{
+		this->_Ephemeris.push_back(ptr->clone());
+	}
+	
 }
 
 Satellite::~Satellite()
 {
 	this->_NavigationData.clear();
+	this->_Ephemeris.clear();
 }
 
 void Satellite::addNavData(std::unique_ptr<NavData> navdata)
@@ -45,13 +52,14 @@ void Satellite::calcEphimeris()
 	switch (this->_SvSystem)
 	{
 	case SvSystem::GALILEO:
-		for (auto& nav : this->_NavigationData)
+		//for (auto& nav : this->_NavigationData)
 		{
-			auto eph = GalileoEphemeris();
-			eph.CalcEphemeris((*nav.get()));
-			this->_Ephemeris.emplace_back(eph);
+			//auto eph = std::make_unique<GalileoEphemeris>();
+			//eph->CalcEphemeris(*nav.get());
+			//this->_Ephemeris.push_back(std::move(eph));
+			this->_Ephemeris.emplace_back(std::make_unique<GalileoEphemeris>());
 		}
-
+				
 		/*this->_Ephemeris.CalcGalileoEphimeris( this->_NavigationData);
 				
 		for (auto ephemeris : this->_Ephemeris.Position_E())
@@ -71,12 +79,18 @@ Satellite& Satellite::operator=(Satellite& other) noexcept
 	{
 		this->_SvSystem = other._SvSystem;
 		this->_SvNumber = other._SvNumber;
-		this->_Ephemeris = other._Ephemeris;
+		
 		// Copy the vector of NavigationData
 		this->_NavigationData.clear(); // Clear current vector contents
 		for (const auto& navData : other._NavigationData)
 		{
 			this->_NavigationData.push_back(navData->clone());
+		}
+
+		this->_Ephemeris.clear(); // Clear current vector contents
+		for (const auto& eph : other._Ephemeris)
+		{
+			this->_Ephemeris.push_back(eph->clone());
 		}
 	}
 	return *this;

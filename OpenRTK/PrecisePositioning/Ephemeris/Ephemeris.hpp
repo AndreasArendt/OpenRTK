@@ -17,6 +17,18 @@ public:
 	ECEF_Position const& Position_E() const { return this->_Position_E; }
 
 	// functions	
-	virtual void CalcEphemeris(NavData& navData) = 0;			
+	virtual void CalcEphemeris(NavData& navData) = 0;
+	virtual std::unique_ptr<Ephemeris> clone() const = 0;
+
+	// cotr & dtor
+	Ephemeris() = default;	
+	virtual ~Ephemeris() = default;
+
+	// operator overloading
+	Ephemeris& operator=(Ephemeris& rhs)
+	{
+		this->_Position_E = rhs.Position_E();
+		return *this;
+	}
 };
 

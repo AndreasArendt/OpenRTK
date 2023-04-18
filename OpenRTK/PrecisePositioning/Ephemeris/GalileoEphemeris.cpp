@@ -4,6 +4,14 @@
 #include <cmath>
 #include <chrono>
 
+GalileoEphemeris::GalileoEphemeris() : Ephemeris() 
+{
+}
+
+GalileoEphemeris::~GalileoEphemeris()
+{
+}
+
 void GalileoEphemeris::CalcEphemeris(NavData& navData)
 {
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
@@ -77,4 +85,9 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	double z = y_prime * sin(i);
 
 	this->_Position_E = ECEF_Position(x, y, z);
+}
+
+std::unique_ptr<Ephemeris> GalileoEphemeris::clone() const
+{
+	return std::make_unique<GalileoEphemeris>(*this);
 }
