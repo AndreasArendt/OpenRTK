@@ -5,6 +5,8 @@
 #include <cmath>
 #include <chrono>
 
+#include <iostream>
+
 GalileoEphemeris::GalileoEphemeris() : Ephemeris() 
 {
 }
@@ -103,6 +105,8 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 
 	// Corrected inclination
 	double i = i0__semiCirclesDs + delta_i + i_dot__semiCirclesDs * t_k;
+
+	std::cout << i << ",";
 
 	// Position in orbital plane
 	double x_prime = r * cos(u);
