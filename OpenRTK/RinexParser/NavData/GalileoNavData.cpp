@@ -44,7 +44,7 @@ void GalileoNavData::AddOrbit_3(double data0, double data1, double data2, double
 {
 	_Toe__s = data0;
 	_Cic__rad = data1;
-	_Omega0__rad = data2;
+	_Omega0__rad = data2; //OMEGA_0
 	_Cis__rad = data3;
 }
 
@@ -52,8 +52,8 @@ void GalileoNavData::AddOrbit_4(double data0, double data1, double data2, double
 {
 	_i0__rad = data0;
 	_Crc__m = data1;
-	_Omega__rad = data2;
-	_Omega_dot__radDs = data3;
+	_Omega__rad = data2; //omega
+	_Omega_dot__radDs = data3; //OMEGA_DOT
 }
 
 void GalileoNavData::AddOrbit_5(double data0, double data1, double data2, double data3)
@@ -83,8 +83,8 @@ void GalileoNavData::AddOrbit_7(double data0, double data1, double data2, double
 double GalileoNavData::getGST()
 {	
 	double total_seconds = (this->_GalWeek * 604800) + this->_Toe__s;
-	double offset_seconds = 619315200;
-	double GST__s = total_seconds - offset_seconds;
-
+	double offset_GPSTIME_seconds = 619315200; // 18 leap seconds not included (for UTC conversion!)
+	double GST__s = total_seconds - offset_GPSTIME_seconds;
+		
 	return GST__s;
 }

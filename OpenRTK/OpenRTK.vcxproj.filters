@@ -167,6 +167,9 @@
     <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Transformations\Constants.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

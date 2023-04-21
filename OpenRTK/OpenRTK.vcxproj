@@ -169,6 +169,7 @@
     <ClInclude Include="RinexParser\RinexTypes\Satellite.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\TimeDifferenceType.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\TimeSystemCorrection.hpp" />
+    <ClInclude Include="Transformations\Constants.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
     <ClInclude Include="RinexParser\Observations\DopplerObservation.hpp" />
     <ClInclude Include="RinexParser\Observations\CodeObservation.hpp" />
