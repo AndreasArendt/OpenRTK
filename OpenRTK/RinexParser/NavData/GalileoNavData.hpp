@@ -110,6 +110,7 @@ public:
 	// functions
 	void AddClockErrors(double data0, double data1, double data2);
 	double getGST();
+	double getReceiverTime();
 
 	std::unique_ptr<NavData> clone() const override;
 

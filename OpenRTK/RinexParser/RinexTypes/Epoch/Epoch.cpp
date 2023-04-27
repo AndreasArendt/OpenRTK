@@ -22,6 +22,13 @@ Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
 
     // Create a time_point object from the time_t value
     this->_EpochTime = std::chrono::system_clock::from_time_t(timeSinceEpoch);
+
+    this->_year = year;
+    this->_month = month;
+    this->_day = day;
+    this->_hour = hour;
+    this->_minute = minute;
+    this->_second = second;
 }
 
 /**

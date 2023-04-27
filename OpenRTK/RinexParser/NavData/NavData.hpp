@@ -17,7 +17,7 @@ protected:
 	virtual void AddOrbit_6(double data0, double data1, double data2, double data3) = 0;
 	virtual void AddOrbit_7(double data0, double data1, double data2, double data3) = 0;
 
-private:
+protected:
 	NavEpoch _NavEpoch;
 
 public:
