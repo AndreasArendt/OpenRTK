@@ -19,9 +19,8 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 {
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
 	auto trans = Transformation();
-
-	double tt = nav.getGST();
-	double t = nav.getReceiverTime();
+		
+	double t = nav.getReceiverTime(); // TODO: correction by signal transmission duration missing!
 	
 	// 1 semi circle = pi rad
 	// Expected Parameters:
@@ -60,9 +59,6 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 
 	//Time from ephermeris reference poch
 	double t_k = t - nav.Toe__s();
-
-	if (t_k > 0 || t_k < 0)
-		int x = 1;
 
 	if (t_k > 302400)
 	{
