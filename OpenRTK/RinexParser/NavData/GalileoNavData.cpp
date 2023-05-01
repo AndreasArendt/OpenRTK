@@ -1,10 +1,7 @@
 #include "GalileoNavData.hpp"
 
-#include <cmath>
-
 GalileoNavData::GalileoNavData(int year, int month, int day, int hour, int minute, double second) : NavData(year, month, day, hour, minute, second)
 {
-
 }
 
 GalileoNavData::~GalileoNavData()
@@ -105,6 +102,7 @@ int get_yday(int mon, int day, int year)
 	return days[leap][mon] + day;
 }
 
+// TOC
 double GalileoNavData::getReceiverTime()
 {
 	int dayOfYear = get_yday(this->_NavEpoch.Month(), this->_NavEpoch.Day(), this->_NavEpoch.Year());

@@ -2,8 +2,6 @@
 
 #include "NavData.hpp"
 
-#include <memory>
-
 class GalileoNavData : virtual public NavData
 {
 private:
@@ -39,7 +37,7 @@ private:
 	// Orbit 5
 	double _Idot__radDs = 0.0;
 	double _DataSources = 0.0;
-	double _GalWeek = 0.0;
+	double _GalWeek = 0.0;			
 	double _Spare0 = 0.0;
 
 	// Orbit 6
@@ -106,15 +104,15 @@ public:
 
 	// Orbit 7
 	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; }
-	
+		
 	// functions
 	void AddClockErrors(double data0, double data1, double data2);
 	double getGST();
 	double getReceiverTime();
+	double getTOE();
 
 	std::unique_ptr<NavData> clone() const override;
 
 	GalileoNavData(int year, int month, int day, int hour, int minute, double second);
 	~GalileoNavData();
 };
-

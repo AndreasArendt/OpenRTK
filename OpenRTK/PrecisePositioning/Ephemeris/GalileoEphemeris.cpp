@@ -20,29 +20,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
 	auto trans = Transformation();
 		
-	double t = nav.getReceiverTime(); // TODO: correction by signal transmission duration missing!
-	
 	// 1 semi circle = pi rad
-	// Expected Parameters:
-	// M_0 [semi-circles]
-	// delta n [semi-circles/s]
-	// e [unitless]
-	// sqrt(A) [m]
-	// OMEGA_0 [semi-circles]
-	// i_0 [semi-circles]
-	// omega [semi-circles]
-	// 
-	// 
-	// OMEGA_dot [semi-circles/s]
-	// i_dot [semi-circles/s]
-	// C_uc [rad]
-	// C_us [rad]
-	// C_rc [m]
-	// C_rs [m]
-	// C_ic [rad]
-	// C_is [rad]
-	// t_oe [s]
-
 	double M0__semiCircles			= nav.M0__rad()			 / Constants::pi;
 	double delta_n__semiCirclesDs	= nav.DeltaN__radDs()	 / Constants::pi;
 	double OMEGA_0__cemiCircles		= nav.Omega0__rad()		 / Constants::pi;
@@ -58,6 +36,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	double n_0 = sqrt(trans.GravitationalConstant__m3Ds2 / pow(A, 3));
 
 	//Time from ephermeris reference poch
+	double t = nav.getReceiverTime(); // t := TOC TODO: correction by signal transmission duration missing!	
 	double t_k = t - nav.Toe__s();
 
 	if (t_k > 302400)
@@ -69,6 +48,8 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 		t_k += 604800;
 	}
 
+	double delta_t = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t_k + nav.SV_ClockDriftRate__sDs2() * t_k * t_k;
+
 	// Corrected mean motion
 	double n = n_0 + delta_n__semiCirclesDs;
 
@@ -78,7 +59,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	double E = M; // initial guess
 	double dE = 1;
 	int iters = 0;	
-	while ((std::abs(dE) > 1e-12) && (iters < 100))
+	while ((std::abs(dE) > 1e-13) && (iters < 100))
 	{
 		dE = (E - nav.Eccentricity() * std::sin(E) - M) / (1 - nav.Eccentricity() * std::cos(E));
 		E -= dE;
@@ -114,8 +95,6 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 
 	// Corrected inclination
 	double i = i0__semiCirclesDs + delta_i + i_dot__semiCirclesDs * t_k;
-
-	std::cout << i << ",";
 
 	// Position in orbital plane
 	double x_prime = r * cos(u);
