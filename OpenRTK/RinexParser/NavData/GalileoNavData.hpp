@@ -80,7 +80,7 @@ public:
 	double const& SqrtA___sqrtm() const { return _SqrtA___sqrtm; }
 
 	// Orbit 3
-	double const& Toe__s() const { return _Toe__s; }
+	double const& Toe__s() const { return _Toe__s; }		//TOE
 	double const& Cic__rad() const { return _Cic__rad; }
 	double const& Omega0__rad() const { return _Omega0__rad; }
 	double const& Cis__rad() const { return _Cis__rad; }
@@ -103,14 +103,13 @@ public:
 	double const& BDG_E5b_E1() const { return _BDG_E5b_E1; }
 
 	// Orbit 7
-	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; }
+	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; } //TOT
 		
 	// functions
 	void AddClockErrors(double data0, double data1, double data2);
 	double getGST();
-	double getReceiverTime();
-	double getTOE();
-
+	double getReceiverTime();	//TOC
+	
 	std::unique_ptr<NavData> clone() const override;
 
 	GalileoNavData(int year, int month, int day, int hour, int minute, double second);

@@ -47,14 +47,12 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	{
 		t_k += 604800;
 	}
-
-	double delta_t = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t_k + nav.SV_ClockDriftRate__sDs2() * t_k * t_k;
-
+	
 	// Corrected mean motion
 	double n = n_0 + delta_n__semiCirclesDs;
 
 	// Mean anomaly
-	double M = M0__semiCircles * n * t_k;
+	double M = M0__semiCircles + n * t_k;
 
 	double E = M; // initial guess
 	double dE = 1;
@@ -65,6 +63,11 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 		E -= dE;
 		iters++;
 	}
+		
+	// clocl offsets
+	double delta_t_sv = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t_k + nav.SV_ClockDriftRate__sDs2() * t_k * t_k;
+	double F = -2 * sqrt(trans.GravitationalConstant__m3Ds2) / (trans.SpeedOfLight__mDs * trans.SpeedOfLight__mDs);
+	double delta_t_relativistic = F * nav.Eccentricity() * nav.SqrtA___sqrtm() * sin(E);
 
 	// true anomaly
 	double sqrt_1_e2 = sqrt(1 - nav.Eccentricity() * nav.Eccentricity());
