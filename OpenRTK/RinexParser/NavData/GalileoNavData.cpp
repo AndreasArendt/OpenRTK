@@ -105,9 +105,9 @@ int get_yday(int mon, int day, int year)
 // TOC
 double GalileoNavData::getReceiverTime()
 {
-	int dayOfYear = get_yday(this->_NavEpoch.Month(), this->_NavEpoch.Day(), this->_NavEpoch.Year());
+	int dayOfYear = get_yday(this->_Epoch.Month(), this->_Epoch.Day(), this->_Epoch.Year());
 
-	double xy = static_cast<double>(this->_NavEpoch.Year());
+	double xy = static_cast<double>(this->_Epoch.Year());
 	int id_GPS = static_cast<int>(365.25 * (xy - 1.0)) + dayOfYear - 722835;
 
 	// Day of week:
@@ -117,6 +117,6 @@ double GalileoNavData::getReceiverTime()
 	int nw = (id_GPS - idw) / 7;
 
 	// seconds in the week:
-	double t = static_cast<double>(idw) * 86400.0 + (int)this->_NavEpoch.Hour() * 3600 + (int)this->_NavEpoch.Minute() * 60 + +this->_NavEpoch.Second();
+	double t = static_cast<double>(idw) * 86400.0 + (int)this->_Epoch.Hour() * 3600 + (int)this->_Epoch.Minute() * 60 + +this->_Epoch.Second();
 	return t;		
 }

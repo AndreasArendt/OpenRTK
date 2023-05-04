@@ -1,6 +1,6 @@
 #include "NavData.hpp"
 
-NavData::NavData(int year, int month, int day, int hour, int minute, double second) : _NavEpoch(year, month, day, hour, minute, second)
+NavData::NavData(int year, int month, int day, int hour, int minute, double second) : _Epoch(year, month, day, hour, minute, second)
 {
 }
 
