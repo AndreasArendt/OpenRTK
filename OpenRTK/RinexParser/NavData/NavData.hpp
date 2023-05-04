@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ENavOrbitNumber.hpp"
-#include "../RinexTypes/Epoch/NavEpoch.hpp"
+#include "../RinexTypes/Epoch/Epoch.hpp"
 
 #include <memory>
 #include <chrono>
@@ -18,11 +18,11 @@ protected:
 	virtual void AddOrbit_7(double data0, double data1, double data2, double data3) = 0;
 
 protected:
-	NavEpoch _NavEpoch;
+	Epoch _Epoch;
 
 public:
 	// getters
-	std::chrono::system_clock::time_point const& EpochTime() const { return this->_NavEpoch.EpochTime(); }
+	std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
 	
 	// functions
 	virtual void AddClockErrors(double data0, double data1, double data2) = 0;

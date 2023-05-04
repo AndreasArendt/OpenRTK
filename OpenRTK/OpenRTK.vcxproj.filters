@@ -39,9 +39,6 @@
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexParser\RinexTypes\Epoch\ObsEpoch.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -58,6 +55,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PrecisePositioning\Ephemeris\GalileoEphemeris.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecisePositioning\PPP.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="RinexParser\ObsData\ObsData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,12 +128,6 @@
     <ClInclude Include="RinexParser\RinexTypes\TimeSystemCorrection.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexParser\RinexTypes\Epoch\ObsEpoch.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="RinexParser\RinexTypes\Epoch\NavEpoch.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="RinexParser\RinexTypes\Satellite.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -168,6 +165,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Transformations\Constants.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecisePositioning\PPP.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\ObsData\ObsData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

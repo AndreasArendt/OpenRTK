@@ -4,6 +4,8 @@
 #include "RinexParser/RinexObsParser/RinexObsParser.hpp"
 #include "RinexParser/RinexNavParser/RinexNavParser.hpp"
 
+#include "PrecisePositioning/PPP.hpp"
+
 using namespace std;
 
 int main()
@@ -19,9 +21,12 @@ int main()
 	std::unique_ptr<RinexNavParser> navParser = std::make_unique<RinexNavParser>();
 	navParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20230690000_01D_MN.nav");
 	
+	auto ppp = PPP();
+
 	for (Satellite sv : navParser->Satellites())
 	{
 		sv.calcEphimeris();
+		//ppp.CalcUserPosition(sv.Ephemeris(), sv.
 	}
 
 	return 0;
