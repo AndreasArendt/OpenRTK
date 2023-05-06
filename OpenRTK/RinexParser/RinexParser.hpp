@@ -8,11 +8,13 @@
 class RinexParser
 {
 private:	
+	std::unique_ptr<AbstractRinexParser> GetParser(std::string path);
 
 public:		
-	static std::unique_ptr<AbstractRinexParser> GetParser(std::string path);
+	void Parse(std::string path);
 
 	//ctor & dtor
+	~RinexParser() {}
 	RinexParser() {}
 };
 

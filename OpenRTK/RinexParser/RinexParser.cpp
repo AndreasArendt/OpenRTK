@@ -13,7 +13,7 @@ std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
 		
 	if (firstline.find("NAVIGATION DATA") != std::string::npos)
 	{		
-		return std::make_unique<RinexNavParser>();
+		return std::make_unique<RinexNavParser>();		
 	}
 	else if (firstline.find("OBSERVATION DATA") != std::string::npos)
 	{
@@ -24,4 +24,10 @@ std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
 		std::cout << "Unknown Filetype" << std::endl;
 		return nullptr;
 	}
+}
+
+void RinexParser::Parse(std::string path)
+{
+	auto parser = this->GetParser(path);
+	parser->Parse(path);
 }

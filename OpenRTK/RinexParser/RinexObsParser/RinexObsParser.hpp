@@ -18,7 +18,7 @@
 #include <vector>
 #include <unordered_map>
 
-class RinexObsParser : AbstractRinexParser {
+class RinexObsParser : virtual public AbstractRinexParser {
     
 private:    
     void ReadEpochHeader(std::string line);

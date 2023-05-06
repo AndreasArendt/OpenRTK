@@ -27,5 +27,5 @@ public:
 	
 	void Parse(std::string path);
 		
-	virtual ~AbstractRinexParser() = default;
+	virtual ~AbstractRinexParser() = default;		
 };

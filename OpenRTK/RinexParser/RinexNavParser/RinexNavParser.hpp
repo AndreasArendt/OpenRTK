@@ -10,7 +10,7 @@
 #include <vector>
 #include <memory>
 
-class RinexNavParser : AbstractRinexParser
+class RinexNavParser : virtual public AbstractRinexParser
 {
 private:
 	std::string _Version;
