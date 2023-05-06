@@ -25,7 +25,7 @@ public:
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
 
 	// cotr & dtor
-	Ephemeris() = default;	
+	Ephemeris() : _SatelliteClockError__s(0), _RelativisticError__s(0) {};
 	virtual ~Ephemeris() = default;
 
 	// operator overloading

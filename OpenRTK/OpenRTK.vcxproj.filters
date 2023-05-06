@@ -63,13 +63,13 @@
     <ClCompile Include="RinexParser\ObsData\ObsData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="RinexParser\AbstractRinexParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
       <Filter>Headerdateien\RinexReader</Filter>
-    </ClInclude>
-    <ClInclude Include="RinexParser\Observations\RinexObservation.hpp">
-      <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\RinexTypes\ObservationDefinition.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
@@ -171,6 +171,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\AbstractRinexParser.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

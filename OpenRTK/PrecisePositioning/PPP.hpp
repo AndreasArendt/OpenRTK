@@ -6,7 +6,7 @@ class PPP
 {
 public:
 	// public functions
-	void CalcUserPosition(CodeObservation& codeObservation, Ephemeris& ephemeris);
+	//void CalcUserPosition(CodeObservation& codeObservation, Ephemeris& ephemeris);
 
 	// ctor & dtor
 	PPP();

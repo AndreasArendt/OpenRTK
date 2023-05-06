@@ -23,7 +23,7 @@ class Epoch
         int const& Day() const { return this->_day; }
         int const& Hour() const { return this->_hour; }
         int const& Minute() const { return this->_minute; }
-        int const& Second() const { return this->_second; }
+        double const& Second() const { return this->_second; }
 
         // functions
         virtual double ConvertEpochTimeToUTC();

@@ -22,9 +22,9 @@ public:
 	char const& TimeMark() const { return this->_TimeMark; }
 		
 	// public function
-	void AddAlphaBeta(double ab0, double ab1, double ab2);
-	void AddAlphaBeta(double ab0, double ab1, double ab2, double ab3);
-	void AddTimeMark(char timemark);
+	//void AddAlphaBeta(double ab0, double ab1, double ab2);
+	//void AddAlphaBeta(double ab0, double ab1, double ab2, double ab3);
+	//void AddTimeMark(char timemark);
 
 	// ctor & dtor
 	IonosphericCorrection(IonosphericCorrectionParameter ionoCorrectionPatam, char timemark, double ab0, double ab1, double ab2, double ab3) :

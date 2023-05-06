@@ -5,6 +5,9 @@
 #include "../Observations/PhaseObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/SignalStrengthObservation.hpp"
+#include "../RinexTypes/ObservationBand.hpp"
+
+#include <map>
 
 class ObsData
 {
@@ -16,25 +19,27 @@ private:
     int _NumberSVs;
     bool _IsSpecialEvent;
 
-    std::vector<CodeObservation> _CodeObservations;
-    std::vector<PhaseObservation> _PhaseObservations;
-    std::vector<DopplerObservation> _DopplerObservations;
-    std::vector<SignalStrengthObservation> _SnrObservations;
+    std::map<ObservationBand, CodeObservation> _CodeObservations;
+    std::map<ObservationBand, PhaseObservation> _PhaseObservations;
+    std::map<ObservationBand, DopplerObservation> _DopplerObservations;
+    std::map<ObservationBand, SignalStrengthObservation> _SnrObservations;
 
 public:
     // getters        
     std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
-    std::vector<CodeObservation> const& CodeObservations() const { return this->_CodeObservations; }
-    std::vector<PhaseObservation> const& PhaseObservations() const { return this->_PhaseObservations; }
-    std::vector<DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }
-    std::vector<SignalStrengthObservation> const& SnrObservations() const { return this->_SnrObservations; }
+    std::map<ObservationBand, CodeObservation> const& CodeObservations() const { return this->_CodeObservations; }
+    std::map<ObservationBand, PhaseObservation> const& PhaseObservations() const { return this->_PhaseObservations; }
+    std::map<ObservationBand, DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }
+    std::map<ObservationBand, SignalStrengthObservation> const& SnrObservations() const { return this->_SnrObservations; }
     bool const& IsSpecialEvent() const { return _IsSpecialEvent; }
 
     // functions
-    void AddCodeObservation(CodeObservation& observation);
-    void AddPhaseObservation(PhaseObservation& observation);
-    void AddDopplerObservation(DopplerObservation& observation);
-    void AddSnrObservation(SignalStrengthObservation& observation);
+    void AddCodeObservation(ObservationBand band, double Pseudorange__m);
+    void AddPhaseObservation(ObservationBand band, double Carrierphase__Cycles);
+    void AddDopplerObservation(ObservationBand band, double Doppler__Hz);
+    void AddSnrObservation(ObservationBand band, double SNR);
+
+    ObsData() : _EpochFlag(-1), _NumberSVs(-1), _IsSpecialEvent(false) { }
 
     ObsData(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs) :
         _Epoch(year, month, day, hour, minute, second),

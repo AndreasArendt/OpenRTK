@@ -1,29 +1,18 @@
 #pragma once
 
-#include "RinexTypes/Satellite.hpp"
+#include "AbstractRinexParser.hpp"
 
 #include <string>
-#include <vector>
+#include <memory>
 
 class RinexParser
 {
-protected:
-	std::vector<Satellite> _Satellites;
+private:	
 
-private:
-
-	// private functions
-	virtual void ParseLine(std::string line) = 0;
-
-public:
-	// getters
-	std::vector<Satellite> const& Satellites() const { return this->_Satellites; }
-
-	// functions
-	virtual void ParseFile(std::string path) = 0;
+public:		
+	static std::unique_ptr<AbstractRinexParser> GetParser(std::string path);
 
 	//ctor & dtor
-	RinexParser();
-	virtual ~RinexParser() {}
+	RinexParser() {}
 };
 

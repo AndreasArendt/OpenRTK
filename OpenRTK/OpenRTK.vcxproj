@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RinexParser\AbstractRinexParser.cpp" />
     <ClCompile Include="RinexParser\ObsData\ObsData.cpp" />
     <ClCompile Include="PrecisePositioning\PPP.cpp" />
     <ClCompile Include="PrecisePositioning\Ephemeris\GalileoEphemeris.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RinexParser\AbstractRinexParser.hpp" />
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp" />
     <ClInclude Include="PrecisePositioning\PPP.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp" />
@@ -182,7 +184,6 @@
     <ClInclude Include="RinexParser\Observations\PhaseObservation.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexReaderState.hpp" />
-    <ClInclude Include="RinexParser\Observations\RinexObservation.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexObsParser.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\SvSystem.hpp" />
     <ClInclude Include="Transformations\Kepler.hpp" />

@@ -1,21 +1,21 @@
 #include "ObsData.hpp"
 
-void ObsData::AddCodeObservation(CodeObservation& observation)
+void ObsData::AddCodeObservation(ObservationBand band, double Pseudorange__m)
 {
-    this->_CodeObservations.push_back(observation);
+    this->_CodeObservations.emplace(band, Pseudorange__m);
 }
 
-void ObsData::AddPhaseObservation(PhaseObservation& observation)
+void ObsData::AddPhaseObservation(ObservationBand band, double Carrierphase__Cycles)
 {
-    this->_PhaseObservations.push_back(observation);
+    this->_PhaseObservations.emplace(band, Carrierphase__Cycles);
 }
 
-void ObsData::AddDopplerObservation(DopplerObservation& observation)
+void ObsData::AddDopplerObservation(ObservationBand band, double Doppler__Hz)
 {
-    this->_DopplerObservations.push_back(observation);
+    this->_DopplerObservations.emplace(band, Doppler__Hz);
 }
 
-void ObsData::AddSnrObservation(SignalStrengthObservation& observation)
+void ObsData::AddSnrObservation(ObservationBand band, double SNR)
 {
-    this->_SnrObservations.push_back(observation);
+    this->_SnrObservations.emplace(band, SNR);
 }

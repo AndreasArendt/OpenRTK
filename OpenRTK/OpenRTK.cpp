@@ -1,16 +1,17 @@
 // OpenRTK.cpp: Definiert den Einstiegspunkt für die Anwendung.
 //
 
-#include "RinexParser/RinexObsParser/RinexObsParser.hpp"
-#include "RinexParser/RinexNavParser/RinexNavParser.hpp"
-
+#include "RinexParser/RinexParser.hpp"
 #include "PrecisePositioning/PPP.hpp"
+
+#include <memory>
 
 using namespace std;
 
 int main()
 {
 	auto rnxParser = std::make_unique<RinexParser>();
+
 
 	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20221550000_01D_30S_MO.obs");
 	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs");

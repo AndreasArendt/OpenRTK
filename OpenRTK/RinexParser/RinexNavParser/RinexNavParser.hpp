@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../RinexParser.hpp"
+#include "../AbstractRinexParser.hpp"
 #include "../RinexTypes/IonosphericCorrection.hpp"
 #include "../RinexTypes/TimeSystemCorrection.hpp"
 #include "../RinexTypes/Satellite.hpp"
@@ -10,7 +10,7 @@
 #include <vector>
 #include <memory>
 
-class RinexNavParser : RinexParser
+class RinexNavParser : AbstractRinexParser
 {
 private:
 	std::string _Version;
@@ -23,9 +23,8 @@ private:
 
 	ENavOrbitNumber _CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;	
 	std::unique_ptr<NavData> _CurrentNavData;
-	Satellite* _CurrentSatellite = nullptr;
-
-	void ParseEoch(std::string line);
+	
+	void ParseEpoch(std::string line);	
 	void ParseLine(std::string line);
 	void ParseIonoCorrDefinition(std::string line);
 	void ParseTimeDiffDefinition(std::string line);
@@ -43,6 +42,6 @@ public:
 	~RinexNavParser();
 
 	// public function
-	void ParseFile(std::string path) override;
+	void InitParser();
 };
 

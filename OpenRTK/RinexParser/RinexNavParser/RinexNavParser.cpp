@@ -24,8 +24,7 @@ RinexNavParser::~RinexNavParser()
 {
 	this->_IonosphericCorrections.clear();
 	this->_IonosphericCorrections.clear();
-	this->_TimeSystemCorrections.clear();	
-	delete this->_CurrentSatellite;
+	this->_TimeSystemCorrections.clear();		
 }
 
 void RinexNavParser::ParseIonoCorrDefinition(std::string line)
@@ -102,7 +101,7 @@ void RinexNavParser::ParseOrbitData(std::string line)
 	this->_CurrentNavData->AddOrbit(this->_CurrentOrbitNumber, data0, data1, data2, data3);
 }
 
-void RinexNavParser::ParseEoch(std::string line)
+void RinexNavParser::ParseEpoch(std::string line)
 {
 	switch (_NavEpochParsingState)
 	{
@@ -131,22 +130,10 @@ void RinexNavParser::ParseEoch(std::string line)
 		double clockDrift = parseDouble(line.substr(42, 19));
 		double clockDriftRate = parseDouble(line.substr(61, 19));
 				
-		auto it = std::find_if(this->_Satellites.begin(), this->_Satellites.end(), [&](Satellite& sv)
-			{
-				return satellite == sv;
-			});
+		// GET CURRENT SATTELITE
+		this->FindCurrentSatellite(satellite);
 
-		if (it == this->_Satellites.end())
-		{
-			this->_Satellites.push_back(satellite);
-			this->_CurrentSatellite = &this->_Satellites.back();
-		}
-		else
-		{
-			this->_CurrentSatellite = &(*it);
-		}
-
-		switch (this->_CurrentSatellite->SVSystem())
+		switch (this->CurrentSatellite()->SVSystem())
 		{
 		case SvSystem::GPS:
 		{
@@ -186,7 +173,7 @@ void RinexNavParser::ParseEoch(std::string line)
 
 		if (this->_CurrentOrbitNumber == ENavOrbitNumber::ORBIT_UNKNOWN)
 		{
-			this->_CurrentSatellite->addNavData(std::move(this->_CurrentNavData));
+			this->CurrentSatellite()->addNavData(std::move(this->_CurrentNavData));
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 		}
 		break;
@@ -223,12 +210,11 @@ void RinexNavParser::ParseLine(std::string line)
 	}
 	else if (_RinexHeaderParsed)
 	{
-		this->ParseEoch(line);
+		this->ParseEpoch(line);
 	}
 }
 
-void RinexNavParser::ParseFile(std::string path)
+void RinexNavParser::InitParser()
 {
-	this->_RinexHeaderParsed = false;
-	RinexParser::ParseFile(path);
+	this->_RinexHeaderParsed = false;	
 }

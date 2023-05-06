@@ -117,6 +117,6 @@ double GalileoNavData::getReceiverTime()
 	int nw = (id_GPS - idw) / 7;
 
 	// seconds in the week:
-	double t = static_cast<double>(idw) * 86400.0 + (int)this->_Epoch.Hour() * 3600 + (int)this->_Epoch.Minute() * 60 + +this->_Epoch.Second();
+	double t = static_cast<double>(idw) * 86400.0 + (int)this->_Epoch.Hour() * 3600 + (int)this->_Epoch.Minute() * 60 + this->_Epoch.Second();
 	return t;		
 }

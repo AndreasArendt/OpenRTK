@@ -2,7 +2,12 @@
 
 Epoch::Epoch()
 {
-
+    this->_year = 0;
+    this->_month = 0;
+    this->_day = 0;
+    this->_hour = 0;
+    this->_minute = 0;
+    this->_second = 0.0;
 }
 
 Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)    
