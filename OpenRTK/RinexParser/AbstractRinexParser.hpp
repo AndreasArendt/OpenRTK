@@ -13,7 +13,7 @@ protected:
 	// getters
 	Satellite* const& CurrentSatellite() const { return this->_CurrentSatellite; }
 		
-	void FindCurrentSatellite(Satellite& satellite);
+	void FindCurrentSatellite(Satellite satellite);
 
 private:
 	Satellite* _CurrentSatellite = nullptr;

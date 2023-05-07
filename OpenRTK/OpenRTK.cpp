@@ -11,8 +11,12 @@ using namespace std;
 int main()
 {
 	auto rnxParser = std::make_unique<RinexParser>();
-	rnxParser->Parse("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs");
+		
+	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs";
 
+	auto parser = rnxParser->GetParser(obsPath);
+	parser->Parse(obsPath);
+	
 	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20221550000_01D_30S_MO.obs");
 	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs");
 

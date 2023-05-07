@@ -29,6 +29,11 @@ Satellite::Satellite(const Satellite& other) :
 		this->_NavigationData.push_back(ptr->clone());		
 	}
 
+	for (const auto& ptr : other._ObservationData)
+	{
+		this->_ObservationData.push_back(ptr);
+	}
+
 	for (const auto& ptr : other._Ephemeris) 
 	{
 		this->_Ephemeris.push_back(ptr->clone());
@@ -37,8 +42,9 @@ Satellite::Satellite(const Satellite& other) :
 }
 
 Satellite::~Satellite()
-{
+{	
 	this->_NavigationData.clear();
+	this->_ObservationData.clear();
 	this->_Ephemeris.clear();
 }
 
@@ -47,7 +53,7 @@ void Satellite::addNavData(std::unique_ptr<NavData> navdata)
 	this->_NavigationData.push_back(std::move(navdata));
 }
 
-void Satellite::addObsData(ObsData& obsdata)
+void Satellite::addObsData(ObsData obsdata)
 {
 	this->_ObservationData.push_back(obsdata);
 }

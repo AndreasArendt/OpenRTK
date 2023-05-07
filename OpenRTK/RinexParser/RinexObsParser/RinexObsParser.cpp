@@ -127,6 +127,7 @@ void RinexObsParser::ReadEpochObservation(std::string line)
         StartIndex += 16;
     }       
 
+    // TODO: only add obsData if at least one observation in rinex file!
     this->CurrentSatellite()->addObsData(this->_CurrentObsData);
 }
 

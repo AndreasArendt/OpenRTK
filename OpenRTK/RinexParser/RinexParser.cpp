@@ -6,7 +6,7 @@
 #include <iostream>
 
 std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
-{
+{	
 	std::ifstream infile(path);
 	std::string firstline;
 	std::getline(infile, firstline);
@@ -24,10 +24,4 @@ std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
 		std::cout << "Unknown Filetype" << std::endl;
 		return nullptr;
 	}
-}
-
-void RinexParser::Parse(std::string path)
-{
-	auto parser = this->GetParser(path);
-	parser->Parse(path);
 }

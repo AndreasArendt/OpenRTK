@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-void AbstractRinexParser::FindCurrentSatellite(Satellite& satellite)
+void AbstractRinexParser::FindCurrentSatellite(Satellite satellite)
 {
 	auto it = std::find_if(this->_Satellites.begin(), this->_Satellites.end(), [&](Satellite& sv)
 		{
@@ -11,7 +11,7 @@ void AbstractRinexParser::FindCurrentSatellite(Satellite& satellite)
 		});
 
 	if (it == this->_Satellites.end())
-	{
+	{		
 		this->_Satellites.push_back(satellite);
 		this->_CurrentSatellite = &this->_Satellites.back();
 	}

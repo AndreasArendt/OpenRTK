@@ -12,7 +12,11 @@
 
 class Satellite
 {
-private:
+    //
+    // remember to implement clone function when adding new data here!
+    //
+
+private:    
     SvSystem _SvSystem;
     int _SvNumber;
     std::vector<std::unique_ptr<NavData>> _NavigationData;    
@@ -29,7 +33,7 @@ public:
 
     // public functions    
     void addNavData(std::unique_ptr<NavData> navdata);
-    void addObsData(ObsData& obsdata);
+    void addObsData(ObsData obsdata);
     void calcEphimeris();
 
     // ctor & dtor    
