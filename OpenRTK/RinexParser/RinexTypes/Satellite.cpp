@@ -47,9 +47,9 @@ void Satellite::addNavData(std::unique_ptr<NavData> navdata)
 	this->_NavigationData.push_back(std::move(navdata));
 }
 
-void Satellite::addObsData(std::unique_ptr<ObsData> obsdata)
+void Satellite::addObsData(ObsData& obsdata)
 {
-	this->_ObservationData.push_back(std::move(obsdata));
+	this->_ObservationData.push_back(obsdata);
 }
 
 void Satellite::calcEphimeris()

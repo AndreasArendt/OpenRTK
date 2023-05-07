@@ -15,8 +15,7 @@ protected:
 	Epoch _Epoch;
 
 private:
-    int _EpochFlag;
-    int _NumberSVs;
+    int _EpochFlag;    
     bool _IsSpecialEvent;
 
     std::map<ObservationBand, CodeObservation> _CodeObservations;
@@ -39,13 +38,13 @@ public:
     void AddDopplerObservation(ObservationBand band, double Doppler__Hz);
     void AddSnrObservation(ObservationBand band, double SNR);
 
-    ObsData() : _EpochFlag(-1), _NumberSVs(-1), _IsSpecialEvent(false) { }
+    ObsData() : _EpochFlag(-1), _IsSpecialEvent(false) { }
 
-    ObsData(int year, int month, int day, int hour, int minute, double second, int epochFlag, int numberSVs) :
-        _Epoch(year, month, day, hour, minute, second),
-        _EpochFlag(epochFlag),
-        _NumberSVs(numberSVs),
+    ObsData(Epoch epoch, int epochFlag) :
+        _Epoch(epoch),
+        _EpochFlag(epochFlag),        
         _IsSpecialEvent(epochFlag >= 2) { }
+    
     ~ObsData() { }
 };
 
