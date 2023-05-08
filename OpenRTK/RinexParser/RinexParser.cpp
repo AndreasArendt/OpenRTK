@@ -25,3 +25,9 @@ std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
 		return nullptr;
 	}
 }
+
+void RinexParser::Parse(std::string path)
+{
+	this->_RinexParser = this->GetParser(path);
+	this->_RinexParser->Parse(path);
+}

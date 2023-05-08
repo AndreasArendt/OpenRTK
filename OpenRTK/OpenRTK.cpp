@@ -10,13 +10,14 @@ using namespace std;
 
 int main()
 {
-	auto rnxParser = std::make_unique<RinexParser>();
+	auto rnxParser = RinexParser();
 		
 	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs";
+	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20230690000_01D_MN.nav";
 
-	auto parser = rnxParser->GetParser(obsPath);
-	parser->Parse(obsPath);
-	
+	rnxParser.Parse(obsPath);
+	rnxParser.Parse(navPath);
+
 	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20221550000_01D_30S_MO.obs");
 	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs");
 
