@@ -89,10 +89,22 @@ void RinexNavParser::ParseOrbitData(std::string line)
 		break;
 	}
 
-	double data0 = parseDouble(line.substr(4, 19));
-	double data1 = parseDouble(line.substr(23, 19));
-	double data2 = parseDouble(line.substr(42, 19));
-	double data3 = parseDouble(line.substr(61, 19));
+	double data0 = 0;
+	double data1 = 0;
+	double data2 = 0;
+	double data3 = 0;
+
+	if (line.length() >= 4+19)
+		data0 = parseDouble(line.substr(4, 19));
+
+	if (line.length() >= 23+19)
+		data1 = parseDouble(line.substr(23, 19));
+	
+	if (line.length() >= 42+19)
+		data2 = parseDouble(line.substr(42, 19));
+	
+	if (line.length() >= 61+19)
+		data3 = parseDouble(line.substr(61, 19));
 
 	this->_CurrentNavData->AddOrbit(this->_CurrentOrbitNumber, data0, data1, data2, data3);
 }
