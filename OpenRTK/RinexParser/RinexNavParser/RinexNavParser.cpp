@@ -140,7 +140,7 @@ void RinexNavParser::ParseEpoch(std::string line)
 		int day = parseInt(line.substr(12, 2));
 		int hour = parseInt(line.substr(15, 2));
 		int minute = parseInt(line.substr(18, 2));
-		double second = parseInt(line.substr(21, 2));
+		double second = parseDouble(line.substr(21, 2));
 		
 		// parse SV clock bias (seconds), SV clock drift (sec/sec) and SV clock drift rate (sec/sec2)
 		double clockBias = parseDouble(line.substr(23, 19));
