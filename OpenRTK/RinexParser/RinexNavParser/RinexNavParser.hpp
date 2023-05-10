@@ -37,8 +37,8 @@ public:
 	std::vector<IonosphericCorrection> const& IonosphericCorrections() const { return this->_IonosphericCorrections; }
 	std::vector<TimeSystemCorrection> const& TimeSystemCorrections() const { return this->_TimeSystemCorrections; }
 	
-	// ctor & dtor
-	RinexNavParser();
+	// ctor & dtor	
+	RinexNavParser(std::vector<Satellite>& satellites) : AbstractRinexParser(satellites) {};
 	~RinexNavParser();
 
 	// public function

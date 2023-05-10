@@ -16,10 +16,6 @@
 #define RINEX_TIME_SYSTEM_DIFF_DEFINITION "TIME SYSTEM CORR"
 #define RINEX_END_OF_HEADER_DEFINITION    "END OF HEADER"
 
-RinexNavParser::RinexNavParser()
-{
-}
-
 RinexNavParser::~RinexNavParser()
 {
 	this->_IonosphericCorrections.clear();

@@ -18,9 +18,6 @@ int main()
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
 
-	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20221550000_01D_30S_MO.obs");
-	//obsParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs");
-
 	//auto firstEp = obsParser->Epochs().front();
 	//double utc = firstEp.ConvertEpochTimeToUTC();
 

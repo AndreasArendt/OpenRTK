@@ -24,10 +24,6 @@
 #define RINEX_ANTENNA_DELTA_DEFINITION   "ANTENNA: DELTA H/E/N"
 #define RINEX_OBS_TYPE_DEFINITION        "SYS / # / OBS TYPES"
 
-RinexObsParser::RinexObsParser() : _CurrentEpochFlag(-1)
-{    
-}
-
 RinexObsParser::~RinexObsParser()
 {   
     this->_ObservationDefinitions.clear();        
