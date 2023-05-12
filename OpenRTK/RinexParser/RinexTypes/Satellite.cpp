@@ -2,9 +2,6 @@
 #include "../../Utils/astring.hpp"
 #include "../../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
 
-#include <iostream>
-#include <iomanip>
-
 Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)
 {
 }
@@ -58,7 +55,7 @@ void Satellite::addObsData(ObsData obsdata)
 	this->_ObservationData.push_back(obsdata);
 }
 
-void Satellite::calcEphimeris()
+void Satellite::calcEphemeris()
 {
 	switch (this->_SvSystem)
 	{
@@ -70,10 +67,7 @@ void Satellite::calcEphimeris()
 			auto duration_since_epoch = nav.get()->EpochTime().time_since_epoch();
 			double utc = std::chrono::duration<double>(duration_since_epoch).count();
 						
-			eph->CalcEphemeris(*nav.get());
-			
-			std::cout << std::fixed << std::setprecision(10) << "E" << this->SvNumber() << "," << utc << "," << eph->Position_E().x() << "," << eph->Position_E().y() << "," << eph->Position_E().z() << std::endl;
-
+			eph->CalcEphemeris(*nav.get());		
 			this->_Ephemeris.push_back(std::move(eph));
 		}
 		break;

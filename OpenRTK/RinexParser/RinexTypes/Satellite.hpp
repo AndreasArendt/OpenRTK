@@ -34,7 +34,7 @@ public:
     // public functions    
     void addNavData(std::unique_ptr<NavData> navdata);
     void addObsData(ObsData obsdata);
-    void calcEphimeris();
+    void calcEphemeris();
 
     // ctor & dtor    
     Satellite();

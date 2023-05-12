@@ -3,7 +3,9 @@
 
 #include "RinexParser/RinexParser.hpp"
 #include "PrecisePositioning/PPP.hpp"
+#include "Export/CsvExport.hpp"
 
+#include <vector>
 #include <memory>
 
 using namespace std;
@@ -11,26 +13,29 @@ using namespace std;
 int main()
 {
 	auto rnxParser = RinexParser();
-		
-	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/OBE400DEU_R_20230690000_01D_30S_MO.obs";
-	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20230690000_01D_MN.nav";
 
+	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/AUBG00DEU_R_20231231000_01H_30S_MO.obs";
+	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20231260000_01D_MN.nav";	
+	
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
 
-	//auto firstEp = obsParser->Epochs().front();
-	//double utc = firstEp.ConvertEpochTimeToUTC();
+	auto ppp = PPP();
 
-	//std::unique_ptr<RinexNavParser> navParser = std::make_unique<RinexNavParser>();
-	//navParser->ParseFile("D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20230690000_01D_MN.nav");
-	//
-	//auto ppp = PPP();
+	std::vector<Satellite> GalileoSatellites;
+	std::copy_if(rnxParser.Satellites().begin(), rnxParser.Satellites().end(), std::back_inserter(GalileoSatellites), [](const auto& sv)
+		{
+			return sv.SVSystem() == SvSystem::GALILEO;
+		});
 
-	//for (Satellite sv : navParser->Satellites())
-	//{
-	//	sv.calcEphimeris();
-	//	//ppp.CalcUserPosition(sv.Ephemeris(), sv.
-	//}
+	for (Satellite& sv : GalileoSatellites)
+	{
+		sv.calcEphemeris();
+
+		//ppp.CalcUserPosition(sv.Ephemeris(), sv.
+	}
+
+	CsvExport().ExportEphemeris(GalileoSatellites, "D:/Projekte/OpenRTK/Analysis/Ephemeris_exp.csv");
 
 	return 0;
 }

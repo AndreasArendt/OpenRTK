@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Export\CsvExport.cpp" />
     <ClCompile Include="RinexParser\AbstractRinexParser.cpp" />
     <ClCompile Include="RinexParser\ObsData\ObsData.cpp" />
     <ClCompile Include="PrecisePositioning\PPP.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Export\CsvExport.hpp" />
     <ClInclude Include="RinexParser\AbstractRinexParser.hpp" />
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp" />
     <ClInclude Include="PrecisePositioning\PPP.hpp" />

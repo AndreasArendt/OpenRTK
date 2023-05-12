@@ -17,6 +17,9 @@ GalileoEphemeris::~GalileoEphemeris()
 
 void GalileoEphemeris::CalcEphemeris(NavData& navData)
 {
+	auto duration_since_epoch = navData.EpochTime().time_since_epoch();	
+	this->_Utc__s = std::chrono::duration<double>(duration_since_epoch).count();
+
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
 	auto trans = Transformation();
 		
