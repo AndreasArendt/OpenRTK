@@ -48,7 +48,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 			{
 				if (obs.PhaseObservations().contains(band))
 				{
-					double code_1 = obs.PhaseObservations().at(band).Pseudorange__m();
+					double code_1 = obs.PhaseObservations().at(band).Carrierphase__Cycles();
 					fid << "," << code_1;
 				}
 				else
