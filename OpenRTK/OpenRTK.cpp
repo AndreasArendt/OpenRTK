@@ -15,7 +15,7 @@ int main()
 	auto rnxParser = RinexParser();
 
 	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/AUBG00DEU_R_20231231000_01H_30S_MO.obs";
-	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20231260000_01D_MN.nav";	
+	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20231231000_01H_MN.nav";	
 	
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
