@@ -25,7 +25,8 @@ private:
 
 public:
     // getters        
-    std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
+    std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }    
+    double const& Utc() const { return std::chrono::duration<double>(this->_Epoch.EpochTime().time_since_epoch()).count(); }    
     std::map<ObservationBand, CodeObservation> const& CodeObservations() const { return this->_CodeObservations; }
     std::map<ObservationBand, PhaseObservation> const& PhaseObservations() const { return this->_PhaseObservations; }
     std::map<ObservationBand, DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }

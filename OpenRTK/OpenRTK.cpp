@@ -35,7 +35,8 @@ int main()
 		//ppp.CalcUserPosition(sv.Ephemeris(), sv.
 	}
 
-	CsvExport().ExportEphemeris(GalileoSatellites, "D:/Projekte/OpenRTK/Analysis/Ephemeris_exp.csv");
+	CsvExport::ExportEphemeris(GalileoSatellites, "D:/Projekte/OpenRTK/Analysis/Ephemeris_exp.csv");
+	CsvExport::ExportObsData(GalileoSatellites, "D:/Projekte/OpenRTK/Analysis/Observation_exp.csv");
 
 	return 0;
 }
