@@ -23,7 +23,7 @@ public:
 	double const& Utc() const { return this->_Utc__s; }
 
 	// functions	
-	virtual void CalcEphemeris(NavData& navData) = 0;
+	virtual void CalcEphemeris(NavData& navData, double time) = 0;
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
 
 	// cotr & dtor

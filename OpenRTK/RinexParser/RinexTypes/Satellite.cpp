@@ -66,8 +66,10 @@ void Satellite::calcEphemeris()
 			
 			auto duration_since_epoch = nav.get()->EpochTime().time_since_epoch();
 			double utc = std::chrono::duration<double>(duration_since_epoch).count();
-						
-			eph->CalcEphemeris(*nav.get());		
+			
+			GalileoNavData* GalileoNav = dynamic_cast<GalileoNavData*>(nav.get());
+
+			eph->CalcEphemeris(*nav.get(), GalileoNav->getReceiverTime());
 			this->_Ephemeris.push_back(std::move(eph));
 		}
 		break;

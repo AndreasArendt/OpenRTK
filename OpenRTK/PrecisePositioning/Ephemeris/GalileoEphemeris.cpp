@@ -15,7 +15,7 @@ GalileoEphemeris::~GalileoEphemeris()
 {
 }
 
-void GalileoEphemeris::CalcEphemeris(NavData& navData)
+void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 {
 	auto duration_since_epoch = navData.EpochTime().time_since_epoch();	
 	this->_Utc__s = std::chrono::duration<double>(duration_since_epoch).count();
@@ -37,9 +37,8 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	// Computed mean motion (rad/s)
 	double n_0 = sqrt(Transformation::GravitationalConstant__m3Ds2 / pow(A, 3));
 
-	//Time from ephermeris reference poch
-	double t = nav.getReceiverTime(); // t := TOC TODO: correction by signal transmission duration missing!	
-	double t_k = t - nav.Toe__s();
+	//Time from ephermeris reference poch	
+	double t_k = time - nav.Toe__s();
 
 	if (t_k > 302400)
 	{
