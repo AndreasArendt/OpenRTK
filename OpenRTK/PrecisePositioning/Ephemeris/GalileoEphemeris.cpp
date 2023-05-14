@@ -20,8 +20,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	auto duration_since_epoch = navData.EpochTime().time_since_epoch();	
 	this->_Utc__s = std::chrono::duration<double>(duration_since_epoch).count();
 
-	auto nav = dynamic_cast<GalileoNavData&>(navData);
-	auto trans = Transformation();
+	auto nav = dynamic_cast<GalileoNavData&>(navData);	
 		
 	// 1 semi circle = pi rad
 	double M0__semiCircles			= nav.M0__rad()			 / Constants::pi;
@@ -36,7 +35,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	double A = nav.SqrtA___sqrtm() * nav.SqrtA___sqrtm();
 
 	// Computed mean motion (rad/s)
-	double n_0 = sqrt(trans.GravitationalConstant__m3Ds2 / pow(A, 3));
+	double n_0 = sqrt(Transformation::GravitationalConstant__m3Ds2 / pow(A, 3));
 
 	//Time from ephermeris reference poch
 	double t = nav.getReceiverTime(); // t := TOC TODO: correction by signal transmission duration missing!	
@@ -69,7 +68,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 		
 	// clocl offsets
 	this->_SatelliteClockError__s = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t_k + nav.SV_ClockDriftRate__sDs2() * t_k * t_k;
-	double F = -2 * sqrt(trans.GravitationalConstant__m3Ds2) / (trans.SpeedOfLight__mDs * trans.SpeedOfLight__mDs);
+	double F = -2 * sqrt(Transformation::GravitationalConstant__m3Ds2) / (Transformation::SpeedOfLight__mDs * Transformation::SpeedOfLight__mDs);
 	this->_RelativisticError__s = F * nav.Eccentricity() * nav.SqrtA___sqrtm() * sin(E);
 
 	// true anomaly
@@ -107,7 +106,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData)
 	double y_prime = r * sin(u);
 
 	// Corrected langitude of ascending node
-	double OMEGA = OMEGA_0__cemiCircles + (OMEGA_dot__semiCirclesDs - trans.MeanAngularVelocityOfEarth__radDs) * t_k - trans.MeanAngularVelocityOfEarth__radDs * nav.Toe__s();
+	double OMEGA = OMEGA_0__cemiCircles + (OMEGA_dot__semiCirclesDs - Transformation::MeanAngularVelocityOfEarth__radDs) * t_k - Transformation::MeanAngularVelocityOfEarth__radDs * nav.Toe__s();
 
 	// GTRF coordinates of the SV antenna phase center position at time t	
 	double x = x_prime * cos(OMEGA) - y_prime * cos(i) * sin(OMEGA);
