@@ -17,11 +17,15 @@ class Satellite
     //
 
 private:    
+    // members
     SvSystem _SvSystem;
     int _SvNumber;
     std::vector<std::unique_ptr<NavData>> _NavigationData;    
     std::vector<ObsData> _ObservationData;
     std::vector<std::unique_ptr<Ephemeris>> _Ephemeris;
+
+    //private functions
+    double CalcSatelliteTxTime(double time, CodeObservation& cObs);
 
 public:
     // getters

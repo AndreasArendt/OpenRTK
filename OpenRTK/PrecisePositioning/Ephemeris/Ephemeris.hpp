@@ -25,20 +25,12 @@ public:
 	// functions	
 	virtual void CalcEphemeris(NavData& navData, double time) = 0;
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
-
+	
 	// cotr & dtor
 	Ephemeris() : _SatelliteClockError__s(0), _RelativisticError__s(0), _Utc__s(0) {};
 	virtual ~Ephemeris() = default;
 
 	// operator overloading
-	Ephemeris& operator=(Ephemeris& rhs)
-	{
-		this->_Position_E = rhs._Position_E;
-		this->_RelativisticError__s = rhs._RelativisticError__s;
-		this->_SatelliteClockError__s = rhs._SatelliteClockError__s;
-		this->_Utc__s = rhs._Utc__s;
-
-		return *this;
-	}
+	Ephemeris& operator=(Ephemeris& rhs);
 };
 

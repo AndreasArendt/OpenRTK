@@ -1,6 +1,7 @@
 #include "Satellite.hpp"
 #include "../../Utils/astring.hpp"
 #include "../../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
+#include "../../Transformations/Transformation.hpp"
 
 Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)
 {
@@ -55,6 +56,12 @@ void Satellite::addObsData(ObsData obsdata)
 	this->_ObservationData.push_back(obsdata);
 }
 
+double Satellite::CalcSatelliteTxTime(double time, CodeObservation& cObs)
+{
+	return time - cObs.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
+}
+
+
 void Satellite::calcEphemeris()
 {
 	switch (this->_SvSystem)
@@ -69,7 +76,9 @@ void Satellite::calcEphemeris()
 			
 			GalileoNavData* GalileoNav = dynamic_cast<GalileoNavData*>(nav.get());
 
-			eph->CalcEphemeris(*nav.get(), GalileoNav->getReceiverTime());
+			double time = GalileoNav->getReceiverTime();
+
+			eph->CalcEphemeris(*nav.get(), time);
 			this->_Ephemeris.push_back(std::move(eph));
 		}
 		break;
