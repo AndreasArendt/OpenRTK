@@ -85,38 +85,3 @@ double GalileoNavData::getGST()
 		
 	return GST__s;
 }
-
-int yisleap(int year)
-{
-	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-}
-
-int get_yday(int mon, int day, int year)
-{
-	static const int days[2][13] = {
-		{0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334},
-		{0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335}
-	};
-	int leap = yisleap(year);
-
-	return days[leap][mon] + day;
-}
-
-// TOC
-double GalileoNavData::getReceiverTime()
-{
-	int dayOfYear = get_yday(this->_Epoch.Month(), this->_Epoch.Day(), this->_Epoch.Year());
-
-	double xy = static_cast<double>(this->_Epoch.Year());
-	int id_GPS = static_cast<int>(365.25 * (xy - 1.0)) + dayOfYear - 722835;
-
-	// Day of week:
-	int idw = id_GPS % 7;
-
-	// Number of GPS week:
-	int nw = (id_GPS - idw) / 7;
-
-	// seconds in the week:
-	double t = static_cast<double>(idw) * 86400.0 + (int)this->_Epoch.Hour() * 3600 + (int)this->_Epoch.Minute() * 60 + this->_Epoch.Second();
-	return t;		
-}

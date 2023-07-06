@@ -3,6 +3,8 @@
 #include <vector>
 #include <chrono>
 
+#include "../../../Utils/time.hpp"
+
 class Epoch
 {
 	private:        
@@ -26,6 +28,7 @@ class Epoch
         double const& Second() const { return this->_second; }
 
         // functions
+        virtual double ReceiverTime();
         virtual double ConvertEpochTimeToUTC();
 
         // ctor & Dtor                

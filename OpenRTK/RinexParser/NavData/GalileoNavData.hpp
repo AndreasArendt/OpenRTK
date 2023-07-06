@@ -106,10 +106,9 @@ public:
 	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; } //TOT
 		
 	// functions
-	void AddClockErrors(double data0, double data1, double data2);
+	void AddClockErrors(double data0, double data1, double data2);	
 	double getGST();
-	double getReceiverTime();	//TOC
-	
+		
 	std::unique_ptr<NavData> clone() const override;
 
 	GalileoNavData(int year, int month, int day, int hour, int minute, double second);

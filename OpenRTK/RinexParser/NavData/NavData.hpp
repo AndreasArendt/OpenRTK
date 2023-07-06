@@ -23,11 +23,13 @@ protected:
 public:
 	// getters
 	std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
+	double const& ReceiverTime() { return this->_Epoch.ReceiverTime(); }
 	
 	// functions
 	virtual void AddClockErrors(double data0, double data1, double data2) = 0;
-	void AddOrbit(ENavOrbitNumber orbitNumber, double data0, double data1, double data2, double data3);
 	
+	void AddOrbit(ENavOrbitNumber orbitNumber, double data0, double data1, double data2, double data3);
+
 	// ctor & dtor
 	NavData() = default;
 	NavData(int year, int month, int day, int hour, int minute, double second);			

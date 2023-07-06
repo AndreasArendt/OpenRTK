@@ -47,6 +47,25 @@ double Epoch::ConvertEpochTimeToUTC()
     return std::chrono::duration<double>(duration_since_epoch).count();
 }
 
+// TOC
+double Epoch::ReceiverTime()
+{
+    int dayOfYear = Time::get_yday(this->_month, this->_day, this->_year);
+
+    double xy = static_cast<double>(this->_year);
+    int id_GPS = static_cast<int>(365.25 * (xy - 1.0)) + dayOfYear - 722835;
+
+    // Day of week:
+    int idw = id_GPS % 7;
+
+    // Number of GPS week:
+    int nw = (id_GPS - idw) / 7;
+
+    // seconds in the week:
+    double t = static_cast<double>(idw) * 86400.0 + (int)this->_hour * 3600 + (int)this->_minute * 60 + this->_second;
+    return t;
+}
+
 bool Epoch::operator==(const Epoch& other) const
 {
     return _EpochTime == other.EpochTime();

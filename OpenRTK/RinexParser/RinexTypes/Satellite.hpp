@@ -23,6 +23,7 @@ private:
     std::vector<std::unique_ptr<NavData>> _NavigationData;    
     std::vector<ObsData> _ObservationData;
     std::vector<std::unique_ptr<Ephemeris>> _Ephemeris;
+    NavData* findClosestTime(double targetTime);
 
     //private functions
     double CalcSatelliteTxTime(double time, CodeObservation& cObs);
