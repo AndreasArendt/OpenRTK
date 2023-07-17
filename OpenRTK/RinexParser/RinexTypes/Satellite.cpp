@@ -104,17 +104,17 @@ void Satellite::calcEphemeris()
 				double transmission_time__s = obs.CodeObservations().begin()->second.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
 				time = time - transmission_time__s;
 
-				// apply clock correction - taken from RTKLIB eph2clk
-				double t = time - nav->ReceiverTime();
-				double ts = t;
+				//// apply clock correction - taken from RTKLIB eph2clk
+				//double t = time - nav->ReceiverTime();
+				//double ts = t;
 
-				for (int i = 0; i < 2; i++) 
-				{					
-					t = ts - (galNav->SV_ClockBias__s() + galNav->SV_ClockDrift__sDs() * t + galNav->SV_ClockDriftRate__sDs2() * t * t);
-				}
+				//for (int i = 0; i < 2; i++) 
+				//{					
+				//	t = ts - (galNav->SV_ClockBias__s() + galNav->SV_ClockDrift__sDs() * t + galNav->SV_ClockDriftRate__sDs2() * t * t);
+				//}
 
-				auto dt = galNav->SV_ClockBias__s() + galNav->SV_ClockDrift__sDs() * t + galNav->SV_ClockDriftRate__sDs2() * t * t;
-				time = time - dt;
+				//auto dt = galNav->SV_ClockBias__s() + galNav->SV_ClockDrift__sDs() * t + galNav->SV_ClockDriftRate__sDs2() * t * t;
+				//time = time - dt;
 
 				eph->CalcEphemeris(*nav, time);
 				this->_Ephemeris.push_back(std::move(eph));

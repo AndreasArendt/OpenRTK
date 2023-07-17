@@ -24,6 +24,7 @@ public:
 
 	// functions	
 	virtual void CalcEphemeris(NavData& navData, double time) = 0;
+	virtual void CalcClockOffset(NavData& navData, double time) = 0;
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
 	
 	// cotr & dtor

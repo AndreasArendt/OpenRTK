@@ -154,6 +154,7 @@
     <ClCompile Include="RinexParser\RinexTypes\Epoch\Epoch.cpp" />
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
+    <ClCompile Include="Transformations\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Export\CsvExport.hpp" />
