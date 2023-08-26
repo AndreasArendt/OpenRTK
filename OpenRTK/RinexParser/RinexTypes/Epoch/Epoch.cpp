@@ -1,7 +1,5 @@
 #include "Epoch.hpp"
 
-#include "../../NavData/rtktypes.h"
-
 Epoch::Epoch()
 {
     this->_year = 0;
@@ -38,16 +36,11 @@ Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
     this->_second = second;
 }
 
-/**
-
-    @brief Converts the epoch time to UTC in seconds.
-    @return The epoch time converted to UTC in seconds.
-    */
-double Epoch::ConvertEpochTimeToUTC()
+typedef struct
 {
-    auto duration_since_epoch = this->_EpochTime.time_since_epoch();
-    return std::chrono::duration<double>(duration_since_epoch).count();
-}
+    int time;
+    double sec;
+}gtime_t;
 
 static gtime_t epoch2time(const double* ep)
 {
@@ -63,37 +56,6 @@ static gtime_t epoch2time(const double* ep)
     time.time = (time_t)days * 86400 + (int)ep[3] * 3600 + (int)ep[4] * 60 + sec;
     time.sec = ep[5] - sec;
     return time;
-}
-
-// TOC
-//double Epoch::Toc()
-//{
-//    int dayOfYear = Time::get_yday(this->_month, this->_day, this->_year);
-//
-//    double xy = static_cast<double>(this->_year);
-//    int id_GPS = static_cast<int>(365.25 * (xy - 1.0)) + dayOfYear - 722835;
-//
-//    // Day of week:
-//    int idw = id_GPS % 7;
-//
-//    // Number of GPS week:
-//    int nw = (id_GPS - idw) / 7;
-//
-//    // seconds in the week:
-//    double t = static_cast<double>(idw) * 86400.0 + (int)this->_hour * 3600 + (int)this->_minute * 60 + this->_second;
-//    return t;
-//}
-
-double Epoch::Toc()
-{
-    double ep[6] =
-    {
-        (double)this->_year, (double)this->_month, (double)this->_day, (double)this->_hour, (double)this->_minute, (double)this->_second
-    };
-
-    auto t = epoch2time(ep);
-    
-    return (double)t.time + t.sec;
 }
 
 bool Epoch::operator==(const Epoch& other) const

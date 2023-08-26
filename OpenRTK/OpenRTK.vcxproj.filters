@@ -188,9 +188,6 @@
     <ClInclude Include="Export\CsvExport.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexParser\NavData\rtktypes.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\time.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>

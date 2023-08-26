@@ -27,7 +27,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 	{
 		for (auto const& obs : sv.ObservationData())
 		{
-			fid << std::fixed << std::setprecision(10) << "E" << sv.SvNumber() << "," << obs.Utc();
+			fid << std::fixed << std::setprecision(10) << "E" << sv.SvNumber() << "," << obs.Epoche().Toc__s();
 
 			// Code
 			for (auto band : { ObservationBand::Band_1, ObservationBand::Band_2, ObservationBand::Band_5 })

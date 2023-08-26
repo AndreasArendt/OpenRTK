@@ -160,7 +160,6 @@
   <ItemGroup>
     <ClInclude Include="Export\CsvExport.hpp" />
     <ClInclude Include="RinexParser\AbstractRinexParser.hpp" />
-    <ClInclude Include="RinexParser\NavData\rtktypes.h" />
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp" />
     <ClInclude Include="PrecisePositioning\PPP.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp" />

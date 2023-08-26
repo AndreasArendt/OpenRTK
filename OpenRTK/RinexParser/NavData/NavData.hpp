@@ -23,7 +23,7 @@ protected:
 public:
 	// getters
 	std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
-	double const& Toc__s() { return this->_Epoch.Toc(); }
+	double const Toc__s() { return this->_Epoch.Toc__s(); }
 	
 	// functions
 	virtual void AddClockErrors(double data0, double data1, double data2) = 0;

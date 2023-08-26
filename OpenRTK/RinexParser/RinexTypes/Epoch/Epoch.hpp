@@ -28,9 +28,8 @@ class Epoch
         double const& Second() const { return this->_second; }
 
         // functions
-        virtual double Toc();
-        virtual double ConvertEpochTimeToUTC();
-
+        double const Toc__s() const { return this->_EpochTime.time_since_epoch().count() / 1e7; }   //conversion to seconds
+        
         // ctor & Dtor                
         Epoch();
         Epoch(int year, int month, int day, int hour, int minute, double second);

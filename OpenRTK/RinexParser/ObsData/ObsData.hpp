@@ -25,14 +25,13 @@ private:
 
 public:
     // getters        
-    std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }    
-    double const& Utc() const { return std::chrono::duration<double>(this->_Epoch.EpochTime().time_since_epoch()).count(); }    
+    std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
     std::map<ObservationBand, CodeObservation> const& CodeObservations() const { return this->_CodeObservations; }
     std::map<ObservationBand, PhaseObservation> const& PhaseObservations() const { return this->_PhaseObservations; }
     std::map<ObservationBand, DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }
     std::map<ObservationBand, SignalStrengthObservation> const& SnrObservations() const { return this->_SnrObservations; }
-    bool const& IsSpecialEvent() const { return this->_IsSpecialEvent; }    
-    double const& ReceiverTime() { return this->_Epoch.Toc(); }
+    bool const& IsSpecialEvent() const { return this->_IsSpecialEvent; }        
+    Epoch const& Epoche() const { return this->_Epoch; }
 
     // functions
     void AddCodeObservation(ObservationBand band, double Pseudorange__m);
