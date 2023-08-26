@@ -9,8 +9,11 @@
 
 class Ephemeris
 {
-protected:
+public:
 	ECEF_Position _Position_E;
+
+protected:
+	/*ECEF_Position _Position_E;*/
 	double _SatelliteClockError__s;
 	double _RelativisticError__s;
 	double _Utc__s;

@@ -72,6 +72,9 @@
     <ClCompile Include="Transformations\Transformation.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PrecisePositioning\Ephemeris\Ephemeris.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -183,6 +186,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Export\CsvExport.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\NavData\rtktypes.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\time.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,7 @@
 #include "Epoch.hpp"
 
+#include "../../NavData/rtktypes.h"
+
 Epoch::Epoch()
 {
     this->_year = 0;
@@ -47,23 +49,51 @@ double Epoch::ConvertEpochTimeToUTC()
     return std::chrono::duration<double>(duration_since_epoch).count();
 }
 
-// TOC
-double Epoch::ReceiverTime()
+static gtime_t epoch2time(const double* ep)
 {
-    int dayOfYear = Time::get_yday(this->_month, this->_day, this->_year);
+    const int doy[] = { 1,32,60,91,121,152,182,213,244,274,305,335 };
+    gtime_t time = { 0 };
+    int days, sec, year = (int)ep[0], mon = (int)ep[1], day = (int)ep[2];
 
-    double xy = static_cast<double>(this->_year);
-    int id_GPS = static_cast<int>(365.25 * (xy - 1.0)) + dayOfYear - 722835;
+    if (year < 1970 || 2099 < year || mon < 1 || 12 < mon) return time;
 
-    // Day of week:
-    int idw = id_GPS % 7;
+    /* leap year if year%4==0 in 1901-2099 */
+    days = (year - 1970) * 365 + (year - 1969) / 4 + doy[mon - 1] + day - 2 + (year % 4 == 0 && mon >= 3 ? 1 : 0);
+    sec = (int)floor(ep[5]);
+    time.time = (time_t)days * 86400 + (int)ep[3] * 3600 + (int)ep[4] * 60 + sec;
+    time.sec = ep[5] - sec;
+    return time;
+}
 
-    // Number of GPS week:
-    int nw = (id_GPS - idw) / 7;
+// TOC
+//double Epoch::Toc()
+//{
+//    int dayOfYear = Time::get_yday(this->_month, this->_day, this->_year);
+//
+//    double xy = static_cast<double>(this->_year);
+//    int id_GPS = static_cast<int>(365.25 * (xy - 1.0)) + dayOfYear - 722835;
+//
+//    // Day of week:
+//    int idw = id_GPS % 7;
+//
+//    // Number of GPS week:
+//    int nw = (id_GPS - idw) / 7;
+//
+//    // seconds in the week:
+//    double t = static_cast<double>(idw) * 86400.0 + (int)this->_hour * 3600 + (int)this->_minute * 60 + this->_second;
+//    return t;
+//}
 
-    // seconds in the week:
-    double t = static_cast<double>(idw) * 86400.0 + (int)this->_hour * 3600 + (int)this->_minute * 60 + this->_second;
-    return t;
+double Epoch::Toc()
+{
+    double ep[6] =
+    {
+        (double)this->_year, (double)this->_month, (double)this->_day, (double)this->_hour, (double)this->_minute, (double)this->_second
+    };
+
+    auto t = epoch2time(ep);
+    
+    return (double)t.time + t.sec;
 }
 
 bool Epoch::operator==(const Epoch& other) const

@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Export\CsvExport.cpp" />
+    <ClCompile Include="PrecisePositioning\Ephemeris\Ephemeris.cpp" />
     <ClCompile Include="RinexParser\AbstractRinexParser.cpp" />
     <ClCompile Include="RinexParser\ObsData\ObsData.cpp" />
     <ClCompile Include="PrecisePositioning\PPP.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Export\CsvExport.hpp" />
     <ClInclude Include="RinexParser\AbstractRinexParser.hpp" />
+    <ClInclude Include="RinexParser\NavData\rtktypes.h" />
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp" />
     <ClInclude Include="PrecisePositioning\PPP.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp" />
@@ -194,6 +196,7 @@
     <ClInclude Include="Transformations\Transformation.hpp" />
     <ClInclude Include="Utils\astring.hpp" />
     <ClInclude Include="Utils\strim.hpp" />
+    <ClInclude Include="Utils\time.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
