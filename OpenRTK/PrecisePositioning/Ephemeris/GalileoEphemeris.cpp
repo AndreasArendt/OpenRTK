@@ -37,19 +37,17 @@ double GalileoEphemeris::CalcMeanAnomaly(NavData& navData, double time)
 	
 	double t_k = time - nav.ToeEpoch();
 
-	// 1 semi circle = pi rad
-	double delta_n__semiCirclesDs = nav.DeltaN__radDs();
-	double M0__semiCircles        = nav.M0__rad();
-	double A                      = nav.SqrtA___sqrtm() * nav.SqrtA___sqrtm();
+	// 1 semi circle = pi rad	
+	double A = nav.SqrtA___sqrtm() * nav.SqrtA___sqrtm();
 
 	// Computed mean motion (rad/s)
 	double n_0 = sqrt(Transformation::GravitationalConstant__m3Ds2 / pow(A, 3));
 
 	// Corrected mean motion
-	double n = n_0 + delta_n__semiCirclesDs;
+	double n = n_0 + nav.DeltaN__radDs();
 
 	// Mean anomaly at reference time
-	double M = M0__semiCircles + n * t_k;
+	double M = nav.M0__rad() + n * t_k;
 
 	double E = M; // initial guess
 	double dE = 1;
@@ -75,13 +73,6 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 
 	auto nav = dynamic_cast<GalileoNavData&>(navData);	
 	
-	// 1 semi circle = pi rad	
-	double OMEGA_0__cemiCircles		= nav.Omega0__rad();
-	double i0__semiCirclesDs		= nav.i0__rad();
-	double Omega__semiCircles		= nav.Omega__rad();
-	double OMEGA_dot__semiCirclesDs = nav.Omega_dot__radDs();
-	double i_dot__semiCirclesDs     = nav.Idot__radDs();
-
 	// Semo major Axis
 	double A = nav.SqrtA___sqrtm() * nav.SqrtA___sqrtm();
 	
@@ -108,7 +99,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 	double v = atan2(sqrt_1_e2 * (sinE / minus_ecosE_plus_1), cosE_minus_E / minus_ecosE_plus_1);
 
 	// Argument of Latitude (phi)
-	double phi = v + Omega__semiCircles;
+	double phi = v + nav.Omega__rad();
 
 	// argument of Latitude Correction
 	double delta_u = nav.Cus__rad() * sin(2 * phi) + nav.Cuc__rad() * cos(2 * phi);
@@ -126,14 +117,14 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 	double r = A * (1 - nav.Eccentricity() * cos(E)) + delta_r;
 
 	// Corrected inclination
-	double i = i0__semiCirclesDs + delta_i + i_dot__semiCirclesDs * t_k;
+	double i = nav.i0__rad() + delta_i + nav.Idot__radDs() * t_k;
 
 	// Position in orbital plane
 	double x_prime = r * cos(u);
 	double y_prime = r * sin(u);
 
 	// Corrected langitude of ascending node	
-	double OMEGA = OMEGA_0__cemiCircles + (OMEGA_dot__semiCirclesDs - Transformation::MeanAngularVelocityOfEarth__radDs) * t_k - Transformation::MeanAngularVelocityOfEarth__radDs * nav.Toe__s();
+	double OMEGA = nav.Omega0__rad() + (nav.Omega_dot__radDs() - Transformation::MeanAngularVelocityOfEarth__radDs) * t_k - Transformation::MeanAngularVelocityOfEarth__radDs * nav.Toe__s();
 
 	// GTRF coordinates of the SV antenna phase center position at time t	
 	double x = x_prime * cos(OMEGA) - y_prime * cos(i) * sin(OMEGA);
