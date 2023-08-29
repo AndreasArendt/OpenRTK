@@ -11,7 +11,8 @@ std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
 	std::string firstline;
 	std::getline(infile, firstline);
 		
-	if (firstline.find("NAVIGATION DATA") != std::string::npos)
+	if ((firstline.find("NAVIGATION DATA") != std::string::npos) ||
+		(firstline.find("NAV DATA") != std::string::npos))
 	{		
 		return std::make_unique<RinexNavParser>(this->_Satellites);		
 	}

@@ -103,6 +103,9 @@ void Satellite::calcEphemeris()
 
 				// TODO: do for all frequencies!!
 				
+				if (obs.CodeObservations().empty())
+					continue;
+
 				// transmission time correction
 				double transmission_time__s = obs.CodeObservations().begin()->second.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
 				time = time - transmission_time__s;

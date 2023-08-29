@@ -24,6 +24,9 @@ void AbstractRinexParser::FindCurrentSatellite(Satellite satellite)
 void AbstractRinexParser::Parse(std::string path)
 {
 	std::ifstream infile(path);
+	if (!infile)
+		std::cout << "Could not open file.";
+
 	std::string firstline;
 	std::getline(infile, firstline);
 		
