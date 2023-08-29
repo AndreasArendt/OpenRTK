@@ -67,9 +67,8 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 	// Satellite Clock Offset Correction
 	this->CalcClockOffset(navData, time);
 	time = time - this->_SatelliteClockError__s;
-
-	auto duration_since_epoch = navData.EpochTime().time_since_epoch();	
-	this->_Utc__s = std::chrono::duration<double>(duration_since_epoch).count();
+		
+	this->_Utc__s = navData.Toc__s();
 
 	auto nav = dynamic_cast<GalileoNavData&>(navData);	
 	

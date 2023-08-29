@@ -21,8 +21,7 @@ protected:
 	Epoch _Epoch;
 
 public:
-	// getters
-	std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
+	// getters	
 	double const Toc__s() { return this->_Epoch.Toc__s(); }
 	
 	// functions

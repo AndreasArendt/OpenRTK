@@ -24,8 +24,7 @@ private:
     std::map<ObservationBand, SignalStrengthObservation> _SnrObservations;
 
 public:
-    // getters        
-    std::chrono::system_clock::time_point const& EpochTime() const { return this->_Epoch.EpochTime(); }
+    // getters            
     std::map<ObservationBand, CodeObservation> const& CodeObservations() const { return this->_CodeObservations; }
     std::map<ObservationBand, PhaseObservation> const& PhaseObservations() const { return this->_PhaseObservations; }
     std::map<ObservationBand, DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }

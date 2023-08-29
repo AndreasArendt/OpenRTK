@@ -18,8 +18,7 @@ class Epoch
         double _second;
 
 	public:
-        // getters
-        std::chrono::system_clock::time_point const& EpochTime() const { return this->_EpochTime; }
+        // getters        
         int const& Year() const { return this->_year; }
         int const& Month() const { return this->_month; }
         int const& Day() const { return this->_day; }

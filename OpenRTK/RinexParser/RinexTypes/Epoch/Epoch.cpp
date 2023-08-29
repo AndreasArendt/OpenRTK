@@ -60,12 +60,12 @@ static gtime_t epoch2time(const double* ep)
 
 bool Epoch::operator==(const Epoch& other) const
 {
-    return _EpochTime == other.EpochTime();
+    return this->Toc__s() == other.Toc__s();
 }
 
 bool Epoch::operator!=(const Epoch& other) const
 {
-    return _EpochTime != other.EpochTime();
+    return this->Toc__s() != other.Toc__s();
 }
 
 Epoch::~Epoch()
