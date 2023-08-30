@@ -17,6 +17,7 @@ protected:
 	double _SatelliteClockError__s;
 	double _RelativisticError__s;
 	double _Utc__s;
+	double _Toc__s;
 
 public:
 	// getters	
@@ -24,6 +25,7 @@ public:
 	double const& SatelliteClockError__s() const { return this->_SatelliteClockError__s;  }
 	double const& RelativisticError__s() const { return this->_RelativisticError__s; }
 	double const& Utc() const { return this->_Utc__s; }
+	double const& Toc__s() const { return this->_Toc__s; }
 
 	// functions	
 	virtual void CalcEphemeris(NavData& navData, double time) = 0;
@@ -31,7 +33,7 @@ public:
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
 	
 	// cotr & dtor
-	Ephemeris() : _SatelliteClockError__s(0), _RelativisticError__s(0), _Utc__s(0) {};
+	Ephemeris() : _SatelliteClockError__s(0), _RelativisticError__s(0), _Utc__s(0), _Toc__s(0) {};
 	virtual ~Ephemeris() = default;
 
 	// operator overloading

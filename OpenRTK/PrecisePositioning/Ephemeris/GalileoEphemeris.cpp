@@ -67,9 +67,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 	// Satellite Clock Offset Correction
 	this->CalcClockOffset(navData, time);
 	time = time - this->_SatelliteClockError__s;
-		
-	this->_Utc__s = navData.Toc__s();
-
+	
 	auto nav = dynamic_cast<GalileoNavData&>(navData);	
 	
 	// Semo major Axis
@@ -131,6 +129,8 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 	double z = y_prime * sin(i);
 
 	this->_Position_E = ECEF_Position(x, y, z);
+	this->_Utc__s = time;
+	this->_Toc__s = navData.Toc__s();
 }
 
 std::unique_ptr<Ephemeris> GalileoEphemeris::clone() const
