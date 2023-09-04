@@ -11,7 +11,7 @@ private:
 	double CalcMeanAnomaly(NavData& navData, double time);		
 
 public:
-	void CalcEphemeris(NavData& navData, double time) override;
+	void CalcEphemeris(NavData& navData, double time, double obstime) override;
 	void CalcClockOffset(NavData& navData, double time) override;
 	std::unique_ptr<Ephemeris> clone() const override;
 

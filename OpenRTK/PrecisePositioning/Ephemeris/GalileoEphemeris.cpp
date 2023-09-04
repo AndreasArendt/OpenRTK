@@ -62,7 +62,7 @@ double GalileoEphemeris::CalcMeanAnomaly(NavData& navData, double time)
 	return E;
 }
 
-void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
+void GalileoEphemeris::CalcEphemeris(NavData& navData, double time, double obstime)
 {
 	// Satellite Clock Offset Correction
 	this->CalcClockOffset(navData, time);
@@ -131,6 +131,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time)
 	this->_Position_E = ECEF_Position(x, y, z);
 	this->_Utc__s = time;
 	this->_Toc__s = navData.Toc__s();
+	this->_Obstime__s = obstime;
 }
 
 std::unique_ptr<Ephemeris> GalileoEphemeris::clone() const

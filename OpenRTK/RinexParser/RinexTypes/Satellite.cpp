@@ -110,7 +110,7 @@ void Satellite::calcEphemeris()
 				double transmission_time__s = obs.CodeObservations().begin()->second.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
 				time = time - transmission_time__s;
 				
-				eph->CalcEphemeris(*nav, time);
+				eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
 				this->_Ephemeris.push_back(std::move(eph));
 			}
 		}			
