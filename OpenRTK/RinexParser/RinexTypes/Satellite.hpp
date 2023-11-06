@@ -24,7 +24,7 @@ private:
     std::vector<ObsData> _ObservationData;
     std::vector<std::unique_ptr<Ephemeris>> _Ephemeris;
     NavData* findClosestTime(double targetTime);
-
+    
     //private functions
     double CalcSatelliteTxTime(double time, CodeObservation& cObs);
 
@@ -35,7 +35,7 @@ public:
     std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
     std::vector<ObsData> const& ObservationData() const { return this->_ObservationData; }
     std::vector<std::unique_ptr<Ephemeris>> const& Ephemeris() const { return this->_Ephemeris; }
-
+    
     // public functions    
     void addNavData(std::unique_ptr<NavData> navdata);
     void addObsData(ObsData obsdata);

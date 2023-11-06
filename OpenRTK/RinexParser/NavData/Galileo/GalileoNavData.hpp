@@ -1,6 +1,7 @@
 #pragma once
 
-#include "NavData.hpp"
+#include "../NavData.hpp"
+#include "GalileoSvHealth.hpp"
 
 class GalileoNavData : virtual public NavData
 {

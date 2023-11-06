@@ -148,7 +148,7 @@
     <ClCompile Include="PrecisePositioning\Ephemeris\GalileoEphemeris.cpp" />
     <ClCompile Include="RinexParser\NavData\NavData.cpp" />
     <ClCompile Include="RinexParser\RinexParser.cpp" />
-    <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp" />
+    <ClCompile Include="RinexParser\NavData\Galileo\GalileoNavData.cpp" />
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp" />
     <ClCompile Include="RinexParser\RinexNavParser\RinexNavParser.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
@@ -160,12 +160,13 @@
   <ItemGroup>
     <ClInclude Include="Export\CsvExport.hpp" />
     <ClInclude Include="RinexParser\AbstractRinexParser.hpp" />
+    <ClInclude Include="RinexParser\NavData\Galileo\GalileoSvHealth.hpp" />
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp" />
     <ClInclude Include="PrecisePositioning\PPP.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\Ephemeris.hpp" />
     <ClInclude Include="RinexParser\RinexParser.hpp" />
-    <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp" />
+    <ClInclude Include="RinexParser\NavData\Galileo\GalileoNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\GpsNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\NavData.hpp" />
     <ClInclude Include="RinexParser\RinexNavParser\NavEpochParsingState.hpp" />

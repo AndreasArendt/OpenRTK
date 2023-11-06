@@ -17,9 +17,7 @@ Satellite::Satellite(std::string satStr)
 	this->_SvNumber = parseInt(satStr.substr(1, 2));
 }
 
-Satellite::Satellite(const Satellite& other) :
-	_SvSystem(other._SvSystem),
-	_SvNumber(other._SvNumber)
+Satellite::Satellite(const Satellite& other) : _SvSystem(other._SvSystem), _SvNumber(other._SvNumber)
 {
 	// Create new unique pointers and copy the underlying objects
 	for (const auto& ptr : other._NavigationData)
@@ -89,18 +87,14 @@ void Satellite::calcEphemeris()
 	case SvSystem::GALILEO:
 		for (auto& obs : this->_ObservationData)
 		{
-			auto eph = std::make_unique<GalileoEphemeris>();
-
 			double time = obs.Epoche().Toc__s();
 
 			NavData* nav = this->findClosestTime(time);
-
+		
 			if (nav != nullptr)
 			{
-				auto galNav = dynamic_cast<GalileoNavData*>(nav);
-
-				double delta_t = nav->Toc__s() - time;
-
+				auto galNav = dynamic_cast<GalileoNavData*>(nav);				
+				
 				// TODO: do for all frequencies!!
 				
 				if (obs.CodeObservations().empty())
@@ -110,6 +104,9 @@ void Satellite::calcEphemeris()
 				double transmission_time__s = obs.CodeObservations().begin()->second.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
 				time = time - transmission_time__s;
 				
+				auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
+
+				auto eph = std::make_unique<GalileoEphemeris>(svHealth);
 				eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
 				this->_Ephemeris.push_back(std::move(eph));
 			}

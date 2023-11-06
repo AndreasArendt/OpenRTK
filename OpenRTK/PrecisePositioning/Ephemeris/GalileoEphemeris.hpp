@@ -16,7 +16,7 @@ public:
 	std::unique_ptr<Ephemeris> clone() const override;
 
 	// ctor & dtor	
-	GalileoEphemeris();	
+	GalileoEphemeris(GalileoSvHealth svHealth);
 	~GalileoEphemeris();
 };
 

@@ -42,7 +42,7 @@
     <ClCompile Include="RinexParser\NavData\GpsNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexParser\NavData\GalileoNavData.cpp">
+    <ClCompile Include="RinexParser\NavData\Galileo\GalileoNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RinexParser\RinexParser.cpp">
@@ -152,7 +152,7 @@
     <ClInclude Include="RinexParser\NavData\GpsNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexParser\NavData\GalileoNavData.hpp">
+    <ClInclude Include="RinexParser\NavData\Galileo\GalileoNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\RinexParser.hpp">
@@ -189,6 +189,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Utils\time.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\NavData\Galileo\GalileoSvHealth.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-GalileoEphemeris::GalileoEphemeris() : Ephemeris() 
+GalileoEphemeris::GalileoEphemeris(GalileoSvHealth svHealth) : Ephemeris(svHealth)
 {
 }
 
@@ -130,7 +130,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time, double obsti
 
 	this->_Position_E = ECEF_Position(x, y, z);
 	this->_Utc__s = time;
-	this->_Toc__s = navData.Toc__s();
+	this->_Toe__s = nav.ToeEpoch();
 	this->_Obstime__s = obstime;
 }
 

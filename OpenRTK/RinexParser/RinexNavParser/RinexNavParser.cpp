@@ -4,7 +4,7 @@
 #include "../RinexTypes/IonosphericCorrectionParameter.hpp"
 #include "../RinexTypes/TimeDifferenceType.hpp"
 #include "../NavData/GpsNavData.hpp"
-#include "../NavData/GalileoNavData.hpp"
+#include "../NavData/Galileo/GalileoNavData.hpp"
 
 #include <sstream>
 #include <fstream>
