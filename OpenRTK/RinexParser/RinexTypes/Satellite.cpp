@@ -114,8 +114,6 @@ void Satellite::calcEphemeris()
 			{
 				auto galNav = dynamic_cast<GalileoNavData*>(nav);				
 				
-				// TODO: do for all frequencies!!
-								
 				for (const auto& [band, code] : obs.CodeObservations()) 
 				{
 					// transmission time correction
