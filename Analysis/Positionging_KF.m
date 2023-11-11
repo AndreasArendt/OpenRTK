@@ -24,16 +24,15 @@ clear eph;
 clear obs;
 
 %%
-c__mDs = 299792458;
-
 ctr = 1;
 
-F = eye(4);
-X(:,ctr) = [station_pos__m'; 0];
-P(:,:,ctr) = zeros(4,4);
-Q = diag([0.001 0.001 0.001 0.0001]);
+F = eye(5);
+X(:,ctr) = [station_pos__m'; 0; 0];
+P(:,:,ctr) = zeros(5,5);
+Q = diag([0.001 0.001 0.001 0.0001 0.0001]);
 y(ctr) = 0;
-R = 100;
+R_L1 = 100;
+R_L5 = 1000;
 
 timestamps = unique(S.ObsToc);
 
@@ -50,7 +49,13 @@ for tt = timestamps.'
     idx_eph_healthy = S.Health == 0;
     idx = idx & idx_eph_healthy;
     idx = idx & (S.Code_1 > 1e3 & S.Code_5 > 1e3);
-             
+    idx = idx & (S.Band == 1 | S.Band == 5);
+    % idx = idx & (S.Band == 1);
+    % idx = idx & (S.Band == 5);
+
+    idx_L1 = S.Band(idx) == 1;
+    idx_L5 = S.Band(idx) == 5;
+
     % Prefit residuals  
     dx = (S.x(idx) - X(1,ctr+1));
     dy = (S.y(idx) - X(2,ctr+1));
@@ -60,9 +65,14 @@ for tt = timestamps.'
     % Sagnac Effect
     r = r + Transformation.MeanAngularVelocityOfEarth__radDs*(S.x(idx)*X(2,ctr+1) - S.y(idx)*X(1,ctr+1)) ./ Transformation.SpeedOfLight__mDs;
 
-    cdt_sv = c__mDs * S.SvClockOffset(idx);
-    cdt_rx = c__mDs * X(4,ctr+1);
-    cdt_relativistic = c__mDs * S.RelativisticError(idx);
+    cdt_sv = Transformation.SpeedOfLight__mDs * S.SvClockOffset(idx);
+    cdt_rx_L1 = Transformation.SpeedOfLight__mDs * X(4,ctr+1);
+    cdt_rx_L5 = Transformation.SpeedOfLight__mDs * X(5,ctr+1);
+    cdt_relativistic = Transformation.SpeedOfLight__mDs * S.RelativisticError(idx);
+
+    cdt_rx = zeros(numel(r), 1);
+    cdt_rx(idx_L1) = cdt_rx_L1;
+    cdt_rx(idx_L5) = cdt_rx_L5;
 
     [lat__rad, lon__rad, alt__m] = Transformation.ecef2wgs84(X(1,ctr+1), X(2,ctr+1), X(3,ctr+1));                
     [E,N,U] = Transformation.ecef2enu(lat__rad, lon__rad, dx, dy, dz);
@@ -78,25 +88,31 @@ for tt = timestamps.'
     H2 = (X(2,ctr+1) - S.y(idx)) ./ r; 
     H3 = (X(3,ctr+1) - S.z(idx)) ./ r; 
 
-    C = repmat(c__mDs, numel(r),1);
-    H = [H1, H2, H3, C];
+    C1 = zeros(numel(r), 1);        
+    C1(idx_L1) = Transformation.SpeedOfLight__mDs;
+    
+    C5 = zeros(numel(r), 1);    
+    C5(idx_L5) = Transformation.SpeedOfLight__mDs;
+    H = [H1, H2, H3, C1, C5];
      
     dist_meas = r_ionofree - cdt_rx + cdt_sv - dt_tropo - cdt_relativistic;        
     y = dist_meas - r;
    
     DOP(ctr) = norm(diag(inv([H1, H2, H3, ones(numel(r),1)].'*[H1, H2, H3, ones(numel(r),1)])));
     
-    RR = eye(sum(idx)) .* R;
+    R = zeros(size(r));
+    R(idx_L1) = R_L1;
+    R(idx_L5) = R_L5;
 
-    K = P(:,:,ctr+1) * H' / (H * P(:,:,ctr+1) * H.' + RR);
+    K = P(:,:,ctr+1) * H' / (H * P(:,:,ctr+1) * H.' + diag(R));
     X(:,ctr+1) = X(:,ctr+1) + K * y;
-    P(:,:,ctr+1) = (eye(4) - K*H) * P(:,:,ctr+1) * (eye(4) - K*H).' + K * RR * K.';
+    P(:,:,ctr+1) = (eye(5) - K*H) * P(:,:,ctr+1) * (eye(5) - K*H).' + K *  diag(R) * K.';
 
     ctr = ctr+1;    
 end
 
 %%
-figure; 
+% figure; 
 ax(1) = subplot(4,2,1);
 title('x_E')
 hold on;
@@ -129,6 +145,7 @@ ax(6) = subplot(4,2,6);
 title('dt_r')
 hold on;
 plot(timestamps(2:end), X(4,3:end)); 
+plot(timestamps(2:end), X(5,3:end)); 
 
 ax(7) = subplot(4,2,7);
 title('GDOP')
@@ -144,27 +161,27 @@ linkaxes(ax, 'x');
 
 %%
 
-idx = S.SV_numbers == 3;
-
-dx = (S.x- station_pos__m(1));
-dy = (S.y - station_pos__m(2));
-dz = (S.z - station_pos__m(3));
-rr = sqrt( dx.^2 + dy.^2 + dz.^2);
-
-figure;
-axx(1) = subplot(3,1,1);
-hold on;
-plot(S.ObsToc(idx) - min(S.ObsToc(idx)), S.Code_1(idx), '.')
-plot(S.ObsToc(idx) - min(S.ObsToc(idx)), rr(idx), '.')
-
-axx(2) = subplot(3,1,2);
-% plot(timestamps(2:end) - timestamps(2), X(4,3:end)); 
-plot(S.ObsToc(idx) - min(S.ObsToc(idx)), S.Code_1(idx) - rr(idx), '.')
-
-axx(3) = subplot(3,1,3);
-plot(S.ObsToc(idx) - min(S.ObsToc(idx)), S.SvClockOffset(idx), '.')
-
-linkaxes(axx, 'x')
+% idx = S.SV_numbers == 3;
+% 
+% dx = (S.x- station_pos__m(1));
+% dy = (S.y - station_pos__m(2));
+% dz = (S.z - station_pos__m(3));
+% rr = sqrt( dx.^2 + dy.^2 + dz.^2);
+% 
+% figure;
+% axx(1) = subplot(3,1,1);
+% hold on;
+% plot(S.ObsToc(idx) - min(S.ObsToc(idx)), S.Code_1(idx), '.')
+% plot(S.ObsToc(idx) - min(S.ObsToc(idx)), rr(idx), '.')
+% 
+% axx(2) = subplot(3,1,2);
+% % plot(timestamps(2:end) - timestamps(2), X(4,3:end)); 
+% plot(S.ObsToc(idx) - min(S.ObsToc(idx)), S.Code_1(idx) - rr(idx), '.')
+% 
+% axx(3) = subplot(3,1,3);
+% plot(S.ObsToc(idx) - min(S.ObsToc(idx)), S.SvClockOffset(idx), '.')
+% 
+% linkaxes(axx, 'x')
 
 
 
