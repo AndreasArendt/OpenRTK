@@ -22,11 +22,12 @@ private:
     int _SvNumber;
     std::vector<std::unique_ptr<NavData>> _NavigationData;    
     std::vector<ObsData> _ObservationData;
-    std::vector<std::unique_ptr<Ephemeris>> _Ephemeris;
+    std::map<ObservationBand, std::vector<std::unique_ptr<Ephemeris>>> _Ephemeris;
     NavData* findClosestTime(double targetTime);
     
     //private functions
     double CalcSatelliteTxTime(double time, CodeObservation& cObs);
+    void InsertEphemeris(ObservationBand band, std::unique_ptr<Ephemeris> ephemeris);
 
 public:
     // getters
@@ -34,7 +35,7 @@ public:
     int const& SvNumber() const { return this->_SvNumber; }
     std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
     std::vector<ObsData> const& ObservationData() const { return this->_ObservationData; }
-    std::vector<std::unique_ptr<Ephemeris>> const& Ephemeris() const { return this->_Ephemeris; }
+    std::map<ObservationBand, std::vector<std::unique_ptr<Ephemeris>>> const& SatelliteEphemeris() const { return this->_Ephemeris; }
     
     // public functions    
     void addNavData(std::unique_ptr<NavData> navdata);

@@ -72,7 +72,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 					fid << "," << 0;
 				}
 			}
-			
+
 			fid << std::endl;
 		}
 	}
@@ -83,25 +83,30 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::string path)
 {
 	auto fid = CsvExport::OpenFile(path);
-	fid << "SvSystem,UTC,Toe,ObsToc,x,y,z,SvClockOffset,RelativisticError,Health" << std::endl;
+	fid << "SvSystem,UTC,Toe,ObsToc,x,y,z,SvClockOffset,RelativisticError,Health,Band" << std::endl;
 
 	for (Satellite const& sv : satellites)
 	{
-		for (auto& eph : sv.Ephemeris())
+		for (const auto& [band, ephemerides] : sv.SatelliteEphemeris())
 		{
-			auto gEph = dynamic_cast<GalileoEphemeris*>(eph.get());
+			for (const auto& eph : ephemerides)
+			{
 
-			fid << std::fixed << std::setprecision(10) << "E" << sv.SvNumber() << "," 
-													   << eph->Utc() << "," 
-													   << gEph->Toe__s() << ","
-													   << eph->Obstime__s() << ","
-													   << eph->Position_E().x() << "," 
-													   << eph->Position_E().y() << "," 
-													   << eph->Position_E().z() << "," 
-													   << eph->SatelliteClockError__s() << ","
-													   << eph->RelativisticError__s() << ","
-													   << eph->SvHealth().Health()
-													   << std::endl;
+				auto gEph = dynamic_cast<GalileoEphemeris*>(eph.get());
+
+				fid << std::fixed << std::setprecision(10) << "E" << sv.SvNumber() << ","
+					<< eph->Utc() << ","
+					<< gEph->Toe__s() << ","
+					<< eph->Obstime__s() << ","
+					<< eph->Position_E().x() << ","
+					<< eph->Position_E().y() << ","
+					<< eph->Position_E().z() << ","
+					<< eph->SatelliteClockError__s() << ","
+					<< eph->RelativisticError__s() << ","
+					<< eph->SvHealth().Health() << ","
+					<< static_cast<int>(band - '0')
+					<< std::endl;
+			}
 		}
 	}
 

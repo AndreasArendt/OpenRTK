@@ -30,11 +30,13 @@ Satellite::Satellite(const Satellite& other) : _SvSystem(other._SvSystem), _SvNu
 		this->_ObservationData.push_back(ptr);
 	}
 
-	for (const auto& ptr : other._Ephemeris)
+	for (const auto& pair : other._Ephemeris)
 	{
-		this->_Ephemeris.push_back(ptr->clone());
+		for (const auto& ephemerisPtr : pair.second)
+		{
+			this->InsertEphemeris(pair.first, ephemerisPtr->clone());
+		}
 	}
-
 }
 
 Satellite::~Satellite()
@@ -42,6 +44,23 @@ Satellite::~Satellite()
 	this->_NavigationData.clear();
 	this->_ObservationData.clear();
 	this->_Ephemeris.clear();
+}
+
+void Satellite::InsertEphemeris(ObservationBand band, std::unique_ptr<Ephemeris> ephemeris)
+{		
+	auto it = this->_Ephemeris.find(band);
+	if (it != this->_Ephemeris.end())
+	{
+		auto& EphemerisVector = it->second;
+		EphemerisVector.push_back(std::move(ephemeris));
+	}
+	else
+	{
+		// If the key doesn't exist, create a new vector and move the unique_ptr into it
+		std::vector<std::unique_ptr<Ephemeris>> newEphemerisVector;
+		newEphemerisVector.push_back(std::move(ephemeris));
+		this->_Ephemeris[band] = std::move(newEphemerisVector);
+	}
 }
 
 void Satellite::addNavData(std::unique_ptr<NavData> navdata)
@@ -96,19 +115,19 @@ void Satellite::calcEphemeris()
 				auto galNav = dynamic_cast<GalileoNavData*>(nav);				
 				
 				// TODO: do for all frequencies!!
+								
+				for (const auto& [band, code] : obs.CodeObservations()) 
+				{
+					// transmission time correction
+					double transmission_time__s = code.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
+					time = time - transmission_time__s;
 				
-				if (obs.CodeObservations().empty())
-					continue;
+					auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
 
-				// transmission time correction
-				double transmission_time__s = obs.CodeObservations().begin()->second.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
-				time = time - transmission_time__s;
-				
-				auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
-
-				auto eph = std::make_unique<GalileoEphemeris>(svHealth);
-				eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
-				this->_Ephemeris.push_back(std::move(eph));
+					auto eph = std::make_unique<GalileoEphemeris>(svHealth);
+					eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());					
+					this->InsertEphemeris(band, std::move(eph));
+				}
 			}
 		}			
 		break;
@@ -132,10 +151,15 @@ Satellite& Satellite::operator=(Satellite& other) noexcept
 		}
 
 		this->_Ephemeris.clear(); // Clear current vector contents
-		for (const auto& eph : other._Ephemeris)
+	
+		for (const auto& pair : other._Ephemeris)
 		{
-			this->_Ephemeris.push_back(eph->clone());
+			for (const auto& ephemerisPtr : pair.second)
+			{
+				this->InsertEphemeris(pair.first, ephemerisPtr->clone());
+			}
 		}
+
 	}
 	return *this;
 }
