@@ -29,7 +29,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 	{
 		for (auto const& obs : sv.ObservationData())
 		{
-			fid << std::fixed << std::setprecision(10) << "E" << sv.SvNumber() << "," << obs.Epoche().Toc__s();
+			fid << std::fixed << std::setprecision(17) << "E" << sv.SvNumber() << "," << obs.Epoche().Toc__s();
 
 			// Code
 			for (auto band : { ObservationBand::Band_1, ObservationBand::Band_2, ObservationBand::Band_5 })
@@ -94,7 +94,7 @@ void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::s
 
 				auto gEph = dynamic_cast<GalileoEphemeris*>(eph.get());
 
-				fid << std::fixed << std::setprecision(10) << "E" << sv.SvNumber() << ","
+				fid << std::fixed << std::setprecision(17) << "E" << sv.SvNumber() << ","
 					<< eph->Utc() << ","
 					<< gEph->Toe__s() << ","
 					<< eph->Obstime__s() << ","
