@@ -86,16 +86,13 @@ NavData* Satellite::findClosestTime(double targetTime)
 	double minDifference = std::numeric_limits<double>::max();	
 	NavData* closestData = nullptr;
 
-	for (auto& data : this->_NavigationData)
+	for (auto& navdata : this->_NavigationData)
 	{
-		NavData* pnavData = data.get();
-		GalileoNavData* galNav = dynamic_cast<GalileoNavData*>(pnavData);		
-
-		double difference = std::abs(galNav->ToeEpoch() - targetTime);		
+		double difference = std::abs(navdata->Toc__s() - targetTime);
 		if ((difference < minDifference) && ( std::abs(difference) < 14400.0)) //GAL #define MAXDTOE_GAL 14400.0             /* max time difference to Galileo Toe (s) */
 		{
 			minDifference = difference;
-			closestData = data.get();
+			closestData = navdata.get();
 		}
 	}
 
@@ -132,6 +129,32 @@ void Satellite::calcEphemeris()
 			}
 		}			
 		break;
+	//case SvSystem::GPS:
+	//	for (auto& obs : this->_ObservationData)
+	//	{
+	//		double time = obs.Epoche().Toc__s();
+
+	//		NavData* nav = this->findClosestTime(time);
+
+	//		if (nav != nullptr)
+	//		{
+	//			auto galNav = dynamic_cast<GalileoNavData*>(nav);
+
+	//			for (const auto& [band, code] : obs.CodeObservations())
+	//			{
+	//				// transmission time correction
+	//				double transmission_time__s = code.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
+	//				time = time - transmission_time__s;
+
+	//				auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
+
+	//				auto eph = std::make_unique<GalileoEphemeris>(svHealth);
+	//				eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
+	//				this->InsertEphemeris(band, std::move(eph));
+	//			}
+	//		}
+	//	}
+	//	break;
 	default:
 		break;
 	}
