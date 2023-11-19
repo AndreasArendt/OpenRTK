@@ -77,3 +77,23 @@ void GpsNavData::AddOrbit_7(double data0, double data1, double data2, double dat
 	_Spare0 = data2;
 	_Spare1 = data3;
 }
+
+double GpsNavData::ToeEpoch()
+{
+	double t__s = 315964800.00000000; // Sunday, 6. January 1980 00:00:00 (GPS time 0)
+
+	t__s += (time_t)86400 * 7 * this->_GpsWeek + this->_Toe__s; //add GalWeek[s] and Toe[s]
+
+	// Week adjustment
+	double tt = difftime(t__s, this->Toc__s());
+	if (tt < -302400.0)
+	{
+		t__s += 604800.0;
+	}
+	if (tt > 302400.0)
+	{
+		t__s -= 604800.0;
+	}
+
+	return t__s;
+}

@@ -64,9 +64,54 @@ protected:
 	void AddOrbit_7(double data0, double data1, double data2, double data3);
 
 public:
+	// Clock Data
+	double const& SV_ClockBias__s() const { return _SV_ClockBias__s; }
+	double const& SV_ClockDrift__sDs() const { return _SV_ClockDrift__sDs; }
+	double const& SV_ClockDriftRate__sDs2() const { return _SV_ClockDriftRate__sDs2; }
+
+	// Orbit 1
+	double const& IODE_IssueOfData() const { return _IODE_IssueOfData; }
+	double const& Crs__m() const { return _Crs__m; }
+	double const& DeltaN__radDs() const { return _DeltaN__radDs; }
+	double const& M0__rad() const { return _M0__rad; }
+
+	// Orbit 2
+	double const& Cuc__rad() const { return _Cuc__rad; }
+	double const& Eccentricity() const { return _Eccentricity; }
+	double const& Cus__rad() const { return _Cus__rad; }
+	double const& SqrtA___sqrtm() const { return _SqrtA___sqrtm; }
+
+	// Orbit 3
+	double const& Toe__s() const { return _Toe__s; }		//TOE
+	double const& Cic__rad() const { return _Cic__rad; }
+	double const& Omega0__rad() const { return _Omega0__rad; }
+	double const& Cis__rad() const { return _Cis__rad; }
+
+	// Orbit 4
+	double const& i0__rad() const { return _i0__rad; }
+	double const& Crc__m() const { return _Crc__m; }
+	double const& Omega__rad() const { return _Omega__rad; }
+	double const& Omega_dot__radDs() const { return _Omega_dot__radDs; }
+
+	// Orbit 5
+	double const& Idot__radDs() const { return _Idot__radDs; }
+	double const& CodesOnL2() const { return _CodesOnL2; }
+	double const& GpsWeek() const { return _GpsWeek; }
+
+	// Orbit 6
+	double const& SvAccuracy__m() const { return _SvAccuracy__m; }
+	double const& SvHealth() const { return _SvHealth; }
+	double const& TGD__s() const { return _TGD__s; }
+	double const& IODC() const { return _IODC; }
+
+	// Orbit 7
+	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; } //TOT
+	double FitInterval__hrs() const { return _FitInterval__hrs; }
+	
 	//functions
 	void AddClockErrors(double data0, double data1, double data2);
-	
+	double ToeEpoch();
+
 	std::unique_ptr<NavData> clone() const override;
 
 	// ctor & dtor

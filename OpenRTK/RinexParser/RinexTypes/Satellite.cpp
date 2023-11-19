@@ -129,32 +129,32 @@ void Satellite::calcEphemeris()
 			}
 		}			
 		break;
-	//case SvSystem::GPS:
-	//	for (auto& obs : this->_ObservationData)
-	//	{
-	//		double time = obs.Epoche().Toc__s();
+	case SvSystem::GPS:
+		for (auto& obs : this->_ObservationData)
+		{
+			double time = obs.Epoche().Toc__s();
 
-	//		NavData* nav = this->findClosestTime(time);
+			NavData* nav = this->findClosestTime(time);
 
-	//		if (nav != nullptr)
-	//		{
-	//			auto galNav = dynamic_cast<GalileoNavData*>(nav);
+			if (nav != nullptr)
+			{
+				auto gpsNav = dynamic_cast<GpsNavData*>(nav);
 
-	//			for (const auto& [band, code] : obs.CodeObservations())
-	//			{
-	//				// transmission time correction
-	//				double transmission_time__s = code.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
-	//				time = time - transmission_time__s;
+				for (const auto& [band, code] : obs.CodeObservations())
+				{
+					// transmission time correction
+					double transmission_time__s = code.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
+					time = time - transmission_time__s;
 
-	//				auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
+					auto svHealth = GpsSvHealth::fromBitfield(gpsNav->SvHealth());
 
-	//				auto eph = std::make_unique<GalileoEphemeris>(svHealth);
-	//				eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
-	//				this->InsertEphemeris(band, std::move(eph));
-	//			}
-	//		}
-	//	}
-	//	break;
+					auto eph = std::make_unique<GpsEphemeris>(svHealth);
+					eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
+					this->InsertEphemeris(band, std::move(eph));
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}
