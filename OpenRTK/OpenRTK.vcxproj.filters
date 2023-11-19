@@ -75,6 +75,9 @@
     <ClCompile Include="PrecisePositioning\Ephemeris\Ephemeris.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="PrecisePositioning\Ephemeris\KeplerOrbit.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -192,6 +195,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\NavData\Galileo\GalileoSvHealth.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecisePositioning\Ephemeris\KeplerOrbit.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

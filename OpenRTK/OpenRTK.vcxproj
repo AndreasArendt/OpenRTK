@@ -141,6 +141,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Export\CsvExport.cpp" />
+    <ClCompile Include="PrecisePositioning\Ephemeris\KeplerOrbit.cpp" />
     <ClCompile Include="PrecisePositioning\Ephemeris\Ephemeris.cpp" />
     <ClCompile Include="RinexParser\AbstractRinexParser.cpp" />
     <ClCompile Include="RinexParser\ObsData\ObsData.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Export\CsvExport.hpp" />
+    <ClInclude Include="PrecisePositioning\Ephemeris\KeplerOrbit.hpp" />
     <ClInclude Include="RinexParser\AbstractRinexParser.hpp" />
     <ClInclude Include="RinexParser\NavData\Galileo\GalileoSvHealth.hpp" />
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp" />

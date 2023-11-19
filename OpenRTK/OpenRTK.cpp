@@ -17,11 +17,11 @@ int main()
 	//std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/AUBG00DEU_R_20231231000_01H_30S_MO.obs";
 	//std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20231231000_01H_MN.nav";
 
-	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/AUBG00DEU_R_20232220000_01D_30S_MO.obs";
-	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20232220000_01D_MN.nav";
+	//std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/AUBG00DEU_R_20232220000_01D_30S_MO.obs";
+	//std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/AUBG00DEU_R_20232220000_01D_MN.nav";
 	
-	//std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/ORID00MKD_R_20230090000_01D_30S_MO.obs";
-	//std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/ORID00MKD_R_20230090000_01D_MN.nav";
+	std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/ORID00MKD_R_20230090000_01D_30S_MO.obs";
+	std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/ORID00MKD_R_20230090000_01D_MN.nav";
 
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
