@@ -103,7 +103,7 @@ void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::s
 					<< eph->Position_E().z() << ","
 					<< eph->SatelliteClockError__s() << ","
 					<< eph->RelativisticError__s() << ","
-					<< eph->SvHealth().Health() << ","
+					<< eph->SatelliteHealth().Health() << ","
 					<< static_cast<int>(band - '0')
 					<< std::endl;
 			}

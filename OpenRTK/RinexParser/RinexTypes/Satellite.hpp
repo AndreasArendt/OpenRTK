@@ -3,7 +3,6 @@
 #include "SvSystem.hpp"
 #include "../../PrecisePositioning/Ephemeris/Ephemeris.hpp"
 #include "../NavData/NavData.hpp"
-#include "../NavData/GpsNavData.hpp"
 #include "../ObsData/ObsData.hpp"
 
 #include <string>

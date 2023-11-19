@@ -1,10 +1,10 @@
 #pragma once
 
-class GalileoSvHealth
+#include "../SvHealth.hpp"
+
+class GalileoSvHealth : public SvHealth
 {
 public:    
-    int _Health;
-
     struct 
     {
         int E1B_DVS : 1;
@@ -13,7 +13,7 @@ public:
         int E5A_HS  : 2;
         int E5B_DVS : 1;
         int E5B_HS  : 2;
-    } bits;
+    } bits = { 0 };
 
     int const& Health() const { return this->_Health; }
 
@@ -31,5 +31,4 @@ public:
 
         return result;
     }
-
 };

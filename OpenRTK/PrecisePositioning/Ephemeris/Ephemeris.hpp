@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../RinexParser/NavData/Galileo/GalileoNavData.hpp"
 #include "../../Transformations/ECEF_Position.hpp"
+#include "../../RinexParser/NavData/NavData.hpp"
+#include "../../RinexParser/NavData/SvHealth.hpp"
 
 #include <math.h>
 #include <memory>
@@ -11,7 +12,7 @@ class Ephemeris
 {
 public:
 	ECEF_Position _Position_E;
-	GalileoSvHealth _SvHealth;
+	SvHealth _SvHealth;
 
 protected:
 	/*ECEF_Position _Position_E;*/
@@ -29,7 +30,7 @@ public:
 	double const& Utc() const { return this->_Utc__s; }
 	double const& Toe__s() const { return this->_Toe__s; }
 	double const& Obstime__s() const { return this->_Obstime__s; }
-	GalileoSvHealth const& SvHealth() const { return this->_SvHealth; }
+	SvHealth const& SatelliteHealth() const { return this->_SvHealth; }
 
 	// functions	
 	virtual void CalcEphemeris(NavData& navData, double time, double obstime) = 0;
@@ -37,7 +38,7 @@ public:
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
 		
 	// cotr & dtor
-	Ephemeris(GalileoSvHealth svHealth) : _SatelliteClockError__s(0), _RelativisticError__s(0), _Utc__s(0), _Toe__s(0), _Obstime__s(0), _SvHealth(svHealth)	{};
+	Ephemeris(SvHealth svHealth) : _SatelliteClockError__s(0), _RelativisticError__s(0), _Utc__s(0), _Toe__s(0), _Obstime__s(0), _SvHealth(svHealth)	{};
 
 	virtual ~Ephemeris() = default;
 

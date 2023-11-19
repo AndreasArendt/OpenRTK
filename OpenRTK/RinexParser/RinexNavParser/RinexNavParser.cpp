@@ -3,7 +3,7 @@
 #include "../../Utils/astring.hpp"
 #include "../RinexTypes/IonosphericCorrectionParameter.hpp"
 #include "../RinexTypes/TimeDifferenceType.hpp"
-#include "../NavData/GpsNavData.hpp"
+#include "../NavData/Gps/GpsNavData.hpp"
 #include "../NavData/Galileo/GalileoNavData.hpp"
 
 #include <sstream>

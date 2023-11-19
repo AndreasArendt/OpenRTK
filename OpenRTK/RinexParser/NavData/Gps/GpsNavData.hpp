@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NavData.hpp"
+#include "../NavData.hpp"
 
 #include <memory>
 

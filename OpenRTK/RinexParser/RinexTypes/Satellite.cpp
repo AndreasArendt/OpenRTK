@@ -1,6 +1,9 @@
 #include "Satellite.hpp"
 #include "../../Utils/astring.hpp"
 #include "../../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
+#include "../../PrecisePositioning/Ephemeris/GpsEphemeris.hpp"
+#include "../NavData/Galileo/GalileoNavData.hpp"
+#include "../NavData/Gps/GpsNavData.hpp"
 #include "../../Transformations/Transformation.hpp"
 
 Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)

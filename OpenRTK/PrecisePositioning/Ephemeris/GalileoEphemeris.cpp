@@ -2,13 +2,15 @@
 #include "../../Transformations/Transformation.hpp"
 #include "../../Transformations/Constants.hpp"
 #include "../Ephemeris/KeplerOrbit.hpp"
+#include "../../RinexParser/NavData/Galileo/GalileoNavData.hpp"
+#include "../../RinexParser/NavData/SvHealth.hpp"
 
 #include <cmath>
 #include <chrono>
 
 #include <iostream>
 
-GalileoEphemeris::GalileoEphemeris(GalileoSvHealth svHealth) : Ephemeris(svHealth)
+GalileoEphemeris::GalileoEphemeris(GalileoSvHealth svHealth) : Ephemeris(static_cast<SvHealth>(svHealth))
 {
 }
 

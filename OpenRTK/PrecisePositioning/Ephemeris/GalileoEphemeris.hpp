@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Ephemeris.hpp"
+#include "../../RinexParser/NavData/Galileo/GalileoSvHealth.hpp"
 
 #include <memory>
 

@@ -39,7 +39,7 @@
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="RinexParser\NavData\GpsNavData.cpp">
+    <ClCompile Include="RinexParser\NavData\Gps\GpsNavData.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RinexParser\NavData\Galileo\GalileoNavData.cpp">
@@ -76,6 +76,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PrecisePositioning\Ephemeris\KeplerOrbit.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecisePositioning\Ephemeris\GpsEphemeris.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,7 +155,7 @@
     <ClInclude Include="RinexParser\NavData\NavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="RinexParser\NavData\GpsNavData.hpp">
+    <ClInclude Include="RinexParser\NavData\Gps\GpsNavData.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\NavData\Galileo\GalileoNavData.hpp">
@@ -198,6 +201,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="PrecisePositioning\Ephemeris\KeplerOrbit.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecisePositioning\Ephemeris\GpsEphemeris.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\NavData\Gps\GpsSvHealth.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="RinexParser\NavData\SvHealth.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
