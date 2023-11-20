@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
+#include "../PrecisePositioning/Ephemeris/GpsEphemeris.hpp"
 
 CsvExport::CsvExport()
 {
@@ -29,7 +30,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 	{
 		for (auto const& obs : sv.ObservationData())
 		{
-			fid << std::fixed << std::setprecision(17) << "E" << sv.SvNumber() << "," << obs.Epoche().Toc__s();
+			fid << std::fixed << std::setprecision(17) << static_cast<char>(sv.SVSystem()) << sv.SvNumber() << "," << obs.Epoche().Toc__s();
 
 			// Code
 			for (auto band : { ObservationBand::Band_1, ObservationBand::Band_2, ObservationBand::Band_5 })
@@ -91,12 +92,21 @@ void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::s
 		{
 			for (const auto& eph : ephemerides)
 			{
+				double Toe__s = 0;
+				if (sv.SVSystem() == SvSystem::GALILEO)
+				{
+					auto gEph = dynamic_cast<GalileoEphemeris*>(eph.get());
+					Toe__s = gEph->Toe__s();
+				}
+				else if (sv.SVSystem() == SvSystem::GPS)
+				{
+					auto gEph = dynamic_cast<GpsEphemeris*>(eph.get());
+					Toe__s = gEph->Toe__s();
+				}
 
-				auto gEph = dynamic_cast<GalileoEphemeris*>(eph.get());
-
-				fid << std::fixed << std::setprecision(17) << "E" << sv.SvNumber() << ","
+				fid << std::fixed << std::setprecision(17) << static_cast<char>(sv.SVSystem()) << sv.SvNumber() << ","
 					<< eph->Utc() << ","
-					<< gEph->Toe__s() << ","
+					<< Toe__s << ","
 					<< eph->Obstime__s() << ","
 					<< eph->Position_E().x() << ","
 					<< eph->Position_E().y() << ","
