@@ -23,7 +23,7 @@ void GalileoEphemeris::CalcClockOffset(NavData& navData, double time)
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
 
 	// apply clock correction - taken from RTKLIB eph2clk
-	double t = time - nav.Toc__s();
+	double t = time - nav.Epoche().Toc__s();
 	double ts = t;
 
 	for (int i = 0; i < 2; i++)

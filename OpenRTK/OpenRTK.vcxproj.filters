@@ -212,6 +212,9 @@
     <ClInclude Include="RinexParser\NavData\SvHealth.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="RinexParser\RinexData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

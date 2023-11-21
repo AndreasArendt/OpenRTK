@@ -171,6 +171,7 @@
     <ClInclude Include="PrecisePositioning\PPP.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GalileoEphemeris.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\Ephemeris.hpp" />
+    <ClInclude Include="RinexParser\RinexData.hpp" />
     <ClInclude Include="RinexParser\RinexParser.hpp" />
     <ClInclude Include="RinexParser\NavData\Galileo\GalileoNavData.hpp" />
     <ClInclude Include="RinexParser\NavData\Gps\GpsNavData.hpp" />

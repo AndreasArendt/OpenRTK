@@ -6,13 +6,12 @@
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/SignalStrengthObservation.hpp"
 #include "../RinexTypes/ObservationBand.hpp"
+#include "../RinexData.hpp"
 
 #include <map>
 
-class ObsData
+class ObsData : public RinexData
 {
-protected:
-	Epoch _Epoch;
 
 private:
     int _EpochFlag;    
@@ -30,8 +29,7 @@ public:
     std::map<ObservationBand, DopplerObservation> const& DopplerObservations() const { return this->_DopplerObservations; }
     std::map<ObservationBand, SignalStrengthObservation> const& SnrObservations() const { return this->_SnrObservations; }
     bool const& IsSpecialEvent() const { return this->_IsSpecialEvent; }        
-    Epoch const& Epoche() const { return this->_Epoch; }
-
+    
     // functions
     void AddCodeObservation(ObservationBand band, double Pseudorange__m);
     void AddPhaseObservation(ObservationBand band, double Carrierphase__Cycles);
@@ -39,12 +37,7 @@ public:
     void AddSnrObservation(ObservationBand band, double SNR);
 
     ObsData() : _EpochFlag(-1), _IsSpecialEvent(false) { }
-
-    ObsData(Epoch epoch, int epochFlag) :
-        _Epoch(epoch),
-        _EpochFlag(epochFlag),        
-        _IsSpecialEvent(epochFlag >= 2) { }
-    
+    ObsData(Epoch epoch, int epochFlag) : RinexData(epoch), _EpochFlag(epochFlag), _IsSpecialEvent(epochFlag >= 2) { }    
     ~ObsData() { }
 };
 

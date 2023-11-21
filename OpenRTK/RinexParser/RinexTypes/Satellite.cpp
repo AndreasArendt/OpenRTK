@@ -88,7 +88,7 @@ NavData* Satellite::findClosestTime(double targetTime)
 
 	for (auto& navdata : this->_NavigationData)
 	{
-		double difference = std::abs(navdata->Toc__s() - targetTime);
+		double difference = std::abs(navdata->Epoche().Toc__s() - targetTime);
 		if ((difference < minDifference) && ( std::abs(difference) < 14400.0)) //GAL #define MAXDTOE_GAL 14400.0             /* max time difference to Galileo Toe (s) */
 		{
 			minDifference = difference;

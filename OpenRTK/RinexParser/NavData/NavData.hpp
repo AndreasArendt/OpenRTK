@@ -1,12 +1,13 @@
 #pragma once
 
 #include "ENavOrbitNumber.hpp"
-#include "../RinexTypes/Epoch/Epoch.hpp"
+#include "../RinexData.hpp"
+
 
 #include <memory>
 #include <chrono>
 
-class NavData
+class NavData : public RinexData
 {
 protected:
 	virtual void AddOrbit_1(double data0, double data1, double data2, double data3) = 0;
@@ -17,12 +18,9 @@ protected:
 	virtual void AddOrbit_6(double data0, double data1, double data2, double data3) = 0;
 	virtual void AddOrbit_7(double data0, double data1, double data2, double data3) = 0;
 
-protected:
-	Epoch _Epoch;
-
 public:
 	// getters	
-	double const Toc__s() { return this->_Epoch.Toc__s(); }
+	//double const Toc__s() { return this->_Epoch.Toc__s(); }
 	
 	// functions
 	virtual void AddClockErrors(double data0, double data1, double data2) = 0;
