@@ -10,7 +10,7 @@
 
 class Ephemeris
 {
-public:
+private:
 	ECEF_Position _Position_E;
 	SvHealth _SvHealth;
 
