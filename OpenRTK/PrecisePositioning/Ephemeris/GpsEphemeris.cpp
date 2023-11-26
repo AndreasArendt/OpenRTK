@@ -11,7 +11,7 @@ GpsEphemeris::~GpsEphemeris()
 {
 }
 
-void GpsEphemeris::CalcClockOffset(NavData& navData, double time)
+double GpsEphemeris::CalcClockOffset(NavData& navData, double time)
 {
 	auto nav = dynamic_cast<GpsNavData&>(navData);
 
@@ -25,6 +25,7 @@ void GpsEphemeris::CalcClockOffset(NavData& navData, double time)
 	}
 
 	this->_SatelliteClockError__s = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t + nav.SV_ClockDriftRate__sDs2() * t * t;
+	return this->_SatelliteClockError__s;
 }
 
 void GpsEphemeris::CalcEphemeris(NavData& navData, double time, double obstime)
@@ -56,8 +57,10 @@ void GpsEphemeris::CalcEphemeris(NavData& navData, double time, double obstime)
 		.Toe__s = nav.Toe__s()
 	};
 
-	auto orbit = KeplerOrbit();
-	this->_Position_E = orbit.CalcEphemeris(orbitData, time, obstime);
+	auto orbit = KeplerOrbit();	
+	auto pos_vel = orbit.CalcEphemeris(orbitData, time, obstime);
+	this->_Position_E = std::get<0>(pos_vel);
+	this->_Velocity_E = std::get<1>(pos_vel);
 
 	this->_Utc__s = time;
 	this->_Toe__s = nav.ToeEpoch();

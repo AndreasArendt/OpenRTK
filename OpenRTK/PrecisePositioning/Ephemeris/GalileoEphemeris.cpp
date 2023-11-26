@@ -18,7 +18,7 @@ GalileoEphemeris::~GalileoEphemeris()
 {
 }
 
-void GalileoEphemeris::CalcClockOffset(NavData& navData, double time)
+double GalileoEphemeris::CalcClockOffset(NavData& navData, double time)
 {
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
 
@@ -32,6 +32,7 @@ void GalileoEphemeris::CalcClockOffset(NavData& navData, double time)
 	}
 
 	this->_SatelliteClockError__s = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t + nav.SV_ClockDriftRate__sDs2() * t * t;	
+	return this->_SatelliteClockError__s;
 }
 
 void GalileoEphemeris::CalcEphemeris(NavData& navData, double time, double obstime)
@@ -64,7 +65,9 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time, double obsti
 	};
 
 	auto orbit = KeplerOrbit();
-	this->_Position_E = orbit.CalcEphemeris(orbitData, time, obstime);
+	auto pos_vel = orbit.CalcEphemeris(orbitData, time, obstime);
+	this->_Position_E = std::get<0>(pos_vel);
+	this->_Velocity_E = std::get<1>(pos_vel);
 	
 	this->_Utc__s = time;
 	this->_Toe__s = nav.ToeEpoch();

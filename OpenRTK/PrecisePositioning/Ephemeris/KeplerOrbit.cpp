@@ -2,6 +2,16 @@
 
 #include "../../Transformations/Transformation.hpp"
 
+KeplerOrbit::KeplerOrbit()
+{
+
+}
+
+KeplerOrbit::~KeplerOrbit()
+{
+
+}
+
 double KeplerOrbit::CalcMeanAnomaly(KeplerOrbitData& orbitData, double time)
 {	
 	double t_k = time - orbitData.ToeEpoch;
@@ -31,13 +41,9 @@ double KeplerOrbit::CalcMeanAnomaly(KeplerOrbitData& orbitData, double time)
 	return E;
 }
 
-ECEF_Position KeplerOrbit::CalcEphemeris(KeplerOrbitData& orbitData, double time, double obstime)
+std::tuple<ECEF_Position, ECEF_Velocity> KeplerOrbit::CalcEphemeris(KeplerOrbitData& orbitData, double time, double obstime)
 {
-	// Satellite Clock Offset Correction
-	//this->CalcClockOffset(navData, time);
-	//time = time - this->_SatelliteClockError__s;
-		
-	// Semo major Axis
+	// Semi major Axis
 	double A = orbitData.SqrtA___sqrtm * orbitData.SqrtA___sqrtm;
 
 	// Mean Anomaly
@@ -95,5 +101,49 @@ ECEF_Position KeplerOrbit::CalcEphemeris(KeplerOrbitData& orbitData, double time
 	double y = x_prime * sin(OMEGA) + y_prime * cos(i) * cos(OMEGA);
 	double z = y_prime * sin(i);
 
-	return ECEF_Position(x, y, z);	
+	// ==================================================
+	// Calculate Velocity
+	// ==================================================		
+
+	// Computed mean motion (rad/s)
+	double n_0 = sqrt(Transformation::GravitationalConstant__m3Ds2 / pow(A, 3));
+
+	// Corrected mean motion
+	double n = n_0 + orbitData.DeltaN__radDs;
+
+	double Ek_dot = n / (1 - orbitData.Eccentricity * cos(E)); // (1)
+
+	// True Anomaly rate
+	double vk_dot = (Ek_dot * sqrt(1 - orbitData.Eccentricity * orbitData.Eccentricity)) / (1 - orbitData.Eccentricity * cos(E)); // (2)
+
+	// Corrected Inclination Angle Rate
+	double dldot_kDdt = orbitData.Idot__radDs + 2 * vk_dot * (orbitData.Cis__rad + cos(2 * phi) - orbitData.Cic__rad * sin(2 * phi)); // (3)
+
+	// Corrected Argument of Latitude Rate
+	double uk_dot = vk_dot + 2 * vk_dot * (orbitData.Cus__rad * cos(2 * phi) - orbitData.Cuc__rad * sin(2 * phi)); // (4)
+
+	double A_dot = 0.0; //?
+	double rk_dot = A_dot * (1 - orbitData.Eccentricity * cos(E)) +
+		A * orbitData.Eccentricity * sin(E) * Ek_dot +
+		2 * (orbitData.Crs__m * cos(2 * phi) - orbitData.Crc__m * sin(2 * phi)) * vk_dot; // (5)
+
+	double Omegak_dot = orbitData.Omega_dot__radDs - Transformation::MeanAngularVelocityOfEarth__radDs; // (6)
+
+	// In plane x,y velocity
+	double x_prime_dot = rk_dot * cos(u) - r * uk_dot * sin(u); // (7)
+	double y_prime_dot = rk_dot * sin(u) + r * uk_dot * cos(u); // (8)
+	
+	// ECEF Velocity
+	double xdot = -x_prime * Omegak_dot * sin(OMEGA) + x_prime_dot * cos(OMEGA) -
+		y_prime_dot * sin(OMEGA) * cos(i) -
+		y_prime * (Omegak_dot * cos(OMEGA) * cos(i) - dldot_kDdt * sin(OMEGA) * sin(i));
+
+	double ydot = x_prime * Omegak_dot * cos(OMEGA) +
+		x_prime_dot * sin(OMEGA) +
+		y_prime_dot * cos(OMEGA) * cos(i) -
+		y_prime * (Omegak_dot * sin(OMEGA) * cos(i) + dldot_kDdt * cos(OMEGA) * sin(i));
+
+	double zdot = y_prime_dot * sin(i) + y_prime * dldot_kDdt * cos(i);
+
+	return std::tuple<ECEF_Position, ECEF_Velocity>(ECEF_Position(x, y, z), ECEF_Velocity(xdot, ydot, zdot));
 }

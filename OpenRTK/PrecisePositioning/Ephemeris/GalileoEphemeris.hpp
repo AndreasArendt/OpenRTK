@@ -13,7 +13,7 @@ private:
 public:
 	void CalcVelocity();
 	void CalcEphemeris(NavData& navData, double time, double obstime) override;
-	void CalcClockOffset(NavData& navData, double time) override;
+	double CalcClockOffset(NavData& navData, double time) override;
 	std::unique_ptr<Ephemeris> clone() const override;
 
 	// ctor & dtor	

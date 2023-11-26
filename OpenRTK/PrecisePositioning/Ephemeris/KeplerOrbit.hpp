@@ -2,10 +2,11 @@
 
 #include "../../RinexParser/NavData/NavData.hpp"
 #include "../../Transformations/ECEF_Position.hpp"
+#include "../../Transformations/ECEF_Velocity.hpp"
 
 struct KeplerOrbitData
 {
-	double SqrtA___sqrtm;
+	double SqrtA___sqrtm;	
 	double DeltaN__radDs;
 	double M0__rad;
 	double Eccentricity;
@@ -21,7 +22,7 @@ struct KeplerOrbitData
 	double i0__rad;
 	double Idot__radDs;
 	double ToeEpoch;
-	double Toe__s;
+	double Toe__s;	
 };
 
 class KeplerOrbit
@@ -32,5 +33,9 @@ private:
 	double CalcMeanAnomaly(KeplerOrbitData& orbitData, double time);
 
 public:
-	ECEF_Position CalcEphemeris(KeplerOrbitData& orbitData, double time, double obstime);
+	std::tuple<ECEF_Position, ECEF_Velocity> CalcEphemeris(KeplerOrbitData& orbitData, double time, double obstime);
+	
+	// ctor & dtor
+	KeplerOrbit();
+	~KeplerOrbit();
 };

@@ -115,14 +115,15 @@ void Satellite::calcEphemeris()
 				auto galNav = dynamic_cast<GalileoNavData*>(nav);				
 				
 				for (const auto& [band, code] : obs.CodeObservations()) 
-				{
+				{					
+					auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
+					auto eph = std::make_unique<GalileoEphemeris>(svHealth);
+					
 					// transmission time correction
 					double transmission_time__s = code.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
 					time = time - transmission_time__s;
-				
-					auto svHealth = GalileoSvHealth::fromBitfield(galNav->SvHealth());
+					time = time - eph->CalcClockOffset(*nav, time);
 
-					auto eph = std::make_unique<GalileoEphemeris>(svHealth);
 					eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());					
 					this->InsertEphemeris(band, std::move(eph));
 				}
@@ -142,13 +143,14 @@ void Satellite::calcEphemeris()
 
 				for (const auto& [band, code] : obs.CodeObservations())
 				{
+					auto svHealth = GpsSvHealth::fromBitfield(gpsNav->SvHealth());
+					auto eph = std::make_unique<GpsEphemeris>(svHealth);
+
 					// transmission time correction
 					double transmission_time__s = code.Pseudorange__m() / Transformation::SpeedOfLight__mDs;
 					time = time - transmission_time__s;
+					time = time - eph->CalcClockOffset(*nav, time);
 
-					auto svHealth = GpsSvHealth::fromBitfield(gpsNav->SvHealth());
-
-					auto eph = std::make_unique<GpsEphemeris>(svHealth);
 					eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
 					this->InsertEphemeris(band, std::move(eph));
 				}

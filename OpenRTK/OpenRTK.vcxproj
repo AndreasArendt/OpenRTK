@@ -198,9 +198,11 @@
     <ClInclude Include="RinexParser\RinexObsParser\RinexReaderState.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexObsParser.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\SvSystem.hpp" />
+    <ClInclude Include="Transformations\ECEF_Velocity.hpp" />
     <ClInclude Include="Transformations\Kepler.hpp" />
     <ClInclude Include="Transformations\Position.hpp" />
     <ClInclude Include="Transformations\Transformation.hpp" />
+    <ClInclude Include="Transformations\Velocity.hpp" />
     <ClInclude Include="Utils\astring.hpp" />
     <ClInclude Include="Utils\strim.hpp" />
     <ClInclude Include="Utils\time.hpp" />
