@@ -10,12 +10,9 @@
 
 class Ephemeris
 {
-private:
-	ECEF_Position _Position_E;
-	SvHealth _SvHealth;
-
 protected:
-	/*ECEF_Position _Position_E;*/
+	ECEF_Position _Position_E;
+	SvHealth _SvHealth;	
 	double _SatelliteClockError__s;
 	double _RelativisticError__s;
 	double _Utc__s;
