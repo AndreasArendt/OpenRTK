@@ -16,4 +16,14 @@ public:
 	Position() {}
 	Position(double x, double y, double z) : _x__m(x), _y__m(y), _z__m(z) {}
 	~Position() {}
+	
+	Position operator+ (const Position& rhs) const
+	{
+		return Position(this->_x__m + rhs._x__m, this->_y__m + rhs._y__m, this->_z__m + rhs._z__m);
+	}
+
+	Position operator- (const Position& rhs) const
+	{
+		return Position(this->_x__m - rhs._x__m, this->_y__m - rhs._y__m, this->_z__m - rhs._z__m);
+	}
 };

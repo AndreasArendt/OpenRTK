@@ -68,7 +68,7 @@ void GalileoEphemeris::CalcEphemeris(NavData& navData, double time, double obsti
 	auto pos_vel = orbit.CalcEphemeris(orbitData, time, obstime);
 	this->_Position_E = std::get<0>(pos_vel);
 	this->_Velocity_E = std::get<1>(pos_vel);
-	
+
 	this->_Utc__s = time;
 	this->_Toe__s = nav.ToeEpoch();
 	this->_Obstime__s = obstime;

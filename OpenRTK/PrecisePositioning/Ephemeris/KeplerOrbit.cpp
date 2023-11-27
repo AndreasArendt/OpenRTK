@@ -117,21 +117,19 @@ std::tuple<ECEF_Position, ECEF_Velocity> KeplerOrbit::CalcEphemeris(KeplerOrbitD
 	double vk_dot = (Ek_dot * sqrt(1 - orbitData.Eccentricity * orbitData.Eccentricity)) / (1 - orbitData.Eccentricity * cos(E)); // (2)
 
 	// Corrected Inclination Angle Rate
-	double dldot_kDdt = orbitData.Idot__radDs + 2 * vk_dot * (orbitData.Cis__rad + cos(2 * phi) - orbitData.Cic__rad * sin(2 * phi)); // (3)
+	double dldot_kDdt = orbitData.Idot__radDs + 2 * vk_dot * (orbitData.Cis__rad * cos(2 * phi) - orbitData.Cic__rad * sin(2 * phi)); // (3)
 
 	// Corrected Argument of Latitude Rate
-	double uk_dot = vk_dot + 2 * vk_dot * (orbitData.Cus__rad * cos(2 * phi) - orbitData.Cuc__rad * sin(2 * phi)); // (4)
+	double u_dot = vk_dot + 2 * vk_dot * (orbitData.Cus__rad * cos(2 * phi) - orbitData.Cuc__rad * sin(2 * phi)); // (4)
 
-	double A_dot = 0.0; //?
-	double rk_dot = A_dot * (1 - orbitData.Eccentricity * cos(E)) +
-		A * orbitData.Eccentricity * sin(E) * Ek_dot +
-		2 * (orbitData.Crs__m * cos(2 * phi) - orbitData.Crc__m * sin(2 * phi)) * vk_dot; // (5)
+	double r_dot = orbitData.Eccentricity * A * Ek_dot * sin(E) +
+		2 * vk_dot * (orbitData.Crs__m * cos(2 * phi) - orbitData.Crc__m * sin(2 * phi)); // (5)
 
 	double Omegak_dot = orbitData.Omega_dot__radDs - Transformation::MeanAngularVelocityOfEarth__radDs; // (6)
 
 	// In plane x,y velocity
-	double x_prime_dot = rk_dot * cos(u) - r * uk_dot * sin(u); // (7)
-	double y_prime_dot = rk_dot * sin(u) + r * uk_dot * cos(u); // (8)
+	double x_prime_dot = r_dot * cos(u) - r * u_dot * sin(u); // (7)
+	double y_prime_dot = r_dot * sin(u) + r * u_dot * cos(u); // (8)
 	
 	// ECEF Velocity
 	double xdot = -x_prime * Omegak_dot * sin(OMEGA) + x_prime_dot * cos(OMEGA) -
