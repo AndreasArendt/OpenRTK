@@ -26,10 +26,10 @@ clear obs;
 %%
 ctr = 1;
 
-F = eye(5);
-X(:,ctr) = [station_pos__m'; 0; 0];
-P(:,:,ctr) = zeros(5,5);
-Q = diag([0.001 0.001 0.001 0.0001 0.0001]);
+F = eye(4);
+X(:,ctr) = [station_pos__m'; 0];
+P(:,:,ctr) = zeros(4,4);
+Q = diag([0.001 0.001 0.001 0.0001]);
 y(ctr) = 0;
 R_L1 = 100;
 R_L5 = 1000;
@@ -49,8 +49,8 @@ for tt = timestamps.'
     idx_eph_healthy = S.Health == 0;
     idx = idx & idx_eph_healthy;
     idx = idx & (S.Code_1 > 1e3 & S.Code_5 > 1e3);
-    idx = idx & (S.Band == 1 | S.Band == 5);
-    % idx = idx & (S.Band == 1);
+    % idx = idx & (S.Band == 1 | S.Band == 5);
+    idx = idx & (S.Band == 1);
     % idx = idx & (S.Band == 5);
 
     idx_L1 = S.Band(idx) == 1;
@@ -66,8 +66,8 @@ for tt = timestamps.'
     r = r + Transformation.MeanAngularVelocityOfEarth__radDs*(S.x(idx)*X(2,ctr+1) - S.y(idx)*X(1,ctr+1)) ./ Transformation.SpeedOfLight__mDs;
 
     cdt_sv = Transformation.SpeedOfLight__mDs * S.SvClockOffset(idx);
-    cdt_rx_L1 = Transformation.SpeedOfLight__mDs * X(4,ctr+1);
-    cdt_rx_L5 = Transformation.SpeedOfLight__mDs * X(5,ctr+1);
+    cdt_rx_L1 = X(4,ctr+1);
+    cdt_rx_L5 = X(4,ctr+1);
     cdt_relativistic = Transformation.SpeedOfLight__mDs * S.RelativisticError(idx);
 
     cdt_rx = zeros(numel(r), 1);
@@ -79,7 +79,7 @@ for tt = timestamps.'
     
     elevation = atan2(U, sqrt(E.^2 + N.^2));
 
-    dt_tropo = CalcTropoDelay(alt__m, elevation);
+    dt_tropo = TropoModel(alt__m, elevation);
             
     r_ionofree = ((F_E1_Galileo__MHz^2 * S.Code_1(idx)) - (F_E5a_Galileo__MHz^2 * S.Code_5(idx))) ./ ...
                         (F_E1_Galileo__MHz^2 - F_E5a_Galileo__MHz^2);
@@ -88,12 +88,12 @@ for tt = timestamps.'
     H2 = (X(2,ctr+1) - S.y(idx)) ./ r; 
     H3 = (X(3,ctr+1) - S.z(idx)) ./ r; 
 
-    C1 = zeros(numel(r), 1);        
-    C1(idx_L1) = Transformation.SpeedOfLight__mDs;
+    % C1 = zeros(numel(r), 1);        
+    % C1(idx_L1) = Transformation.SpeedOfLight__mDs;
     
-    C5 = zeros(numel(r), 1);    
-    C5(idx_L5) = Transformation.SpeedOfLight__mDs;
-    H = [H1, H2, H3, C1, C5];
+    % C5 = zeros(numel(r), 1);    
+    % C5(idx_L5) = Transformation.SpeedOfLight__mDs;
+    H = [H1, H2, H3, ones(numel(r), 1)];
      
     dist_meas = r_ionofree - cdt_rx + cdt_sv - dt_tropo - cdt_relativistic;        
     y = dist_meas - r;
@@ -106,7 +106,7 @@ for tt = timestamps.'
 
     K = P(:,:,ctr+1) * H' / (H * P(:,:,ctr+1) * H.' + diag(R));
     X(:,ctr+1) = X(:,ctr+1) + K * y;
-    P(:,:,ctr+1) = (eye(5) - K*H) * P(:,:,ctr+1) * (eye(5) - K*H).' + K *  diag(R) * K.';
+    P(:,:,ctr+1) = (eye(4) - K*H) * P(:,:,ctr+1) * (eye(4) - K*H).' + K *  diag(R) * K.';
 
     ctr = ctr+1;    
 end
@@ -145,7 +145,7 @@ ax(6) = subplot(4,2,6);
 title('dt_r')
 hold on;
 plot(timestamps(2:end), X(4,3:end)); 
-plot(timestamps(2:end), X(5,3:end)); 
+% plot(timestamps(2:end), X(5,3:end)); 
 
 ax(7) = subplot(4,2,7);
 title('GDOP')
