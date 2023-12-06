@@ -2,19 +2,32 @@ clear;
 LoadData;
 
 %%
-F = eye(4);
-% F(1:3,4:6) = 1; % velocity
-% F(7,8) = 1;     % delta t dot
+kalman_cfg.idx_pos_N = 1;
+kalman_cfg.idx_pos_E = 2;
+kalman_cfg.idx_pos_D = 3;
 
-Q = diag([0.001 0.001 0.001 0.0001]);
+kalman_cfg.idx_vel_N = 4;
+kalman_cfg.idx_vel_E = 5;
+kalman_cfg.idx_vel_D = 6;
 
-kalman = Kalman.Kalman(4, F, Q);
-kalman.SetInitialStates([station_pos__m'; 0]);
+kalman_cfg.idx_dt = 7;      % actually dt * c
+kalman_cfg.idx_dt_dot = 8;  % actually dt_dot * c
 
+%%
+F = eye(8);
+F([kalman_cfg.idx_pos_N, kalman_cfg.idx_pos_E, kalman_cfg.idx_pos_D], [kalman_cfg.idx_vel_N, kalman_cfg.idx_vel_E, kalman_cfg.idx_vel_D]) = 1; % velocity
+F(kalman_cfg.idx_dt, kalman_cfg.idx_dt_dot)     = 1;     % delta t dot
+
+Q = diag([0.0001 0.0001 0.0001 0.001 0.001 0.001 0.1 0.001]);
+
+kalman = Kalman.Kalman(8, F, Q);
+kalman.SetInitialStates([station_pos__m'; 0; 0; 0; 0; 0]);
 timestamps = unique(S.ObsToc);
 
 pos = [];
+vel = [];
 dt_rx = [];
+dt__dot_rx = [];
 
 for tt = timestamps.'    
     idx = S.ObsToc == tt;
@@ -28,30 +41,35 @@ for tt = timestamps.'
     idx = idx & (S.Band == 1);
         
     % calc distance and distance vector
-    [r, d, e] = CalcDistance( S.x(idx), S.y(idx), S.z(idx), kalman.X(1), kalman.X(2), kalman.X(3));
+    [r, d, e] = CalcDistance( S.x(idx), S.y(idx), S.z(idx), ...
+                              kalman.X(kalman_cfg.idx_pos_N), kalman.X(kalman_cfg.idx_pos_E), kalman.X(kalman_cfg.idx_pos_D));
 
-    % Prefit residuals  
-    [delta_pseudorange] = CalcDeltaPseudorange( kalman.X(1), kalman.X(2), kalman.X(3), ...
+    % Correction
+    [delta_pseudorange] = CalcDeltaPseudorange( kalman.X(kalman_cfg.idx_pos_N), kalman.X(kalman_cfg.idx_pos_E), kalman.X(kalman_cfg.idx_pos_D), ...
                                                 S.Code_1(idx), S.Code_5(idx), ...
                                                 F_E1_Galileo__MHz, F_E5a_Galileo__MHz, ...
-                                                S.SvClockOffset(idx), kalman.X(4), S.RelativisticError(idx), ...
+                                                S.SvClockOffset(idx), kalman.X(kalman_cfg.idx_dt_dot), S.RelativisticError(idx), ...
                                                 d(:,1), d(:,2), d(:,3));
       
+    % Pseudorange residual
     v = delta_pseudorange - r;
         
-    C = Transformation.SpeedOfLight__mDs .* ones(numel(v), 1);
-    
-    H = [ -e(:,1), -e(:,2), -e(:,3), ones(numel(v), 1)];               
+    I = ones(numel(v), 1);
+    O = zeros(numel(v), 1);
+
+    H = [ -e(:,1), -e(:,2), -e(:,3), O, O, O, I, O];               
     R = eye(numel(v)) .* 100;
     
     kalman.CorrectEKF(H, v, R);
 
-    pos(end+1,:) = kalman.X(1:3);
-    dt_rx(end+1) = kalman.X(4);
+    pos(end+1,:) = kalman.X([kalman_cfg.idx_pos_N, kalman_cfg.idx_pos_E, kalman_cfg.idx_pos_D]);
+    vel(end+1,:) = kalman.X([kalman_cfg.idx_vel_N, kalman_cfg.idx_vel_E, kalman_cfg.idx_vel_D]);
+    dt_rx(end+1) = kalman.X(kalman_cfg.idx_dt);    
+    dt__dot_rx(end+1) = kalman.X(kalman_cfg.idx_dt_dot);
 end
 
 %%
-figure
+figure(42);
 subplot(4,2,1)
 hold on;
 plot(pos(:,1));
