@@ -31,6 +31,7 @@ double GalileoEphemeris::CalcClockOffset(NavData& navData, double time)
 		t = ts - (nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t + nav.SV_ClockDriftRate__sDs2() * t * t);
 	}
 
+	this->_SatelliteClockDrift__1Ds = nav.SV_ClockDrift__sDs();
 	this->_SatelliteClockError__s = nav.SV_ClockBias__s() + nav.SV_ClockDrift__sDs() * t + nav.SV_ClockDriftRate__sDs2() * t * t;	
 	return this->_SatelliteClockError__s;
 }

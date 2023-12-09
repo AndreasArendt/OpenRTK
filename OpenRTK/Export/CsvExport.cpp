@@ -98,7 +98,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::string path)
 {
 	auto fid = CsvExport::OpenFile(path);
-	fid << "SvSystem,UTC,Toe,ObsToc,x,y,z,xdot,ydot,zdot,SvClockOffset,RelativisticError,Health,Band" << std::endl;
+	fid << "SvSystem,UTC,Toe,ObsToc,x,y,z,xdot,ydot,zdot,SvClockOffset,SvClockDrift,RelativisticError,Health,Band" << std::endl;
 
 	for (Satellite const& sv : satellites)
 	{
@@ -129,6 +129,7 @@ void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::s
 					<< eph->Velocity_E().y() << ","
 					<< eph->Velocity_E().z() << ","
 					<< eph->SatelliteClockError__s() << ","
+					<< eph->SatelliteClockDrift__1Ds() << ","
 					<< eph->RelativisticError__s() << ","
 					<< eph->SatelliteHealth().Health() << ","
 					<< static_cast<int>(band - '0')

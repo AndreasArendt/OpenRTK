@@ -12,11 +12,13 @@
 class Ephemeris
 {
 protected:
+	// remember to add variables to == Operator overload
 	ECEF_Position _Position_E;
 	ECEF_Velocity _Velocity_E;
 	SvHealth _SvHealth;	
 	double _SatelliteClockError__s;
 	double _RelativisticError__s;
+	double _SatelliteClockDrift__1Ds;
 	double _Utc__s;
 	double _Toe__s;
 	double _Obstime__s;
@@ -26,6 +28,7 @@ public:
 	ECEF_Position const& Position_E() const { return this->_Position_E; }
 	ECEF_Velocity const& Velocity_E() const { return this->_Velocity_E; }
 	double const& SatelliteClockError__s() const { return this->_SatelliteClockError__s;  }
+	double const& SatelliteClockDrift__1Ds() const { return this->_SatelliteClockDrift__1Ds; }
 	double const& RelativisticError__s() const { return this->_RelativisticError__s; }
 	double const& Utc() const { return this->_Utc__s; }
 	double const& Toe__s() const { return this->_Toe__s; }
@@ -38,7 +41,7 @@ public:
 	virtual std::unique_ptr<Ephemeris> clone() const = 0;
 		
 	// cotr & dtor
-	Ephemeris(SvHealth svHealth) : _SatelliteClockError__s(0), _RelativisticError__s(0), _Utc__s(0), _Toe__s(0), _Obstime__s(0), _SvHealth(svHealth)	{};
+	Ephemeris(SvHealth svHealth) : _SatelliteClockError__s(0), _SatelliteClockDrift__1Ds(0), _RelativisticError__s(0), _Utc__s(0), _Toe__s(0), _Obstime__s(0), _SvHealth(svHealth)	{};
 
 	virtual ~Ephemeris() = default;
 
