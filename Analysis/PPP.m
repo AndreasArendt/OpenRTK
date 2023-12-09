@@ -1,5 +1,5 @@
-% clear;
-% LoadData;
+clear;
+LoadData;
 
 %%
 kalman_cfg.idx_pos_N = 1;
@@ -21,7 +21,7 @@ F(kalman_cfg.idx_dt, kalman_cfg.idx_dt_dot)     = 1;     % delta t dot
 Q_pos  = 1e-3;
 Q_vel  = 1e-5; % static configuration
 Q_t    = 1e-3;
-Q_tdot = 1e-2;
+Q_tdot = 1e-3;
 
 Q = diag([Q_pos Q_pos Q_pos Q_vel Q_vel Q_vel Q_t Q_tdot]);
 
