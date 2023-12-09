@@ -22,8 +22,8 @@ S.SV_numbers = cellfun(@(x)(str2num(x(2:end))), S.SvSystem_t_eph);
 station_pos__m = [4498451.8100  1708266.8300  4173591.7800]; %ORID
 % station_pos__m = [  3814004.8279   361287.8653  5082327.1526  ]; %HARL
 
-F_E1_Galileo__MHz  = 1575.420;
-F_E5a_Galileo__MHz = 1176.450;
+F_E1_Galileo__Hz  = 1575.420e6;
+F_E5a_Galileo__Hz = 1176.450e6;
 
 clear eph;
 clear obs;
