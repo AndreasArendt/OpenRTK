@@ -1,5 +1,5 @@
-clear;
-LoadData;
+% clear;
+% LoadData;
 
 %%
 kalman_cfg.idx_pos_N = 1;
@@ -27,6 +27,7 @@ Q = diag([Q_pos Q_pos Q_pos Q_vel Q_vel Q_vel Q_t Q_tdot]);
 
 kalman = Kalman.Kalman(8, F, Q);
 kalman.SetInitialStates([station_pos__m'; 0; 0; 0; 0; 0]);
+kalman.SetInitialCovariance(eye(8));
 timestamps = unique(S.ObsToc);
 
 pos = [];
@@ -47,25 +48,35 @@ for tt = timestamps.'
     % Indices
     code_idx    = idx & (S.Code_1 > 1e3 & S.Code_5 > 1e3);
     phase_idx   = idx & (S.Phase_1 > 0 & S.Phase_5 > 0);
-    doppler_idx = idx & (S.Doppler_1 ~= 0);
+    doppler_idx = idx & (S.Doppler_1 ~= 0 & S.Doppler_5 ~= 0);
 
     %% Doppler Correction
     [~, ~, e] = CalcDistance( S.x(doppler_idx), S.y(doppler_idx), S.z(doppler_idx), ...
                               kalman.X(kalman_cfg.idx_pos_N), kalman.X(kalman_cfg.idx_pos_E), kalman.X(kalman_cfg.idx_pos_D));
 
-    delta_vel = [ S.xdot(doppler_idx), S.ydot(doppler_idx), S.zdot(doppler_idx)] - ...
-                [ kalman.X(kalman_cfg.idx_vel_N), kalman.X(kalman_cfg.idx_vel_E), kalman.X(kalman_cfg.idx_vel_D)];
+    [doppler_est__Hz_L1] = CalcDeltaDoppler( S.xdot(doppler_idx), S.ydot(doppler_idx), S.zdot(doppler_idx), ...
+                                          kalman.X(kalman_cfg.idx_vel_N), kalman.X(kalman_cfg.idx_vel_E), kalman.X(kalman_cfg.idx_vel_D), ...
+                                          S.SvClockDrift(doppler_idx),  kalman.X(kalman_cfg.idx_dt_dot), e, F_E1_Galileo__Hz);
+    
+    [doppler_est__Hz_L5] = CalcDeltaDoppler( S.xdot(doppler_idx), S.ydot(doppler_idx), S.zdot(doppler_idx), ...
+                                          kalman.X(kalman_cfg.idx_vel_N), kalman.X(kalman_cfg.idx_vel_E), kalman.X(kalman_cfg.idx_vel_D), ...
+                                          S.SvClockDrift(doppler_idx),  kalman.X(kalman_cfg.idx_dt_dot), e, F_E5a_Galileo__Hz);
 
-    delta_clock_drift = kalman.X(kalman_cfg.idx_dt_dot) - Transformation.SpeedOfLight__mDs .* S.SvClockDrift(doppler_idx);
+    % v = [ S.Doppler_1(doppler_idx) - doppler_est__Hz_L1];
 
-    doppler_est = (-1/(Transformation.SpeedOfLight__mDs / F_E1_Galileo__Hz)) .* (dot(e, delta_vel,2) - delta_clock_drift);
-
-    v = S.Doppler_1(doppler_idx) - doppler_est;
+    v = [ S.Doppler_1(doppler_idx) - doppler_est__Hz_L1; ...
+          S.Doppler_5(doppler_idx) - doppler_est__Hz_L5];
     
     I = ones(numel(v), 1);
-    O = zeros(numel(v), 1);
+    % % O = zeros(numel(v), 1);
 
-    H = [ O, O, O, e(:,1), e(:,2), e(:,3), O, I];               
+    % H = [ O, O, O, e(:,1), e(:,2), e(:,3), O, I];
+
+    I = ones(numel(v)/2, 1);
+    O = zeros(numel(v)/2, 1);
+
+    H = [ O, O, O, e(:,1), e(:,2), e(:,3), O, I; ...
+          O, O, O, e(:,1), e(:,2), e(:,3), O, I];
     R = eye(numel(v));
 
     kalman.CorrectEKF(H, v, R);
@@ -78,7 +89,7 @@ for tt = timestamps.'
     [delta_pseudorange] = CalcDeltaPseudorange( kalman.X(kalman_cfg.idx_pos_N), kalman.X(kalman_cfg.idx_pos_E), kalman.X(kalman_cfg.idx_pos_D), ...
                                                 S.Code_1(code_idx), S.Code_5(code_idx), ...
                                                 F_E1_Galileo__Hz, F_E5a_Galileo__Hz, ...
-                                                S.SvClockOffset(code_idx), kalman.X(kalman_cfg.idx_dt_dot), S.RelativisticError(code_idx), ...
+                                                S.SvClockOffset(code_idx), kalman.X(kalman_cfg.idx_dt), S.RelativisticError(code_idx), ...
                                                 d(:,1), d(:,2), d(:,3));
 
     % Pseudorange residual
@@ -90,6 +101,27 @@ for tt = timestamps.'
     H = [ -e(:,1), -e(:,2), -e(:,3), O, O, O, I, O];               
     R = eye(numel(v)) .* 100;
     
+    kalman.CorrectEKF(H, v, R);
+
+    %% Carrierphase Correction
+    % calc distance and distance vector
+    [r, d, e] = CalcDistance( S.x(phase_idx), S.y(phase_idx), S.z(phase_idx), ...
+                              kalman.X(kalman_cfg.idx_pos_N), kalman.X(kalman_cfg.idx_pos_E), kalman.X(kalman_cfg.idx_pos_D));
+
+    [delta_carrierphase] = CalcDeltaCarrierphase( kalman.X(kalman_cfg.idx_pos_N), kalman.X(kalman_cfg.idx_pos_E), kalman.X(kalman_cfg.idx_pos_D), ...
+                                                  S.Phase_1(phase_idx), S.Phase_5(phase_idx), ...
+                                                  F_E1_Galileo__Hz, F_E5a_Galileo__Hz, ...
+                                                  S.SvClockOffset(phase_idx), kalman.X(kalman_cfg.idx_dt), ...
+                                                  d(:,1), d(:,2), d(:,3));
+
+    v = delta_carrierphase - r;
+
+    I = ones(numel(v), 1);
+    O = zeros(numel(v), 1);
+
+    H = [ -e(:,1), -e(:,2), -e(:,3), O, O, O, I, O];               
+    R = eye(numel(v)) .* 0.1;
+
     kalman.CorrectEKF(H, v, R);
 
     %%
