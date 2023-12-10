@@ -24,7 +24,7 @@ std::ofstream CsvExport::OpenFile(std::string path)
 void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::string path)
 {
 	auto fid = CsvExport::OpenFile(path);
-	fid << "SvSystem,UTC,Code_1,Code_2,Code_5,Phase_1,Phase_2,Phase_5,Doppler_1,Doppler_2,Doppler_3,Snr_1,Snr_2,Snr_5" << std::endl;
+	fid << "SvSystem,UTC,Code_1,Code_2,Code_5,Phase_1,Phase_2,Phase_5,Doppler_1,Doppler_2,Doppler_5,Snr_1,Snr_2,Snr_5" << std::endl;
 
 	for (Satellite const& sv : satellites)
 	{
