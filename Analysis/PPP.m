@@ -1,6 +1,8 @@
 % clear;
 % LoadData;
 
+timestamps = unique(S.ObsToc);
+
 %%
 kalman_cfg.idx_pos_N = 1;
 kalman_cfg.idx_pos_E = 2;
@@ -14,9 +16,13 @@ kalman_cfg.idx_dt     = 7;  % actually dt * c
 kalman_cfg.idx_dt_dot = 8;  % actually dt_dot * c
 
 %%
-F = eye(8);
-F([kalman_cfg.idx_pos_N, kalman_cfg.idx_pos_E, kalman_cfg.idx_pos_D], [kalman_cfg.idx_vel_N, kalman_cfg.idx_vel_E, kalman_cfg.idx_vel_D]) = 1; % velocity
+dt = mean(diff(timestamps));
+
+F = zeros(8);
+F([kalman_cfg.idx_pos_N, kalman_cfg.idx_pos_E, kalman_cfg.idx_pos_D], [kalman_cfg.idx_vel_N, kalman_cfg.idx_vel_E, kalman_cfg.idx_vel_D]) = eye(3); % velocity
 F(kalman_cfg.idx_dt, kalman_cfg.idx_dt_dot)     = 1;     % delta t dot
+
+Psi = eye(8) + F * dt;
 
 Q_pos  = 1e-3;
 Q_vel  = 1e-5; % static configuration
@@ -25,10 +31,9 @@ Q_tdot = 1e-3;
 
 Q = diag([Q_pos Q_pos Q_pos Q_vel Q_vel Q_vel Q_t Q_tdot]);
 
-kalman = Kalman.Kalman(8, F, Q);
+kalman = Kalman.Kalman(8, Psi, Q);
 kalman.SetInitialStates([station_pos__m'; 0; 0; 0; 0; 0]);
 kalman.SetInitialCovariance(eye(8));
-timestamps = unique(S.ObsToc);
 
 pos = [];
 vel = [];
@@ -40,14 +45,13 @@ for tt = timestamps.'
   
     kalman.Predict();
     
-    % filter out unhealthy satellites
-    idx_eph_healthy = S.Health == 0;
-    idx = idx & idx_eph_healthy;    
-    idx = idx & (S.Band == 1);
-        
+    % filter out unhealthy satellites    
+    idx = idx & S.Health == 0;
+    idx = idx & (S.Snr_1 > 0) & (S.Snr_5 > 0);        
+
     % Indices
-    code_idx    = idx & (S.Code_1 > 1e3 & S.Code_5 > 1e3);
-    phase_idx   = idx & (S.Phase_1 > 0 & S.Phase_5 > 0);
+    code_idx    = idx & (S.Code_1 > 1e3 & S.Code_5 > 1e3) & (S.Band == 1);
+    phase_idx   = idx & (S.Phase_1 > 0  & S.Phase_5 > 0)  & (S.Band == 1);
     doppler_idx = idx & (S.Doppler_1 ~= 0 & S.Doppler_5 ~= 0);
 
     %% Doppler Correction
@@ -62,18 +66,11 @@ for tt = timestamps.'
                                           kalman.X(kalman_cfg.idx_vel_N), kalman.X(kalman_cfg.idx_vel_E), kalman.X(kalman_cfg.idx_vel_D), ...
                                           S.SvClockDrift(doppler_idx),  kalman.X(kalman_cfg.idx_dt_dot), e, F_E5a_Galileo__Hz);
 
-    % v = [ S.Doppler_1(doppler_idx) - doppler_est__Hz_L1];
-
     v = [ S.Doppler_1(doppler_idx) - doppler_est__Hz_L1; ...
           S.Doppler_5(doppler_idx) - doppler_est__Hz_L5];
-    
-    I = ones(numel(v), 1);
-    % % O = zeros(numel(v), 1);
 
-    % H = [ O, O, O, e(:,1), e(:,2), e(:,3), O, I];
-
-    I = ones(numel(v)/2, 1);
-    O = zeros(numel(v)/2, 1);
+    I = ones(numel(e(:,1)), 1);
+    O = zeros(numel(e(:,1)), 1);
 
     H = [ O, O, O, e(:,1), e(:,2), e(:,3), O, I; ...
           O, O, O, e(:,1), e(:,2), e(:,3), O, I];
@@ -101,7 +98,7 @@ for tt = timestamps.'
     H = [ -e(:,1), -e(:,2), -e(:,3), O, O, O, I, O];               
     R = eye(numel(v)) .* 100;
     
-    kalman.CorrectEKF(H, v, R);
+    kalman.CorrectEKF(H, v, R);   
 
     %% Carrierphase Correction
     % calc distance and distance vector
@@ -120,7 +117,7 @@ for tt = timestamps.'
     O = zeros(numel(v), 1);
 
     H = [ -e(:,1), -e(:,2), -e(:,3), O, O, O, I, O];               
-    R = eye(numel(v)) .* 0.1;
+    R = eye(numel(v));
 
     kalman.CorrectEKF(H, v, R);
 
@@ -135,57 +132,61 @@ end
 figure(42);
 subplot(4,3,1)
 hold on;
-plot(pos(:,1));
+plot(timestamps, pos(:,1));
 yline(station_pos__m(1))
-ylim([station_pos__m(1) - 10, station_pos__m(1) + 10])
 
 subplot(4,3,2)
 hold on;
-plot(station_pos__m(1) - pos(:,1));
+plot(timestamps, station_pos__m(1) - pos(:,1));
 
 subplot(4,3,3)
 hold on;
-plot(vel(:,1));
+plot(timestamps, vel(:,1));
 
 subplot(4,3,4)
 hold on;
-plot(pos(:,2));
+plot(timestamps, pos(:,2));
 yline(station_pos__m(2))
 
 subplot(4,3,5)
 hold on;
-plot(station_pos__m(2) - pos(:,2));
+plot(timestamps, station_pos__m(2) - pos(:,2));
 
 subplot(4,3,6)
 hold on;
-plot(vel(:,2));
+plot(timestamps, vel(:,2));
 
 subplot(4,3,7)
 hold on;
-plot(pos(:,3));
+plot(timestamps, pos(:,3));
 yline(station_pos__m(3))
 
 subplot(4,3,8)
 hold on;
-plot(station_pos__m(3) - pos(:,3));
+plot(timestamps, station_pos__m(3) - pos(:,3));
 
 subplot(4,3,9)
 hold on;
-plot(vel(:,3));
+plot(timestamps, vel(:,3));
 
 subplot(4,3,10)
 hold on;
-plot(dt_rx ./ Transformation.SpeedOfLight__mDs);
+plot(timestamps, dt_rx ./ Transformation.SpeedOfLight__mDs);
 
 subplot(4,3,11);
 hold on;
-plot(dt__dot_rx ./ Transformation.SpeedOfLight__mDs)
+plot(timestamps, dt__dot_rx ./ Transformation.SpeedOfLight__mDs)
 
 subplot(4,3,12)
 hold on;
-axis equal;
-plot(pos(:,2), pos(:,1), 'x')
-plot(station_pos__m(2), station_pos__m(1), 'x')
+% axis equal;
+plot(S.ObsToc, S.Snr_1, 'x')
+plot(S.ObsToc, S.Snr_5, 'x')
+% plot(pos(:,2), pos(:,1), 'x')
+% plot(station_pos__m(2), station_pos__m(1), 'x')
+
+ax = findobj(get(gcf, 'Children'), 'type', 'axes');
+linkaxes(ax, 'x')
 
 
 

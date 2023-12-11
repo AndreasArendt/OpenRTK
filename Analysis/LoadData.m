@@ -19,8 +19,8 @@ S = table2struct(T, 'ToScalar', true);
 S.SV_numbers = cellfun(@(x)(str2num(x(2:end))), S.SvSystem_t_eph);
 
 % station_pos__m = [4164313.0000, 803525.9000, 4748474.9000]; %AUBG
-% station_pos__m = [4498451.8100  1708266.8300  4173591.7800]; %ORID
-station_pos__m = [  3814004.8279   361287.8653  5082327.1526  ]; %HARL
+station_pos__m = [4498451.8100  1708266.8300  4173591.7800]; %ORID
+% station_pos__m = [  3814004.8279   361287.8653  5082327.1526  ]; %HARL
 
 F_E1_Galileo__Hz  = 1575.420e6;
 F_E5a_Galileo__Hz = 1176.450e6;
