@@ -56,6 +56,17 @@ classdef Kalman < handle
 
             obj.P = IKH * obj.P * IKH.' + K*R*K.';
         end
+
+        function v = UpdateEKF_State(obj, H, v, R)
+            K = obj.P * H.' / (H * obj.P * H.' + R);            
+            obj.X = obj.X + K * v;
+        end
+
+        function v = UpdateEKF_Covariance(obj, H, v, R)
+            K = obj.P * H.' / (H * obj.P * H.' + R);            
+            IKH = (eye(obj.nStates) - K * H);
+            obj.P = IKH * obj.P * IKH.' + K*R*K.';
+        end
     end
 end
 

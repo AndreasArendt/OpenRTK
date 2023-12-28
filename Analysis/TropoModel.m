@@ -1,4 +1,5 @@
 function dt = TropoModel(h_sealevel, sat_elev)
+    % [COLLINS, 1999]
     d_dry = 2.3 .* exp(-0.116E-03 .* h_sealevel);
 
     if isinf(d_dry)

@@ -10,6 +10,6 @@ function [delta_carrierphase] = CalcDeltaCarrierphase(x_rx, y_rx, z_rx, phase_1,
     dist_F2 = phase_2 .* Transformation.SpeedOfLight__mDs ./ F2;    
 
     [r_ionofree] = CalcIonoFreeLinearCombination(dist_F1, dist_F2, F1, F2);    
-    delta_carrierphase = r_ionofree - cdt_rx + cdt_sv - tropo_offset; % phase windup missing here!
+    delta_carrierphase = r_ionofree - cdt_rx + cdt_sv - tropo_offset; % phase windup missing here! ... and integer ambiguity!
 end
 

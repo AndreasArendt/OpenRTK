@@ -7,7 +7,7 @@ function [tropo_offset] = CalcTropoOffset(x_rx, y_rx, z_rx, dx, dy, dz)
     
     elevation = atan2(U, sqrt(E.^2 + N.^2));
 
-    tropo_offset = TropoModel(alt__m, elevation);
-
+    tropo_offset_old = TropoModel(alt__m, elevation);
+    tropo_offset =  Saastamoinen_TropoModel(lat__rad, alt__m, elevation);
 end
 
