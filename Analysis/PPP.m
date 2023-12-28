@@ -107,7 +107,7 @@ for tt = timestamps.'
     H = [ -e(:,1), -e(:,2), -e(:,3), O, O, O, I, O];   
     R = eye(numel(v));
 
-    kalman.CorrectEKF(H, v, R); 
+    % kalman.CorrectEKF(H, v, R); 
 
     %% Pseudorange Correction
     % calc distance and distance vector
