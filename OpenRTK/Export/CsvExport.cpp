@@ -24,13 +24,13 @@ std::ofstream CsvExport::OpenFile(std::string path)
 void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::string path)
 {
 	auto fid = CsvExport::OpenFile(path);
-	fid << "SvSystem,UTC,Code_1,Code_2,Code_5,Phase_1,Phase_2,Phase_5,Doppler_1,Doppler_2,Doppler_5,Snr_1,Snr_2,Snr_5" << std::endl;
+	fid << "SvSystem,SvSystemID,UTC,Code_1,Code_2,Code_5,Phase_1,Phase_2,Phase_5,Doppler_1,Doppler_2,Doppler_5,Snr_1,Snr_2,Snr_5" << std::endl;
 
 	for (Satellite const& sv : satellites)
 	{
 		for (auto const& obs : sv.ObservationData())
-		{
-			fid << std::fixed << std::setprecision(17) << static_cast<char>(sv.SVSystem()) << sv.SvNumber() << "," << obs.Epoche().Toc__s();
+		{			
+			fid << std::fixed << std::setprecision(17) << static_cast<char>(sv.SVSystem()) << sv.SvNumber() << "," << sv.SvIdentifier() << "," << obs.Epoche().Toc__s();
 
 			// Code
 			for (auto band : { ObservationBand::Band_1, ObservationBand::Band_2, ObservationBand::Band_5 })
@@ -98,7 +98,7 @@ void CsvExport::ExportObsData(const std::vector<Satellite>& satellites, std::str
 void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::string path)
 {
 	auto fid = CsvExport::OpenFile(path);
-	fid << "SvSystem,UTC,Toe,ObsToc,x,y,z,xdot,ydot,zdot,SvClockOffset,SvClockDrift,RelativisticError,Health,Band" << std::endl;
+	fid << "SvSystem,SvSystemID,UTC,Toe,ObsToc,x,y,z,xdot,ydot,zdot,SvClockOffset,SvClockDrift,RelativisticError,Health,Band" << std::endl;
 
 	for (Satellite const& sv : satellites)
 	{
@@ -119,6 +119,7 @@ void CsvExport::ExportEphemeris(const std::vector<Satellite>& satellites, std::s
 				}
 
 				fid << std::fixed << std::setprecision(17) << static_cast<char>(sv.SVSystem()) << sv.SvNumber() << ","
+					<< sv.SvIdentifier() << ","
 					<< eph->Utc() << ","
 					<< Toe__s << ","
 					<< eph->Obstime__s() << ","

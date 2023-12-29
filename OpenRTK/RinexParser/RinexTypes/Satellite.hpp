@@ -32,6 +32,7 @@ public:
     // getters
     SvSystem const& SVSystem() const { return this->_SvSystem; }
     int const& SvNumber() const { return this->_SvNumber; }
+    int const& SvIdentifier() const { return (int)((static_cast<unsigned char>(this->_SvSystem)) << 8) + (int)((unsigned char)this->_SvNumber & 0xFF); }
     std::vector<std::unique_ptr<NavData>> const& NavigationData() const { return this->_NavigationData; }
     std::vector<ObsData> const& ObservationData() const { return this->_ObservationData; }
     std::map<ObservationBand, std::vector<std::unique_ptr<Ephemeris>>> const& SatelliteEphemeris() const { return this->_Ephemeris; }
