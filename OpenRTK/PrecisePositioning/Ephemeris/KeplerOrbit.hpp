@@ -34,7 +34,8 @@ private:
 
 public:
 	std::tuple<ECEF_Position, ECEF_Velocity> CalcEphemeris(KeplerOrbitData& orbitData, double time, double obstime);
-	
+	double const& RelativisticError__s() const { return this->_RelativisticError__s; }
+
 	// ctor & dtor
 	KeplerOrbit();
 	~KeplerOrbit();
