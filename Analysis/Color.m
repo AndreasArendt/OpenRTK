@@ -10,6 +10,7 @@ classdef Color
         GREEN      = [0.4660 0.6740 0.1880]
         LIGHT_BLUE = [0.3010 0.7450 0.9330]
         DARK_RED   = [0.6350 0.0780 0.1840]        
+        BLACK      = [0      0      0     ]
     end   
   
 end
