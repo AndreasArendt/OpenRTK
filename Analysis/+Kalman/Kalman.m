@@ -48,24 +48,39 @@ classdef Kalman < handle
             obj.P = IKH * obj.P * IKH.' + K*R*K.';
         end
 
-        function v = CorrectEKF(obj, H, v, R)
-            K = obj.P * H.' / (H * obj.P * H.' + R);            
-            obj.X = obj.X + K * v;
+        function v = CorrectEKF(obj, H, v, R, varargin)
+            ip = inputParser;
+            ip.addOptional('Index',ones(size(obj.nStates)));
+            ip.parse(varargin{:});            
+            idx = ip.Results.Index;
 
-            IKH = (eye(obj.nStates) - K * H);
+            K = obj.P(idx,idx) * H.' / (H * obj.P(idx,idx) * H.' + R);            
+            obj.X(idx) = obj.X(idx) + K * v;
 
-            obj.P = IKH * obj.P * IKH.' + K*R*K.';
+            IKH = (eye(sum(idx)) - K * H);
+
+            obj.P(idx,idx) = IKH * obj.P(idx,idx) * IKH.' + K*R*K.';
         end
 
-        function v = UpdateEKF_State(obj, H, v, R)
-            K = obj.P * H.' / (H * obj.P * H.' + R);            
-            obj.X = obj.X + K * v;
+        function v = UpdateEKF_State(obj, H, v, R, varargin)
+            ip = inputParser;
+            ip.addOptional('Index',ones(size(obj.nStates)));
+            ip.parse(varargin{:});
+            idx = ip.Results.Index;
+
+            K = obj.P(idx,idx) * H.' / (H * obj.P(idx,idx) * H.' + R);            
+            obj.X(idx) = obj.X(idx) + K * v;
         end
 
-        function v = UpdateEKF_Covariance(obj, H, v, R)
-            K = obj.P * H.' / (H * obj.P * H.' + R);            
-            IKH = (eye(obj.nStates) - K * H);
-            obj.P = IKH * obj.P * IKH.' + K*R*K.';
+        function UpdateEKF_Covariance(obj, H, R, varargin)
+            ip = inputParser;
+            ip.addOptional('Index',ones(size(obj.nStates)));
+            ip.parse(varargin{:});
+            idx = ip.Results.Index;
+            
+            K = obj.P(idx,idx) * H.' / (H * obj.P(idx,idx) * H.' + R);            
+            IKH = (eye(sum(idx)) - K * H);
+            obj.P(idx,idx) = IKH * obj.P(idx,idx) * IKH.' + K*R*K.';
         end
     end
 end
