@@ -1,7 +1,5 @@
 % LoadData;
 
-profile on;
-
 idx_E    = ([S.SvSystemID_t_eph] >= 17664) & ([S.SvSystemID_t_eph] <= 17664+255); %17664 is 69 ('E') << 8
 SvId_E   = unique(S.SvSystemID_t_eph(idx_E));
 number_E = numel(unique(S.SvSystemID_t_eph(idx_E)));
@@ -73,7 +71,7 @@ for tt = timestamps.'
         POS = POS + x_hat(1:3);        
         CDTR = CDTR + x_hat(4);
 
-        if all(x_hat(1:3) < 1e-3)
+        if all(abs(x_hat(1:3)) < 1e-3)
             break;
         end
     end
@@ -82,8 +80,6 @@ for tt = timestamps.'
     pos(:,ctr) = POS;
     cdtr(ctr) = CDTR;
 end
-
-profile viewer;
 
 %%
 afigure(42);
