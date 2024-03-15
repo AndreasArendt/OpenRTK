@@ -1,23 +1,22 @@
 function dt = Saastamoinen_TropoModel(lat__rad, alt__m, elevation)
-
-    humi = 0.7;
-
-    temp0=15.0; % temparature at sea level
-
-    if alt__m < 0
-        alt__m = 0;
-    elseif alt__m > 29500
-        alt__m = 29500;
-    end
-
-    pres = CalcStandardAtmosphere(alt__m);
-
-    temp=temp0-6.5E-3*alt__m+273.16;
-    e=6.108*humi*exp((17.15*temp-4684.0)/(temp-38.45));
    
-    % saastamoninen model
+    if alt__m < 0
+        hgt = 0;
+    else
+        hgt = alt__m;
+    end
+        
+    [p__Pa, T__K, ~] = CalcStandardAtmosphere(alt__m);
+
+    pres = p__Pa / 100;
+
+    % water vapour pressure (Magnus)
+    e_magnus = 0.61094*exp((17.625*(T__K-273.15))/(T__K+243.04-273.15))/1e3;
+    e = e_magnus;
+
+    % /* saastamoninen model */
     z=pi/2.0-elevation;
-    trph=0.0022768 * pres ./ (1.0-0.00266 * cos(2.0*lat__rad) -0.00028*alt__m / 1E3) ./ cos(z);
-    trpw=0.002277*(1255.0./temp+0.05)*e./cos(z);
+    trph=0.0022768.*pres./(1.0-0.00266*cos(2.0*lat__rad)-0.00028*hgt/1e3)./cos(z);
+    trpw=0.0022768*(1255.0+0.05*T__K)*e./T__K;
     dt = trph+trpw;
 end

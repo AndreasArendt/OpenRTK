@@ -39,6 +39,15 @@ for tt = timestamps.'
         cdt_sv  = Transformation.SpeedOfLight__mDs * S.SvClockOffset(code_1_idx);    
         cdt_rel = Transformation.SpeedOfLight__mDs * S.RelativisticError(code_1_idx);
     
+
+        % elevation mask
+        [lat__rad, lon__rad, alt__m] = Transformation.ecef2wgs84(POS(1), POS(2), POS(3));                
+        [E,N,U] = Transformation.ecef2enu(lat__rad, lon__rad, d(:,1), d(:,2), d(:,3));
+    
+        elevation = atan2(U, sqrt(E.^2 + N.^2));
+
+        idx = abs(elevation) > (15/180*pi);
+
         tropo_offset = CalcTropoOffset(POS(1), POS(2), POS(3), ...
                                        d(:,1), d(:,2), d(:,3));
             
@@ -49,9 +58,14 @@ for tt = timestamps.'
         
         A = [-e, ones(numel(e(:,1)),1)];
         % A = -e;
-
+        
         y = pseudorange_est - r;
-          
+
+        if sum(idx) > 4
+            A = A(idx,:);
+            y = y(idx);
+        end 
+
         x_hat = (A.'*A)\A.'*y;
         
         POS = POS + x_hat(1:3);        
