@@ -1,4 +1,4 @@
-function [p__Pa, T__K, rho__kgDm3] = CalcStandardAtmosphere(alt__m)
+function [p__Pa, T__K, rho__kgDm3] = StandardAtmosphere(alt__m)
 % Calculate Standard Atmosphere Parameter
 % p__Pa Pressure in Pascal
 % T__K Temperature in Kelvin

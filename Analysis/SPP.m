@@ -61,10 +61,10 @@ for tt = timestamps.'
         
         y = pseudorange_est - r;
 
-        if sum(idx) > 4
-            A = A(idx,:);
-            y = y(idx);
-        end 
+        % if sum(idx) > 4
+        %     A = A(idx,:);
+        %     y = y(idx);
+        % end 
 
         x_hat = (A.'*A)\A.'*y;
         
