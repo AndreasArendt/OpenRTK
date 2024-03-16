@@ -10,6 +10,7 @@ cdtr = 0;
 ctr = 1;
 
 idx_Galileo = cellfun(@(x)strcmp(x(1), 'E'), S.SvSystem_t_eph);
+idx_GPS     = cellfun(@(x)strcmp(x(1), 'G'), S.SvSystem_t_eph);
 
 timestamps = unique(S.ObsToc);
 for tt = timestamps.'   
@@ -19,7 +20,7 @@ for tt = timestamps.'
     idx = idx & S.Health == 0;
     
     % Indices
-    code_idx   = idx & idx_Galileo & ...   % Galileo only!
+    code_idx   = idx & (idx_Galileo | idx_GPS) & ...   % Galileo only!
                        (S.Code_1 > 1e3) & (S.Code_1 > 1e3) & ...                % valid Pseudoranges
                        ((S.Band == 1) | (S.Band == 5));                         % E1 and E5
     code_1_idx = code_idx & (S.Band == 1);
@@ -41,15 +42,11 @@ for tt = timestamps.'
     
 
         % elevation mask
-        [lat__rad, lon__rad, alt__m] = Transformation.ecef2wgs84(POS(1), POS(2), POS(3));                
-        [E,N,U] = Transformation.ecef2enu(lat__rad, lon__rad, d(:,1), d(:,2), d(:,3));
-    
-        elevation = atan2(U, sqrt(E.^2 + N.^2));
+        elevation = CalcElevation(POS(1), POS(2), POS(3), d(:,1), d(:,2), d(:,3));
 
-        idx = abs(elevation) > (15/180*pi);
+        idx_el = elevation > (5/180*pi) & elevation < (175/180*pi);
 
-        tropo_offset = CalcTropoOffset(POS(1), POS(2), POS(3), ...
-                                       d(:,1), d(:,2), d(:,3));
+        tropo_offset = CalcTropoOffset(POS(1), POS(2), POS(3), elevation);
             
         rho_iono_free = ((F_E1_Galileo__Hz^2 * S.Code_1(code_1_idx)) - (F_E5a_Galileo__Hz^2 * S.Code_5(code_5_idx))) ./ ...
             (F_E1_Galileo__Hz^2 - F_E5a_Galileo__Hz^2);
@@ -57,14 +54,13 @@ for tt = timestamps.'
         pseudorange_est = rho_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset;        
         
         A = [-e, ones(numel(e(:,1)),1)];
-        % A = -e;
-        
+                
         y = pseudorange_est - r;
 
-        % if sum(idx) > 4
-        %     A = A(idx,:);
-        %     y = y(idx);
-        % end 
+        if sum(idx_el) > 4
+            A = A(idx_el,:);
+            y = y(idx_el);
+        end 
 
         x_hat = (A.'*A)\A.'*y;
         

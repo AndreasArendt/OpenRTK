@@ -17,42 +17,42 @@ y_N = y_E - station_pos__m(2);
 z_N = z_E - station_pos__m(3);
 
 %%
-figure;
+afigure;
 subplot(3,2,1)
 hold on;
 plot( x_E, 'DisplayName', 'RTKLIB')
 yline( station_pos__m(1))
-plot(pos(:,1), 'DisplayName', 'KF'); 
+plot(pos(1,:), 'DisplayName', 'KF'); 
 legend('show')
 
 subplot(3,2,2)
 hold on;
 plot( station_pos__m(1) - x_E, 'DisplayName', 'RTKLIB')
-plot( station_pos__m(1) - pos(:,1), 'DisplayName', 'KF'); 
+plot( station_pos__m(1) - pos(1,:), 'DisplayName', 'KF'); 
 legend('show')
 
 subplot(3,2,3)
 hold on;
 plot( y_E, 'DisplayName', 'RTKLIB')
 yline( station_pos__m(2))
-plot(pos(:,2), 'DisplayName', 'KF'); 
+plot(pos(2,:), 'DisplayName', 'KF'); 
 legend('show')
 
 subplot(3,2,4)
 hold on;
 plot( station_pos__m(2) - y_E, 'DisplayName', 'RTKLIB')
-plot( station_pos__m(2) - pos(:,2), 'DisplayName', 'KF'); 
+plot( station_pos__m(2) - pos(2,:), 'DisplayName', 'KF'); 
 legend('show')
 
 subplot(3,2,5)
 hold on;
 plot( z_E, 'DisplayName', 'RTKLIB')
 yline( station_pos__m(3))
-plot(pos(:,3), 'DisplayName', 'KF'); 
+plot(pos(3,:), 'DisplayName', 'KF'); 
 legend('show')
 
 subplot(3,2,6)
 hold on;
 plot( station_pos__m(3) - z_E, 'DisplayName', 'RTKLIB')
-plot( station_pos__m(3) - pos(:,3), 'DisplayName', 'KF'); 
+plot( station_pos__m(3) - pos(3,:), 'DisplayName', 'KF'); 
 legend('show')
