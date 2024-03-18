@@ -13,7 +13,9 @@ classdef Kalman < handle
     end
         
     methods
-        function obj = Kalman(nStates, f, q)
+        function obj = Kalman(f, q)
+            nStates = size(f,1);
+
             obj.X = zeros(nStates,1);
             obj.P = ones(nStates,nStates);
             obj.Q = q;
@@ -48,18 +50,14 @@ classdef Kalman < handle
             obj.P = IKH * obj.P * IKH.' + K*R*K.';
         end
 
-        function v = CorrectEKF(obj, H, v, R, varargin)
-            ip = inputParser;
-            ip.addOptional('Index',ones(size(obj.nStates)));
-            ip.parse(varargin{:});            
-            idx = ip.Results.Index;
+        function CorrectEKF(obj, H, dy, R)
+            I = eye(obj.nStates);
 
-            K = obj.P(idx,idx) * H.' / (H * obj.P(idx,idx) * H.' + R);            
-            obj.X(idx) = obj.X(idx) + K * v;
+            K = obj.P * H.' / (H * obj.P * H.' + R);            
+            obj.X = obj.X + K * dy;
 
-            IKH = (eye(sum(idx)) - K * H);
-
-            obj.P(idx,idx) = IKH * obj.P(idx,idx) * IKH.' + K*R*K.';
+            IKH = I - K * H;
+            obj.P = IKH * obj.P * IKH.' + K*R*K.'; % Joseph's Form
         end
 
         function v = UpdateEKF_State(obj, H, v, R, varargin)
