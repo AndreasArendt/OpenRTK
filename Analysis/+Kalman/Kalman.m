@@ -6,7 +6,6 @@ classdef Kalman < handle
         X % State Matrix
         P % Covarainace Matrix
         Q % Process noise Matrix
-        R % Measurement noise Matrix
         F % Transition Matrix                
 
         nStates = NaN;
@@ -48,6 +47,12 @@ classdef Kalman < handle
             IKH = (eye(obj.nStates) - K * H);
 
             obj.P = IKH * obj.P * IKH.' + K*R*K.';
+        end
+
+        function X = CorrectIterativeEKF(obj, H, dy, R)
+            K = obj.P * H.' / (H * obj.P * H.' + R);            
+            X = obj.X + K * dy;
+            obj.X = X;
         end
 
         function CorrectEKF(obj, H, dy, R)
