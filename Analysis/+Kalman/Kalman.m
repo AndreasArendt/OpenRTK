@@ -16,7 +16,7 @@ classdef Kalman < handle
             nStates = size(f,1);
 
             obj.X = zeros(nStates,1);
-            obj.P = ones(nStates,nStates);
+            obj.P = eye(nStates,nStates);
             obj.Q = q;
             obj.F = f;
 
@@ -24,6 +24,8 @@ classdef Kalman < handle
 
             assert(size(f,1) == nStates, 'Wrong size of Transition matrix');
             assert(size(f,2) == nStates, 'Wrong size of Transition matrix');
+            assert(size(q,1) == nStates, 'Wrong size of Process Noise matrix')
+            assert(size(q,2) == nStates, 'Wrong size of Process Noise matrix')
         end
         
         function SetInitialStates(obj, x0)
