@@ -50,7 +50,7 @@ for tt = timestamps.'
             
         rho_iono_free = ((F_E1_Galileo__Hz^2 * S.Code_1(code_1_idx)) - (F_E5a_Galileo__Hz^2 * S.Code_5(code_5_idx))) ./ ...
             (F_E1_Galileo__Hz^2 - F_E5a_Galileo__Hz^2);
-        
+                
         pseudorange_est = rho_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset;        
         
         A = [-e, ones(numel(e(:,1)),1)];
