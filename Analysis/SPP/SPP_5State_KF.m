@@ -23,6 +23,11 @@ cdr = 0;
 zdt = 0;
 P = eye(nStates);
 
+P_pri  = eye(nStates);
+P_post = eye(nStates);
+X_pri  = kf.X.';
+X_post = kf.X.';
+
 KfIterations = 2;
 
 timestamps = unique(S.ObsToc);
@@ -30,6 +35,9 @@ for tt = timestamps.'
     idx = S.ObsToc == tt;
 
     kf.Predict();
+
+    X_pri(ctr,:)   = kf.X.';
+    P_pri(:,:,ctr) = kf.P;
 
     % filter out unhealthy satellites    
     idx = idx & S.Health == 0;
@@ -88,12 +96,16 @@ for tt = timestamps.'
         end
     end
 
-    ctr = ctr+1;
     pos(ctr,:) = kf.X(1:3);
     cdr(ctr,:) = kf.X(4);
-    ztd(ctr,:) = kf.X(5);
+    ztd(ctr,:) = kf.X(5);    
     P(ctr,:) = diag(kf.P)';
 
+    % for RTS
+    X_post(ctr,:) = kf.X.';
+    P_post(:,:,ctr) = kf.P;
+
+    ctr = ctr+1;
 end
          
 % ReadRtkPos;
