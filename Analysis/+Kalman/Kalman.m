@@ -29,6 +29,7 @@ classdef Kalman < handle
         end
         
         function SetInitialStates(obj, x0)
+            assert(all(size(x0) == size(obj.X)), 'Check if all States have been initialized!');
             obj.X = x0;
         end
 
