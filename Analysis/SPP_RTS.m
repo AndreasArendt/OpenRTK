@@ -21,35 +21,45 @@ end
 
 %%
 afigure(42);
-subplot(3,2,1);
-hold on;
+subplot(4,2,1);
+hold on; grid on;
 yline(station_pos__m(1), 'Color', Color.BLACK)
 plot(X_RTS(:,1))
 ylim([station_pos__m(1)-50,  station_pos__m(1)+50])
 
-subplot(3,2,2);
-hold on;
+subplot(4,2,2);
+hold on; grid on;
 plot(station_pos__m(1) - X_RTS(:,1))
 ylim([-20 20])
 
-subplot(3,2,3);
-hold on;
+subplot(4,2,3);
+hold on; grid on;
 yline(station_pos__m(2), 'Color', Color.BLACK)
 plot(X_RTS(:,2))
 ylim([station_pos__m(2)-50, station_pos__m(2)+50])
 
-subplot(3,2,4);
-hold on;
+subplot(4,2,4);
+hold on; grid on;
 plot(station_pos__m(2) - X_RTS(:,2))
 ylim([-20 20])
 
-subplot(3,2,5);
-hold on;
+subplot(4,2,5);
+hold on; grid on;
 yline(station_pos__m(3), 'Color', Color.BLACK)
 plot(X_RTS(:,3))
 ylim([station_pos__m(3)-50, station_pos__m(3)+50])
 
-subplot(3,2,6);
-hold on;
+subplot(4,2,6);
+hold on; grid on;
 plot(station_pos__m(3) - X_RTS(:,3))
 ylim([-20 20])
+
+subplot(4,2,7);
+hold on; grid on;
+title('dt_r')
+plot(X_RTS(:,4) ./ Transformation.SpeedOfLight__mDs)
+
+subplot(4,2,8);
+hold on; grid on;
+title('ZTD_w')
+plot(X_RTS(:,5))
