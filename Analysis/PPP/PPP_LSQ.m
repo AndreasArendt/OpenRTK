@@ -144,6 +144,10 @@ for tt = timestamps.'
         CDTR           = CDTR + x_hat(4);
         ZTD            = ZTD + x_hat(5);
         AMBIG(idx_Amb) = AMBIG(idx_Amb) + x_hat(6:end); 
+
+        if all(x_hat < 1e-5)
+            break;
+        end
     end
 
     ctr = ctr+1;
@@ -153,9 +157,7 @@ for tt = timestamps.'
     ambig(ctr,:) = NaN(1,nAmbiguity);
     ambig(ctr,idx_Amb) = AMBIG(idx_Amb);
 end
-         
-% ReadRtkPos;
-% return;
+
 %%
 afigure(42);
 subplot(4,2,1);
