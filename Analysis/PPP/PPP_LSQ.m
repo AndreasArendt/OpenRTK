@@ -102,14 +102,6 @@ for tt = timestamps.'
         rho_iono_free = Generic.CalcIonoFreeLinearCombination(S.Code_1(code_1_idx), S.Code_5(code_5_idx), F_E1_Galileo__Hz, F_E5a_Galileo__Hz);
         phi_iono_free = Generic.CalcIonoFreeLinearCombination(S.Phase_1(phase_1_idx), S.Phase_5(phase_5_idx), F_E1_Galileo__Hz, F_E5a_Galileo__Hz);
     
-        % get Carrierphase related data
-        ia = 154; % see: TheImplementationOfPPP_AComprehensiveReview (34)
-        ib = -115;
-        
-        lambda_E1  = Transformation.SpeedOfLight__mDs / F_E1_Galileo__Hz;
-        lambda_E5a = Transformation.SpeedOfLight__mDs / F_E5a_Galileo__Hz;
-        lambda_IF = (lambda_E1*lambda_E5a) / ((ia*lambda_E5a) + (ib*lambda_E1));
-                
         pseudorange_est  = rho_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset;            
         carrierphase_est = phi_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset - AMBIG(idx_Amb);
     
@@ -126,18 +118,10 @@ for tt = timestamps.'
         H_phi(:, 6:end) = eye(nnz(idx_Amb)); 
     
         H = [H_rho; H_phi];
-    
-        idx_zero = all(H == 0);
-        H(:,idx_zero)=[];
-    
+         
         y = [ pseudorange_est  - geo_dist; ...
               carrierphase_est - geo_dist];
-    
-        A = H.' * H;
-        b = -H.' * y;
-        x = -inv(H.'*H) * H.' * y;
-    
-        % x_hat = (A.'*A)\A.'*b;
+        
         x_hat = (H.'*H)\H.'*y;
 
         POS            = POS + x_hat(1:3)';                
