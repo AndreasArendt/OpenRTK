@@ -16,6 +16,7 @@ class Epoch
         int _hour;
         int _minute;
         double _second;
+        double _millisecond;
 
 	public:
         // getters        
@@ -25,13 +26,14 @@ class Epoch
         int const& Hour() const { return this->_hour; }
         int const& Minute() const { return this->_minute; }
         double const& Second() const { return this->_second; }
+        double const& Millisecond() const { return this->_millisecond; }
 
         // functions
         double const Toc__s() const { return this->_EpochTime.time_since_epoch().count() / 1e7; }   //conversion to seconds
         
         // ctor & Dtor                
         Epoch();
-        Epoch(int year, int month, int day, int hour, int minute, double second);
+        Epoch(int year, int month, int day, int hour, int minute, double second);        
         ~Epoch();
 
         // operator overloading
