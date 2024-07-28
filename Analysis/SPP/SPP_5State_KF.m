@@ -44,7 +44,7 @@ for tt = timestamps.'
     
     % Indices
     code_idx   = idx & (idx_Galileo | idx_GPS) & ...
-                       (S.Code_1 > 1e3) & (S.Code_1 > 1e3) & ...                % valid Pseudoranges
+                       (S.Code_1 > 1e3) & (S.Code_5 > 1e3) & ...                % valid Pseudoranges
                        ((S.Band == 1) | (S.Band == 5));                         % E1 and E5
     code_1_idx = code_idx & (S.Band == 1);
     code_5_idx = code_idx & (S.Band == 5);

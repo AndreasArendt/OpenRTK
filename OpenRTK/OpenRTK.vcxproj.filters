@@ -57,7 +57,7 @@
     <ClCompile Include="PrecisePositioning\Ephemeris\GalileoEphemeris.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="PrecisePositioning\PPP.cpp">
+    <ClCompile Include="PrecisePositioning\SPP.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="RinexParser\ObsData\ObsData.cpp">
@@ -79,6 +79,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="PrecisePositioning\Ephemeris\GpsEphemeris.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="PrecisePositioning\Postprocessor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,7 +185,7 @@
     <ClInclude Include="Transformations\Constants.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="PrecisePositioning\PPP.hpp">
+    <ClInclude Include="PrecisePositioning\SPP.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\ObsData\ObsData.hpp">
@@ -219,6 +222,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Transformations\ECEF_Velocity.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecisePositioning\Postprocessor.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

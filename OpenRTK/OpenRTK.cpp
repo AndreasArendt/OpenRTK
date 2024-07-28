@@ -29,7 +29,7 @@ int main()
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
 
-	auto ppp = PPP();
+	auto spp = SPP();
 
 	std::vector<Satellite> Satellites;
 	std::copy_if(rnxParser.Satellites().begin(), rnxParser.Satellites().end(), std::back_inserter(Satellites), [](const auto& sv)
@@ -39,10 +39,11 @@ int main()
 
 	for (Satellite& sv : Satellites)
 	{
-		sv.calcEphemeris();
-
-		//ppp.CalcUserPosition(sv.Ephemeris(), sv.
+		sv.calcEphemeris();				
 	}
+
+	// Single Point Processing
+	spp.Calculate(Satellites);
 
 	CsvExport::ExportEphemeris(Satellites, "D:/Projekte/OpenRTK/Analysis/Ephemeris_exp.csv");
 	CsvExport::ExportObsData(Satellites, "D:/Projekte/OpenRTK/Analysis/Observation_exp.csv");

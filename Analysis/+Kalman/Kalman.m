@@ -42,6 +42,12 @@ classdef Kalman < handle
             obj.P = obj.F * obj.P * obj.F.' + obj.Q;
         end  
 
+        function PredictIdx(obj, idx)
+            idx = idx == 1;
+            obj.X(idx)     = obj.F(idx,idx) * obj.X(idx); % + Bu
+            obj.P(idx,idx) = obj.F(idx,idx) * obj.P(idx,idx) * obj.F(idx,idx).' + obj.Q(idx,idx);
+        end  
+
         function v = Correct(obj, H, z, R)
             K = obj.P * H.' / (H * obj.P * H.' + R);
             v = z - H * obj.X; % residual
@@ -58,6 +64,13 @@ classdef Kalman < handle
             obj.X = X;
         end
 
+        function CorrectIterativeEKFIdx(obj, H, dy, R, idx)
+            idx = idx==1;
+            
+            K = obj.P(idx,idx) * H.' / (H * obj.P(idx,idx) * H.' + R);            
+            obj.X(idx) = obj.X(idx) + K * dy;            
+        end
+
         function CorrectEKF(obj, H, dy, R)
             I = eye(obj.nStates);
 
@@ -66,6 +79,17 @@ classdef Kalman < handle
 
             IKH = I - K * H;
             obj.P = IKH * obj.P * IKH.' + K*R*K.'; % Joseph's Form
+        end
+
+        function CorrectEKFIdx(obj, H, dy, R, idx)
+            idx = idx == 1;
+            I = eye(nnz(idx));
+
+            K = obj.P(idx,idx) * H' / (H * obj.P(idx,idx) * H.' + R);
+            obj.X(idx) = obj.X(idx) + K * dy;
+
+            IKH = I - K * H;
+            obj.P(idx,idx) = IKH * obj.P(idx,idx) * IKH.' + K*R*K.'; % Joseph's Form
         end
 
         function v = UpdateEKF_State(obj, H, v, R, varargin)
