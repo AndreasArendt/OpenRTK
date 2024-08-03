@@ -1,7 +1,11 @@
-function elevation__rad = CalcElevation(x_rx, y_rx, z_rx, dx, dy, dz)
+function elevation__rad = CalcElevation(x_rx, y_rx, z_rx, x_sv, y_sv, z_sv)
+    e = Vector.NormalizedDistanceVector(x_sv, y_sv, z_sv, x_rx, y_rx, z_rx);
 
-    [lat__rad, lon__rad, ~] = Transformation.ecef2wgs84(x_rx, y_rx, z_rx);                
-    [E,N,U] = Transformation.ecef2enu(lat__rad, lon__rad, dx, dy, dz);
-    
-    elevation__rad = atan2(U, sqrt(E.^2 + N.^2));    
+    [lat__rad, lon__rad, ~] = Transformation.ecef2wgs84(x_rx, y_rx, z_rx);
+
+    e_zenith = [cos(lat__rad) * cos(lon__rad); ...
+                cos(lat__rad) * sin(lon__rad); ...
+                sin(lat__rad)];
+
+    elevation__rad = asin(e * e_zenith);
 end

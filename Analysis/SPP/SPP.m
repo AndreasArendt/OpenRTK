@@ -1,4 +1,4 @@
-% LoadData;
+LoadData;
 
 idx_E    = ([S.SvSystemID_t_eph] >= 17664) & ([S.SvSystemID_t_eph] <= 17664+255); %17664 is 69 ('E') << 8
 SvId_E   = unique(S.SvSystemID_t_eph(idx_E));
@@ -9,8 +9,10 @@ cdtr = 0;
 
 ctr = 1;
 
-idx_Galileo = cellfun(@(x)strcmp(x(1), 'E'), S.SvSystem_t_eph);
-idx_GPS     = cellfun(@(x)strcmp(x(1), 'G'), S.SvSystem_t_eph);
+idx_Galileo = cellfun(@(x)strcmp(x(1), 'E'), S.SvSystem_t_eph)                          .* false;
+idx_GPS     = cellfun(@(x)strcmp(x(1), 'G'), S.SvSystem_t_eph)                          .* true;
+
+% take care, this has been reworked to use only GPS L1/L2!!!
 
 timestamps = unique(S.ObsToc);
 for tt = timestamps.'   
@@ -21,10 +23,10 @@ for tt = timestamps.'
     
     % Indices
     code_idx   = idx & (idx_Galileo | idx_GPS) & ...   % Galileo only!
-                       (S.Code_1 > 1e3) & (S.Code_1 > 1e3) & ...                % valid Pseudoranges
-                       ((S.Band == 1) | (S.Band == 5));                         % E1 and E5
+                       (S.Code_1 > 1e3) & (S.Code_2 > 1e3) & ...                % valid Pseudoranges
+                       ((S.Band == 1) | (S.Band == 2));                         % E1 and E5
     code_1_idx = code_idx & (S.Band == 1);
-    code_5_idx = code_idx & (S.Band == 5);
+    code_5_idx = code_idx & (S.Band == 2);
     
     [ia,ib] = ismember(S.SvSystemID_t_eph(code_1_idx), S.SvSystemID_t_eph(code_5_idx));
     tmp = find(code_1_idx);
@@ -42,36 +44,34 @@ for tt = timestamps.'
         sag = Transformation.CalcSagnac( [S.x(code_1_idx), S.y(code_1_idx), S.z(code_1_idx)], ...
                                          [POS(1), POS(2), POS(3)]);
 
+        % correct geographic distance of earth rotation
         geo_dist = dist + sag;
-
-        % distance Vector & normalized distance Vector
-        d = Vector.DistanceVector_3D(S.x(code_1_idx), S.y(code_1_idx), S.z(code_1_idx), ...
-                                     POS(1), POS(2), POS(3));
-
-        e = Vector.NormalizedDistanceVector(S.x(code_1_idx), S.y(code_1_idx), S.z(code_1_idx), ...
-                                            POS(1), POS(2), POS(3));
-    
+        
         cdt_sv  = Transformation.SpeedOfLight__mDs * S.SvClockOffset(code_1_idx);    
         cdt_rel = Transformation.SpeedOfLight__mDs * S.RelativisticError(code_1_idx);
     
-
         % elevation mask
-        elevation = Generic.CalcElevation(POS(1), POS(2), POS(3), d(:,1), d(:,2), d(:,3));
+        elevation = Generic.CalcElevation(POS(1), POS(2), POS(3), S.x(code_1_idx), S.y(code_1_idx), S.z(code_1_idx));
 
         idx_el = elevation > (5/180*pi) & elevation < (175/180*pi);
 
+        % Troposphere Model
         tropo_offset = CalcTropoOffset(POS(1), POS(2), POS(3), elevation);
             
         % Iono-Free LC
-        rho_iono_free = Generic.CalcIonoFreeLinearCombination(S.Code_1(code_1_idx), S.Code_5(code_5_idx), F_E1_Galileo__Hz, F_E5a_Galileo__Hz);
+        rho_iono_free = Generic.CalcIonoFreeLinearCombination(S.Code_1(code_1_idx), S.Code_2(code_5_idx), F_E1_Galileo__Hz, F_L2_GPS__Hz);
                 
-        pseudorange_est = rho_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset;        
+        dist_est = rho_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset;        
         
+        e = Vector.NormalizedDistanceVector(S.x(code_1_idx), S.y(code_1_idx), S.z(code_1_idx), ...
+                                            POS(1), POS(2), POS(3));
+    
         A = [-e, ones(numel(e(:,1)),1)];
                 
-        y = pseudorange_est - geo_dist;
+        y = dist_est - geo_dist;
 
-        if sum(idx_el) > 4
+        % Apply elevation filter only if more than 4SVs available
+        if nnz(idx_el) > 4
             A = A(idx_el,:);
             y = y(idx_el);
         end 
@@ -135,7 +135,7 @@ legend('show')
 subplot(4,2,7);
 hold on; grid on;
 title('dt_r')
-plot(cdr ./ Transformation.SpeedOfLight__mDs, 'DisplayName', 'LSQ (4 States)')
+plot(cdtr ./ Transformation.SpeedOfLight__mDs, 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,8);
