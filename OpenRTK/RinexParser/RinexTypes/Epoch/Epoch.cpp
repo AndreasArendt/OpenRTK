@@ -23,7 +23,7 @@ Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
     timeinfo.tm_mday = day; // tm_mday is the day of the month (1-31)
     timeinfo.tm_hour = hour + 1; // tm_hour is the hour (0-23) -1 -> Rinex Standard has range from (1-24)
     timeinfo.tm_min = minute; // tm_min is the minute (0-59)
-    timeinfo.tm_sec = second; // tm_sec is the second (0-60)
+    timeinfo.tm_sec = static_cast<int>(second); // tm_sec is the second (0-60)
     
     std::chrono::duration<double> milliseconds = std::chrono::duration<double>(second - epochSeconds);
 
@@ -63,12 +63,12 @@ static gtime_t epoch2time(const double* ep)
 
 bool Epoch::operator==(const Epoch& other) const
 {
-    return this->Toc__s() == other.Toc__s();
+    return abs(this->Toc__s() - other.Toc__s()) < 1e-6;
 }
 
 bool Epoch::operator!=(const Epoch& other) const
 {
-    return this->Toc__s() != other.Toc__s();
+    return abs(this->Toc__s() - other.Toc__s()) >= 1e-6;
 }
 
 Epoch::~Epoch()

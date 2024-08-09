@@ -1,6 +1,6 @@
 #pragma once
 
-enum class SvSystem
+enum class SvSystem : char
 {
 	GPS = 'G',
 	GLONASS = 'R',

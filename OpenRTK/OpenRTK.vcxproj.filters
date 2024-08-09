@@ -84,6 +84,9 @@
     <ClCompile Include="PrecisePositioning\Postprocessor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Export\JsonExport.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -225,6 +228,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="PrecisePositioning\Postprocessor.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Export\JsonExportData.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Export\JsonExport.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

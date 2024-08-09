@@ -12,7 +12,6 @@
 
 class ObsData : public RinexData
 {
-
 private:
     int _EpochFlag;    
     bool _IsSpecialEvent;

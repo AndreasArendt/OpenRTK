@@ -82,6 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir)/../submodules/json/include/;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,6 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Export\CsvExport.cpp" />
+    <ClCompile Include="Export\JsonExport.cpp" />
     <ClCompile Include="PrecisePositioning\Postprocessor.cpp" />
     <ClCompile Include="PrecisePositioning\Ephemeris\GpsEphemeris.cpp" />
     <ClCompile Include="PrecisePositioning\Ephemeris\KeplerOrbit.cpp" />
@@ -163,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Export\CsvExport.hpp" />
+    <ClInclude Include="Export\JsonExport.hpp" />
     <ClInclude Include="PrecisePositioning\Postprocessor.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GpsEphemeris.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\KeplerOrbit.hpp" />
@@ -188,6 +192,7 @@
     <ClInclude Include="RinexParser\RinexTypes\Satellite.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\TimeDifferenceType.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\TimeSystemCorrection.hpp" />
+    <ClInclude Include="Export\JsonExportData.hpp" />
     <ClInclude Include="Transformations\Constants.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
     <ClInclude Include="RinexParser\Observations\DopplerObservation.hpp" />

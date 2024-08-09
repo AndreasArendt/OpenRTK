@@ -38,7 +38,8 @@ class Epoch
 
         // operator overloading
         bool operator==(const Epoch& other) const;
-        bool operator!=(const Epoch& other) const;
+        bool operator!=(const Epoch& other) const;        
+        auto operator<=>(const Epoch& other) const = default;
 };
 
 
