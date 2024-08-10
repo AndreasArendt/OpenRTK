@@ -111,7 +111,7 @@ void JsonExport::CollectData(std::vector<Satellite>& satellites)
 					// found current epoch
 					if (obs.Epoche() == sdat.Epoch)
 					{				
-						this->_SatelliteData.insert(this->_SatelliteData.begin(), satData);
+						this->_SatelliteData.at(j).Observations.push_back(satObs);						
 						break;
 					}
 					// insert in sorted order					
