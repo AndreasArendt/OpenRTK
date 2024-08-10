@@ -38,10 +38,7 @@ int main()
 	spp.Calculate(Satellites);
 
 	auto jExport = JsonExport();
-	jExport.Export(Satellites, "");
-
-	//CsvExport::ExportEphemeris(Satellites, "D:/Projekte/OpenRTK/Analysis/Ephemeris_exp.csv");
-	//CsvExport::ExportObsData(Satellites, "D:/Projekte/OpenRTK/Analysis/Observation_exp.csv");
+	jExport.Export(Satellites, "D:/Projekte/OpenRTK/data/satdata.json");
 
 	return 0;
 }
