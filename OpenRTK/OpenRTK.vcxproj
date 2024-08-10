@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Export\CsvExport.cpp" />
     <ClCompile Include="Export\JsonExport.cpp" />
     <ClCompile Include="PrecisePositioning\Postprocessor.cpp" />
     <ClCompile Include="PrecisePositioning\Ephemeris\GpsEphemeris.cpp" />
@@ -165,7 +164,6 @@
     <ClCompile Include="Transformations\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Export\CsvExport.hpp" />
     <ClInclude Include="Export\JsonExport.hpp" />
     <ClInclude Include="PrecisePositioning\Postprocessor.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GpsEphemeris.hpp" />
