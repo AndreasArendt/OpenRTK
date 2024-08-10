@@ -1,6 +1,7 @@
 #include "JsonExport.hpp"
 
 #include <nlohmann/json.hpp>
+#include <fstream>
 
 using json = nlohmann::json;
 
@@ -45,7 +46,7 @@ double JsonExport::GetSnrObservationIfExist(ObsData obs, ObservationBand band)
 }
 
 
-SatelliteObservation JsonExport::CreateSatObservation(Satellite sv, ObsData obs, const Ephemeris& ephemeris)
+SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const ObsData& obs, const Ephemeris& ephemeris)
 {
 	SatelliteObservation satObs;
 	satObs.SatelliteSystem = sv.SvString();
@@ -78,7 +79,7 @@ SatelliteObservation JsonExport::CreateSatObservation(Satellite sv, ObsData obs,
 	return satObs;
 }
 
-void JsonExport::Export(std::vector<Satellite>& satellites, std::string path)
+void JsonExport::CollectData(std::vector<Satellite>& satellites)
 {
 	// iterate over all satellites
 	for (const auto& sv : satellites)
@@ -90,13 +91,14 @@ void JsonExport::Export(std::vector<Satellite>& satellites, std::string path)
 			const auto& ephemeris = *sv.SatelliteEphemeris().at(ObservationBand::Band_1).at(i).get();
 			SatelliteObservation satObs = this->CreateSatObservation(sv, obs, ephemeris);
 
+			// prepare data to be inserted
+			auto satData = SatelliteData();				
+			satData.Epoch = static_cast<jEpoch>(obs.Epoche());
+			satData.Observations.push_back(satObs);
+
 			// if data empty, insert - else iterate 
 			if (this->_SatelliteData.empty())
 			{
-				auto satData = SatelliteData();				
-				satData.Epoch = obs.Epoche();
-				satData.Observations.push_back(satObs);
-
 				this->_SatelliteData.push_back(satData);
 			}
 			else
@@ -105,25 +107,58 @@ void JsonExport::Export(std::vector<Satellite>& satellites, std::string path)
 				for(int j = 0; j < this->_SatelliteData.size(); j++)				
 				{
 					auto& sdat = this->_SatelliteData.at(j);
-
+					
 					// found current epoch
-					if (sdat.Epoch == obs.Epoche())
-					{						
-						sdat.Observations.push_back(satObs);												
+					if (obs.Epoche() == sdat.Epoch)
+					{				
+						this->_SatelliteData.insert(this->_SatelliteData.begin(), satData);
 						break;
 					}
-					// insert in sorted order
-					else if (sdat.Epoch < obs.Epoche())
-					{			
-						auto satData = SatelliteData();
-						satData.Epoch = obs.Epoche();
-						satData.Observations.push_back(satObs);
-												
-						this->_SatelliteData.insert(this->_SatelliteData.begin() + j, satData);
-						break;
+					// insert in sorted order					
+					else if (obs.Epoche() > sdat.Epoch)
+					{
+						if (this->_SatelliteData.size() > j + 1)
+						{
+							auto& next = this->_SatelliteData.at(j+1);
+							if (obs.Epoche() > sdat.Epoch && obs.Epoche() < next.Epoch)
+							{
+								this->_SatelliteData.insert(this->_SatelliteData.begin() + j + 1, satData);
+								break;
+							}
+						}
+						else
+						{
+							this->_SatelliteData.insert(this->_SatelliteData.begin() + j +1, satData);						
+							break;
+						}																			
 					}
 				}
 			}
 		}		
 	}
+}
+
+void JsonExport::Export(std::vector<Satellite>& satellites, std::filesystem::path path)
+{
+	this->CollectData(satellites);
+
+	nlohmann::json j;
+
+	for (const auto& sat : this->_SatelliteData) 
+	{
+		nlohmann::json satJson;
+		satJson["Epoch"] = static_cast<jEpoch>(sat.Epoch).to_json();
+
+		nlohmann::json observationsJson = nlohmann::json::array();
+		for (const auto& obs : sat.Observations) 
+		{
+			observationsJson.push_back(static_cast<SatelliteObservation>(obs).to_json());
+		}
+
+		satJson["Observations"] = observationsJson;
+		j["SatelliteData"].push_back(satJson);
+	}
+
+	std::ofstream file(path);
+	file << j;
 }
