@@ -2,6 +2,7 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <unordered_map>
 
 using json = nlohmann::json;
 
@@ -10,7 +11,7 @@ double JsonExport::GetCodeObservationIfExist(ObsData obs, ObservationBand band)
 	if (obs.CodeObservations().find(band) != obs.CodeObservations().end())
 	{
 		return obs.CodeObservations().at(band).Pseudorange__m();
-	}	
+	}
 
 	return 0;
 }
@@ -50,7 +51,7 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 {
 	SatelliteObservation satObs;
 	satObs.SatelliteSystem = sv.SvString();
-		
+
 	satObs.ECEF_Position = ephemeris.Position_E();
 	satObs.ClockOffset = ephemeris.SatelliteClockError__s();
 	satObs.ClockDrift = ephemeris.SatelliteClockDrift__1Ds();
@@ -81,13 +82,22 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 
 void JsonExport::CollectData(std::vector<Satellite>& satellites)
 {
+	auto epochDataMap = std::unordered_map<Epoch, SatelliteData>();
+
 	// iterate over all satellites
 	for (const auto& sv : satellites)
 	{
 		// iterate over all observations of current satellite
 		for (int i = 0; i < sv.ObservationData().size(); i++)
 		{
-			auto obs = sv.ObservationData().at(i);			
+			auto obs = sv.ObservationData().at(i);	
+
+			// check if Ephemeris data available
+			if (!sv.SatelliteEphemeris().contains(ObservationBand::Band_1))
+			{
+				break;
+			}
+
 			const auto& ephemeris = *sv.SatelliteEphemeris().at(ObservationBand::Band_1).at(i).get();
 			SatelliteObservation satObs = this->CreateSatObservation(sv, obs, ephemeris);
 
@@ -96,67 +106,53 @@ void JsonExport::CollectData(std::vector<Satellite>& satellites)
 			satData.Epoch = static_cast<jEpoch>(obs.Epoche());
 			satData.Observations.push_back(satObs);
 
-			// if data empty, insert - else iterate 
-			if (this->_SatelliteData.empty())
+			if (epochDataMap.contains(obs.Epoche()))
 			{
-				this->_SatelliteData.push_back(satData);
+				epochDataMap.at(obs.Epoche()).Observations.push_back(satObs);
 			}
 			else
 			{
-				// check if any entry for TOC already exists
-				for(int j = 0; j < this->_SatelliteData.size(); j++)				
-				{
-					auto& sdat = this->_SatelliteData.at(j);
-					
-					// found current epoch
-					if (obs.Epoche() == sdat.Epoch)
-					{				
-						this->_SatelliteData.at(j).Observations.push_back(satObs);						
-						break;
-					}
-					// insert in sorted order					
-					else if (obs.Epoche() > sdat.Epoch)
-					{
-						if (this->_SatelliteData.size() > j + 1)
-						{
-							auto& next = this->_SatelliteData.at(j+1);
-							if (obs.Epoche() > sdat.Epoch && obs.Epoche() < next.Epoch)
-							{
-								this->_SatelliteData.insert(this->_SatelliteData.begin() + j + 1, satData);
-								break;
-							}
-						}
-						else
-						{
-							this->_SatelliteData.insert(this->_SatelliteData.begin() + j +1, satData);						
-							break;
-						}																			
-					}
-				}
+				epochDataMap.insert(std::pair<Epoch, SatelliteData>(obs.Epoche(), satData));
 			}
 		}		
 	}
+
+	this->_SatelliteData.clear();
+	this->_SatelliteData.reserve(epochDataMap.size());
+	for (const auto& [epoch, data] : epochDataMap)
+	{
+		this->_SatelliteData.push_back(data);
+	}
+
+	// sorting
+	std::sort(this->_SatelliteData.begin(), this->_SatelliteData.end(),
+		[](const SatelliteData& a, const SatelliteData& b) {
+			return a.Epoch < b.Epoch;
+		});
 }
 
 void JsonExport::Export(std::vector<Satellite>& satellites, std::filesystem::path path)
 {
 	this->CollectData(satellites);
 
-	nlohmann::json j;
+	json j;
 
-	for (const auto& sat : this->_SatelliteData) 
+	j["SatelliteData"] = json::array();
+
+	for (auto& sv : this->_SatelliteData)
 	{
-		nlohmann::json satJson;
-		satJson["Epoch"] = static_cast<jEpoch>(sat.Epoch).to_json();
-
-		nlohmann::json observationsJson = nlohmann::json::array();
-		for (const auto& obs : sat.Observations) 
+		json satJson;
+		satJson["Epoch"] = sv.Epoch.to_json();
+				
+		json observationsJson = json::array();
+		
+		for (auto& obs : sv.Observations)
 		{
-			observationsJson.push_back(static_cast<SatelliteObservation>(obs).to_json());
+			observationsJson.push_back(obs.to_json());
 		}
 
-		satJson["Observations"] = observationsJson;
-		j["SatelliteData"].push_back(satJson);
+		satJson["Observations"] = std::move(observationsJson);
+		j["SatelliteData"].push_back(std::move(satJson));
 	}
 
 	std::ofstream file(path);
