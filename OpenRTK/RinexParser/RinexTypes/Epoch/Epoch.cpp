@@ -37,6 +37,7 @@ Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
     this->_hour = hour;
     this->_minute = minute;
     this->_second = second;
+    this->_millisecond = milliseconds;
 }
 
 typedef struct

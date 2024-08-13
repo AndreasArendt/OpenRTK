@@ -18,8 +18,7 @@ public:
 			{"day", this->Day()},
 			{"hour", this->Hour()},
 			{"minute", this->Minute()},
-			{"second", this->Second()},
-			{"millisecond", this->Millisecond()}
+			{"second", this->Second()}			
 		};
 	}
 };

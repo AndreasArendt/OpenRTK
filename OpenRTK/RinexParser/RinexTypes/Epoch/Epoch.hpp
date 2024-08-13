@@ -17,7 +17,6 @@ private:
 	int _hour;
 	int _minute;
 	double _second;
-	double _millisecond;
 
 public:
 	// getters        
@@ -27,7 +26,6 @@ public:
 	int const& Hour() const { return this->_hour; }
 	int const& Minute() const { return this->_minute; }
 	double const& Second() const { return this->_second; }
-	double const& Millisecond() const { return this->_millisecond; }
 
 	// functions
 	double const Toc__s() const { return this->_EpochTime.time_since_epoch().count() / 1e7; }   //conversion to seconds
@@ -61,7 +59,6 @@ namespace std
 			std::size_t h4 = std::hash<int>{}(obj.Hour());
 			std::size_t h5 = std::hash<int>{}(obj.Minute());
 			std::size_t h6 = std::hash<double>{}(obj.Second());
-			std::size_t h7 = std::hash<double>{}(obj.Millisecond());
 			
 			std::size_t combinedHash = h1;
 			combinedHash = combinedHash * 31 + h2;
@@ -69,7 +66,6 @@ namespace std
 			combinedHash = combinedHash * 31 + h4;
 			combinedHash = combinedHash * 31 + h5;
 			combinedHash = combinedHash * 31 + h6;
-			combinedHash = combinedHash * 31 + h7;
 
 			return combinedHash;
 		}
