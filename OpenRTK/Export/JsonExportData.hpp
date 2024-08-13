@@ -52,6 +52,8 @@ public:
 	double ClockDrift;
 	double RelativisticError;
 
+	bool IsHealthy;
+
 	GenericObservation Code;
 	GenericObservation Carrier;
 	GenericObservation Doppler;
@@ -65,6 +67,7 @@ public:
 		   {"ClockOffset", this->ClockOffset},
 		   {"ClockDrift", this->ClockDrift},
 		   {"RelativisticError", this->RelativisticError},
+           {"IsHealthy", this->IsHealthy},
 		   {"Code", this->Code.to_json()},
 		   {"Carrier", this->Carrier.to_json()},
 		   {"Doppler", this->Doppler.to_json()},

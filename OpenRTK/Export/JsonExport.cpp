@@ -52,10 +52,11 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 	SatelliteObservation satObs;
 	satObs.SatelliteSystem = sv.SvString();
 
-	satObs.ECEF_Position = ephemeris.Position_E();
-	satObs.ClockOffset = ephemeris.SatelliteClockError__s();
-	satObs.ClockDrift = ephemeris.SatelliteClockDrift__1Ds();
+	satObs.ECEF_Position	 = ephemeris.Position_E();
+	satObs.ClockOffset		 = ephemeris.SatelliteClockError__s();
+	satObs.ClockDrift		 = ephemeris.SatelliteClockDrift__1Ds();
 	satObs.RelativisticError = ephemeris.RelativisticError__s();
+	satObs.IsHealthy		 = ephemeris.SatelliteHealth().Health() == 0; // should work for now!
 
 	satObs.Code = GenericObservation();
 	satObs.Code.Band_1 = this->GetCodeObservationIfExist(obs, ObservationBand::Band_1);
