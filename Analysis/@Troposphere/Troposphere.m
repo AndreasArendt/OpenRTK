@@ -11,7 +11,9 @@ classdef Troposphere < handle
 
         % Troposphere Models
         dt = Saastamoinen_TropoModel(lat__rad, alt__m, elevation)
-        dt = Collins_TropoModel(h_sealevel, sat_elev)        
+        dt = Collins_TropoModel(h_sealevel, sat_elev)     
+
+        [tropo_offset] = CalcTropoOffset(x_rx, y_rx, z_rx, elevation, varargin)
     end
 end
 
