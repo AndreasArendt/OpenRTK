@@ -6,8 +6,12 @@ This project focuses on implementing Precise Point Positioning (PPP), Single Poi
 
 ## Table of Contents
 
-1. [Status](#status)
-2. [Installation](#installation)
+- [OpenRTK Precise GNSS](#openrtk-precise-gnss)
+  - [Description](#description)
+  - [Table of Contents](#table-of-contents)
+  - [Status](#status)
+  - [Installation](#installation)
+  - [Documentation](#documentation)
 
 ## Status
 
@@ -22,3 +26,10 @@ Clone the repository:
    git clone https://github.com/AndreasArendt/OpenRTK.git
    cd OpenRTK
    ```
+
+## Documentation                                                               
+The full documentation is available at [Read the Docs](https://docopenrtk.readthedocs.io).
+
+---
+
+[![Documentation Status](https://readthedocs.org/projects/docopenrtk/badge/?version=latest)](https://docopenrtk.readthedocs.io/en/latest/?badge=latest)
