@@ -9,3 +9,6 @@ Welcome to OpenRTK documentation!
 
 Contents
 --------
+:ref:`introduction`.
+
+:ref:`errormodel`.
