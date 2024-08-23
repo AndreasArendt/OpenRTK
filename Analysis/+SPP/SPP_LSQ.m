@@ -71,7 +71,8 @@ for ii = 1:numel(SatelliteData)
 
         x_hat = (A.'*A)\A.'*y;
         
-        POS_E__M                = POS_E__M + x_hat(1:3)';        
+        % State update
+        POS_E__M           = POS_E__M + x_hat(1:3)';        
         RX_CLOCK_OFFSET__M = RX_CLOCK_OFFSET__M + x_hat(4);
 
         if all(abs(x_hat(1:3)) < 1e-3)
@@ -83,45 +84,43 @@ for ii = 1:numel(SatelliteData)
     rx_clock_offset__m(ii+1)  = RX_CLOCK_OFFSET__M;
 end
 
+% adjust off-by-one index
+pos_E__m           = pos_E__m(2:end,:);
+rx_clock_offset__m = rx_clock_offset__m(2:end);
+
 %%
 afigure(42);
 subplot(4,2,1);
 hold on; grid on;
 yline(station_pos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
-ylim([station_pos__m(1)-500,  station_pos__m(1)+500])
 legend('show')
 
 subplot(4,2,2);
 hold on; grid on;
 plot(station_pos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
-ylim([-20 20])
 legend('show')
 
 subplot(4,2,3);
 hold on; grid on;
 yline(station_pos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
-ylim([station_pos__m(2)-500, station_pos__m(2)+500])
 legend('show')
 
 subplot(4,2,4);
 hold on; grid on;
 plot(station_pos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
-ylim([-20 20])
 legend('show')
 
 subplot(4,2,5);
 hold on; grid on;
 yline(station_pos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
-ylim([station_pos__m(3)-500, station_pos__m(3)+500])
 legend('show')
 
 subplot(4,2,6);
 hold on; grid on;
 plot(station_pos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
-ylim([-20 20])
 legend('show')
 
 subplot(4,2,7);
