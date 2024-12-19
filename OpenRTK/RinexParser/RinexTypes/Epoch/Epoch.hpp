@@ -28,7 +28,7 @@ public:
 	double const& Second() const { return this->_second; }
 
 	// functions
-	double const Toc__s() const { return this->_EpochTime.time_since_epoch().count() / 1e7; }   //conversion to seconds
+	double const PosixEpochTime__s() const { return this->_EpochTime.time_since_epoch().count() / 1e7; }   // Time of Clock (TOC)
 
 	// ctor & Dtor                
 	Epoch();
@@ -42,7 +42,7 @@ public:
 
 	auto operator<=>(const Epoch& other) const
 	{
-		return this->Toc__s() <=> other.Toc__s();
+		return this->PosixEpochTime__s() <=> other.PosixEpochTime__s();
 	}
 };
 

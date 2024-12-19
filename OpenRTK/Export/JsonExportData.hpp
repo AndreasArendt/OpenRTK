@@ -13,12 +13,7 @@ public:
 	nlohmann::json to_json()
 	{
 		return {
-			{"year", this->Year()},
-			{"month", this->Month()},
-			{"day", this->Day()},
-			{"hour", this->Hour()},
-			{"minute", this->Minute()},
-			{"second", this->Second()}			
+			{"EpochTime__s", this->PosixEpochTime__s()}		
 		};
 	}
 };
