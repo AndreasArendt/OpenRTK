@@ -104,7 +104,7 @@ void JsonExport::CollectData(std::vector<Satellite>& satellites)
 
 			// prepare data to be inserted
 			auto satData = SatelliteData();				
-			satData.Epoch = static_cast<jEpoch>(obs.Epoche());
+			satData.PosixEpochTime__s = obs.Epoche().PosixEpochTime__s();
 			satData.Observations.push_back(satObs);
 
 			if (epochDataMap.contains(obs.Epoche()))
@@ -128,7 +128,7 @@ void JsonExport::CollectData(std::vector<Satellite>& satellites)
 	// sorting
 	std::sort(this->_SatelliteData.begin(), this->_SatelliteData.end(),
 		[](const SatelliteData& a, const SatelliteData& b) {
-			return a.Epoch < b.Epoch;
+			return a.PosixEpochTime__s < b.PosixEpochTime__s;
 		});
 }
 
@@ -143,7 +143,7 @@ void JsonExport::Export(std::vector<Satellite>& satellites, std::filesystem::pat
 	for (auto& sv : this->_SatelliteData)
 	{
 		json satJson;
-		satJson["Epoch"] = sv.Epoch.to_json();
+		satJson["PosixEpochTime__s"] = sv.PosixEpochTime__s;
 				
 		json observationsJson = json::array();
 		

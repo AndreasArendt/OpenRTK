@@ -85,7 +85,7 @@ double GpsNavData::ToeEpoch()
 	t__s += (time_t)86400 * 7 * this->_GpsWeek + this->_Toe__s; //add GalWeek[s] and Toe[s]
 
 	// Week adjustment
-	double tt = difftime(t__s, this->_Epoch.Toc__s());
+	double tt = difftime(t__s, this->_Epoch.PosixEpochTime__s());
 	if (tt < -302400.0)
 	{
 		t__s += 604800.0;

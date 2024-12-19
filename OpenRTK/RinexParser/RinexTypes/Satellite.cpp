@@ -88,7 +88,7 @@ NavData* Satellite::findClosestTime(double targetTime)
 
 	for (auto& navdata : this->_NavigationData)
 	{
-		double difference = std::abs(navdata->Epoche().Toc__s() - targetTime);
+		double difference = std::abs(navdata->Epoche().PosixEpochTime__s() - targetTime);
 		if ((difference < minDifference) && ( std::abs(difference) < 14400.0)) //GAL #define MAXDTOE_GAL 14400.0             /* max time difference to Galileo Toe (s) */
 		{
 			minDifference = difference;
@@ -106,7 +106,7 @@ void Satellite::calcEphemeris()
 	case SvSystem::GALILEO:
 		for (auto& obs : this->_ObservationData)
 		{
-			double time = obs.Epoche().Toc__s();
+			double time = obs.Epoche().PosixEpochTime__s();
 
 			NavData* nav = this->findClosestTime(time);
 		
@@ -124,7 +124,7 @@ void Satellite::calcEphemeris()
 					time = time - transmission_time__s;
 					time = time - eph->CalcClockOffset(*nav, time);
 
-					eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());					
+					eph->CalcEphemeris(*nav, time, obs.Epoche().PosixEpochTime__s());					
 					this->InsertEphemeris(band, std::move(eph));
 				}
 			}
@@ -133,7 +133,7 @@ void Satellite::calcEphemeris()
 	case SvSystem::GPS:
 		for (auto& obs : this->_ObservationData)
 		{
-			double time = obs.Epoche().Toc__s();
+			double time = obs.Epoche().PosixEpochTime__s();
 
 			NavData* nav = this->findClosestTime(time);
 
@@ -151,7 +151,7 @@ void Satellite::calcEphemeris()
 					time = time - transmission_time__s;
 					time = time - eph->CalcClockOffset(*nav, time);
 
-					eph->CalcEphemeris(*nav, time, obs.Epoche().Toc__s());
+					eph->CalcEphemeris(*nav, time, obs.Epoche().PosixEpochTime__s());
 					this->InsertEphemeris(band, std::move(eph));
 				}
 			}

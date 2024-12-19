@@ -7,17 +7,6 @@
 #include "../Transformations/ECEF_Position.hpp"
 #include "../RinexParser/RinexTypes/Epoch/Epoch.hpp"
 
-class jEpoch : public Epoch
-{
-public:
-	nlohmann::json to_json()
-	{
-		return {
-			{"EpochTime__s", this->PosixEpochTime__s()}		
-		};
-	}
-};
-
 class GenericObservation
 {
 public:
@@ -74,7 +63,7 @@ public:
 class SatelliteData
 {
 public:
-	jEpoch Epoch;
+	double PosixEpochTime__s;
 	std::vector<SatelliteObservation> Observations;		
 };
 

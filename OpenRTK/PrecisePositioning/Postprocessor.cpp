@@ -24,7 +24,7 @@ void Postprocessor::ShuffleData(std::vector<Satellite> satellites)
 	{
 		for (ObsData obs : sv.ObservationData())
 		{
-			obs.Epoche().Toc__s();
+			obs.Epoche().PosixEpochTime__s();
 		}
 	}
 }

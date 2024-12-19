@@ -63,12 +63,12 @@ static gtime_t epoch2time(const double* ep)
 
 bool Epoch::operator==(const Epoch& other) const
 {
-    return abs(this->Toc__s() - other.Toc__s()) < 1e-6;
+    return abs(this->PosixEpochTime__s() - other.PosixEpochTime__s()) < 1e-6;
 }
 
 bool Epoch::operator!=(const Epoch& other) const
 {
-    return abs(this->Toc__s() - other.Toc__s()) >= 1e-6;
+    return abs(this->PosixEpochTime__s() - other.PosixEpochTime__s()) >= 1e-6;
 }
 
 Epoch::~Epoch()
