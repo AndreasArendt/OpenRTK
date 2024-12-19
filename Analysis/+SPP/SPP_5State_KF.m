@@ -1,4 +1,4 @@
-% LoadData;
+LoadData;
 
 idx_E    = ([S.SvSystemID_t_eph] >= 17664) & ([S.SvSystemID_t_eph] <= 17664+255); %17664 is 69 ('E') << 8
 SvId_E   = unique(S.SvSystemID_t_eph(idx_E));
@@ -14,11 +14,11 @@ nStates = 5;
 F = eye(nStates);
 Q = diag([0.01 0.01 0.01 1e-3 1e-9]);
 kf = Kalman.Kalman(F, Q);
-kf.SetInitialStates([station_pos__m'; 0; 0]); % ECEF Position [m]
+kf.SetInitialStates([refpos__m'; 0; 0]); % ECEF Position [m]
                                               % Receiver Clock Error * c [m]
                                               % Zenith Troposphere Delay [m]
 
-pos = station_pos__m;
+pos = refpos__m;
 cdr = 0;
 zdt = 0;
 P = eye(nStates);
@@ -127,40 +127,40 @@ end
 afigure(42);
 subplot(4,2,1);
 hold on; grid on;
-yline(station_pos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
+yline(refpos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos(:,1), 'DisplayName', 'EKF (5 States)')
-ylim([station_pos__m(1)-50,  station_pos__m(1)+50])
+ylim([refpos__m(1)-50,  refpos__m(1)+50])
 legend('show')
 
 subplot(4,2,2);
 hold on; grid on;
-plot(station_pos__m(1) - pos(:,1), 'DisplayName', 'EKF (5 States)')
+plot(refpos__m(1) - pos(:,1), 'DisplayName', 'EKF (5 States)')
 ylim([-20 20])
 legend('show')
 
 subplot(4,2,3);
 hold on; grid on;
-yline(station_pos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
+yline(refpos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos(:,2), 'DisplayName', 'EKF (5 States)')
-ylim([station_pos__m(2)-50, station_pos__m(2)+50])
+ylim([refpos__m(2)-50, refpos__m(2)+50])
 legend('show')
 
 subplot(4,2,4);
 hold on; grid on;
-plot(station_pos__m(2) - pos(:,2), 'DisplayName', 'EKF (5 States)')
+plot(refpos__m(2) - pos(:,2), 'DisplayName', 'EKF (5 States)')
 ylim([-20 20])
 legend('show')
 
 subplot(4,2,5);
 hold on; grid on;
-yline(station_pos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
+yline(refpos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos(:,3), 'DisplayName', 'EKF (5 States)')
-ylim([station_pos__m(3)-50, station_pos__m(3)+50])
+ylim([refpos__m(3)-50, refpos__m(3)+50])
 legend('show')
 
 subplot(4,2,6);
 hold on; grid on;
-plot(station_pos__m(3) - pos(:,3), 'DisplayName', 'EKF (5 States)')
+plot(refpos__m(3) - pos(:,3), 'DisplayName', 'EKF (5 States)')
 ylim([-20 20])
 legend('show')
 

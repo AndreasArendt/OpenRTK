@@ -1,16 +1,13 @@
 LoadData;
 
+refpos__m = [NaN, NaN, NaN];
+
 pos_E__m           = zeros(numel(SatelliteData), 3);
 rx_clock_offset__m = zeros(numel(SatelliteData), 1);
 
-posix = NaN(size(SatelliteData));
-
 for ii = 1:numel(SatelliteData)
     %% Pre-Processing
-    Epoch        = SatelliteData(ii).Epoch;
     Observations = SatelliteData(ii).Observations;
-
-    posix(ii) = epoch2posix( Epoch.day, Epoch.month, Epoch.year, Epoch.hour, Epoch.minute, Epoch.second);
 
     idx_gps = cellfun(@(x)startsWith(x, 'G'), {Observations.SatelliteSystem});
     idx_gal = cellfun(@(x)startsWith(x, 'E'), {Observations.SatelliteSystem});
@@ -92,35 +89,35 @@ rx_clock_offset__m = rx_clock_offset__m(2:end);
 afigure(42);
 subplot(4,2,1);
 hold on; grid on;
-yline(station_pos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
+yline(refpos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,2);
 hold on; grid on;
-plot(station_pos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
+plot(refpos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,3);
 hold on; grid on;
-yline(station_pos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
+yline(refpos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,4);
 hold on; grid on;
-plot(station_pos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
+plot(refpos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,5);
 hold on; grid on;
-yline(station_pos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
+yline(refpos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,6);
 hold on; grid on;
-plot(station_pos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
+plot(refpos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
 legend('show')
 
 subplot(4,2,7);
