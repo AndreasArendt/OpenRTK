@@ -13,7 +13,7 @@ F_L2_GPS__Hz      = 1227.600e6;
 
 function SatelliteData = Load()
     try
-        fid = fopen('data\satdata.json');
+        fid = fopen('data/satdata.json');
         j_str = fscanf(fid, '%s');
     catch
         fclose(fid);
