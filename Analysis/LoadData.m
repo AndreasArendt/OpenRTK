@@ -1,4 +1,5 @@
 clear; fclose all;
+
 SatelliteData = loadSatdata();
 
 % station_pos__m = [4164313.0000, 803525.9000, 4748474.9000]; %AUBG
@@ -13,7 +14,8 @@ F_L2_GPS__Hz      = 1227.600e6;
 
 function SatelliteData = loadSatdata()
     try
-        fid = fopen('data/satdata.json');
+        fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'satdata.json');
+        fid = fopen(fpath);
         j_str = fscanf(fid, '%s');
     catch
         fclose(fid);
