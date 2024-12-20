@@ -84,6 +84,9 @@
     <ClCompile Include="Export\JsonExport.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="SP3\SP3Parser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -228,6 +231,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Export\JsonExport.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SP3\SP3Parser.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

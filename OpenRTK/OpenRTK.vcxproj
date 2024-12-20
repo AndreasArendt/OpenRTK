@@ -161,6 +161,7 @@
     <ClCompile Include="RinexParser\RinexTypes\Epoch\Epoch.cpp" />
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
+    <ClCompile Include="SP3\SP3Parser.cpp" />
     <ClCompile Include="Transformations\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="RinexParser\RinexTypes\TimeDifferenceType.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\TimeSystemCorrection.hpp" />
     <ClInclude Include="Export\JsonExportData.hpp" />
+    <ClInclude Include="SP3\SP3Parser.hpp" />
     <ClInclude Include="Transformations\Constants.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
     <ClInclude Include="RinexParser\Observations\DopplerObservation.hpp" />
