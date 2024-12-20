@@ -17,7 +17,7 @@ Satellite::Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _Sv
 Satellite::Satellite(std::string satStr)
 {
 	this->_SvSystem = static_cast<SvSystem>(satStr.at(0));
-	this->_SvNumber = parseInt(satStr.substr(1, 2));
+	this->_SvNumber = util::astring::parseInt(satStr.substr(1, 2));
 }
 
 Satellite::Satellite(const Satellite& other) : _SvSystem(other._SvSystem), _SvNumber(other._SvNumber)

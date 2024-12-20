@@ -42,7 +42,7 @@ public:
     Position const& AntennaOffset() const { return _AntennaOffset; }
         
     // ctor & dtor
-    RinexObsParser(std::vector<Satellite>& satellites) : AbstractRinexParser(satellites) {};
+    RinexObsParser(std::vector<Satellite>& satellites) : AbstractRinexParser(satellites), _CurrentEpochFlag(-1) {};
     ~RinexObsParser();
         
     //functions

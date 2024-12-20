@@ -40,13 +40,13 @@ void RinexObsParser::ReadEpochHeader(std::string line) {
     try
     {
         // Parse substrings to integers/double
-        int year = parseInt(line.substr(2, 4));
-        int month = parseInt(line.substr(7, 2));
-        int day = parseInt(line.substr(10, 2));
-        int hour = parseInt(line.substr(13, 2));
-        int minute = parseInt(line.substr(16, 2));
-        double second = parseDouble(line.substr(19, 10));
-        this->_CurrentEpochFlag = parseInt(line.substr(31, 1)); //0: OK; 1: power failure between current and previous epoch; >1 Special Event
+        int year = util::astring::parseInt(line.substr(2, 4));
+        int month = util::astring::parseInt(line.substr(7, 2));
+        int day = util::astring::parseInt(line.substr(10, 2));
+        int hour = util::astring::parseInt(line.substr(13, 2));
+        int minute = util::astring::parseInt(line.substr(16, 2));
+        double second = util::astring::parseDouble(line.substr(19, 10));
+        this->_CurrentEpochFlag = util::astring::parseInt(line.substr(31, 1)); //0: OK; 1: power failure between current and previous epoch; >1 Special Event
         //int numberSVs = parseInt(line.substr(33, 2));
 
         // Create new Epoch object and add it to the _Epochs vector
@@ -89,26 +89,26 @@ void RinexObsParser::ReadEpochObservation(std::string line)
         {            
             case ObservationType::Code: //Pseudorange
             {   
-                double psuedorange = parseDouble(data);                 
+                double psuedorange = util::astring::parseDouble(data);
                 CodeObservation cObs = CodeObservation(psuedorange);
                 this->_CurrentObsData.AddCodeObservation(obsDef.GetObservationBand(), psuedorange);    
                 break;  
             }
             case ObservationType::Phase: //Carrierphase
             {
-                double cycles = parseDouble(data);                                                
+                double cycles = util::astring::parseDouble(data);
                 this->_CurrentObsData.AddPhaseObservation(obsDef.GetObservationBand(), cycles);
                 break;
             }
             case ObservationType::Doppler:
             {         
-                double doppler = parseDouble(data);                
+                double doppler = util::astring::parseDouble(data);
                 this->_CurrentObsData.AddDopplerObservation(obsDef.GetObservationBand(), doppler);
                 break;
             }
             case ObservationType::RawSignalStrength:
             {   
-                double snr = parseDouble(data);
+                double snr = util::astring::parseDouble(data);
                 this->_CurrentObsData.AddSnrObservation(obsDef.GetObservationBand(), snr);                
                 break;
             }
@@ -172,17 +172,17 @@ void RinexObsParser::ParseLine(std::string line)
             }
             else if ((line.find(RINEX_APPROX_POSITION_DEFINITION) != std::string::npos)) // approximate position
             {
-                double x = parseDouble(line.substr(0, 14));
-                double y = parseDouble(line.substr(14, 14));
-                double z = parseDouble(line.substr(28, 14));
+                double x = util::astring::parseDouble(line.substr(0, 14));
+                double y = util::astring::parseDouble(line.substr(14, 14));
+                double z = util::astring::parseDouble(line.substr(28, 14));
                 
                 this->_ApproximateMarkerPosition = ECEF_Position(x, y, z);
             }
             else if ((line.find(RINEX_ANTENNA_DELTA_DEFINITION) != std::string::npos)) // antenna phase center offset
             {
-                double x = parseDouble(line.substr(0, 14));
-                double y = parseDouble(line.substr(14, 14));
-                double z = parseDouble(line.substr(28, 14));
+                double x = util::astring::parseDouble(line.substr(0, 14));
+                double y = util::astring::parseDouble(line.substr(14, 14));
+                double z = util::astring::parseDouble(line.substr(28, 14));
 
                 this->_AntennaOffset = Position(x, y, z);
             }

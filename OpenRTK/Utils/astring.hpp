@@ -1,28 +1,62 @@
 #pragma once
 
 #include <string>
+#include <algorithm>
+#include <cctype>
+#include <stdexcept>
+#include <ranges> // Required for ranges in C++20
 
-bool inline emptyOrWhiteSpace(const std::string& str)
+namespace util
 {
-	return (str.empty() || str.find_first_not_of(' ') == std::string::npos || std::all_of(str.begin(), str.end(), ::isspace));
-}
-
-double inline parseDouble(const std::string& str)
-{
-	if (emptyOrWhiteSpace(str))
-		return 0.0;
-	else
+	class astring
 	{
-		std::string modifiedStr(str);
-		std::replace(modifiedStr.begin(), modifiedStr.end(), 'D', 'E'); // Replace 'D' notation
-		return std::stod(modifiedStr);
-	}
-}
+	public:
+		// Checks if a string is empty or contains only whitespace characters
+		static bool emptyOrWhiteSpace(const std::string& str)
+		{
+			return std::ranges::all_of(str, [](unsigned char c) { return std::isspace(c); });
+		}
 
-int inline parseInt(const std::string& str)
-{
-	if (emptyOrWhiteSpace(str))
-		return 0;
-	else
-		return std::stoi(str);
+		// Parses a string to a double, replacing 'D' with 'E' for scientific notation compatibility
+		static double parseDouble(const std::string& str)
+		{
+			if (emptyOrWhiteSpace(str))
+				return 0.0;
+
+			try
+			{
+				std::string modifiedStr = str;
+				std::ranges::replace(modifiedStr, 'D', 'E'); // Replace 'D' notation
+				return std::stod(modifiedStr);
+			}
+			catch (const std::invalid_argument& e)
+			{
+				throw std::runtime_error("Invalid argument: Unable to convert string to double.");
+			}
+			catch (const std::out_of_range& e)
+			{
+				throw std::runtime_error("Out of range: The double value is too large to represent.");
+			}
+		}
+
+		// Parses a string to an integer
+		static int parseInt(const std::string& str)
+		{
+			if (emptyOrWhiteSpace(str))
+				return 0;
+
+			try
+			{
+				return std::stoi(str);
+			}
+			catch (const std::invalid_argument& e)
+			{
+				throw std::runtime_error("Invalid argument: Unable to convert string to int.");
+			}
+			catch (const std::out_of_range& e)
+			{
+				throw std::runtime_error("Out of range: The int value is too large to represent.");
+			}
+		}
+	};
 }

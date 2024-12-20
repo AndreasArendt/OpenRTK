@@ -29,10 +29,10 @@ void RinexNavParser::ParseIonoCorrDefinition(std::string line)
 	IonosphericCorrectionParameter iono_param = IonosphericCorrectionParameterMap()[rtrim(ionospheric_corr)];
 
 	// extract ionospheric correction parameters
-	double alphabeta0 = parseDouble(line.substr(5, 12));
-	double alphabeta1 = parseDouble(line.substr(17, 12));
-	double alphabeta2 = parseDouble(line.substr(29, 12));
-	double alphabeta3 = parseDouble(line.substr(41, 12));
+	double alphabeta0 = util::astring::parseDouble(line.substr(5, 12));
+	double alphabeta1 = util::astring::parseDouble(line.substr(17, 12));
+	double alphabeta2 = util::astring::parseDouble(line.substr(29, 12));
+	double alphabeta3 = util::astring::parseDouble(line.substr(41, 12));
 	char timeMark = line.at(54);
 
 	if (iono_param == IonosphericCorrectionParameter::GAL)
@@ -50,10 +50,10 @@ void RinexNavParser::ParseTimeDiffDefinition(std::string line)
 	std::string timeDiffType = line.substr(0, 4);
 	TimeDifferenceType timeDifferenceType = TimeDifferenceTypeMap()[rtrim(timeDiffType)];
 
-	double a0 = parseDouble(line.substr(5, 17));
-	double a1 = parseDouble(line.substr(22, 16));
-	int t = parseInt(line.substr(39, 6));
-	int w = parseInt(line.substr(46, 4));
+	double a0 = util::astring::parseDouble(line.substr(5, 17));
+	double a1 = util::astring::parseDouble(line.substr(22, 16));
+	int t = util::astring::parseInt(line.substr(39, 6));
+	int w = util::astring::parseInt(line.substr(46, 4));
 
 	this->_TimeSystemCorrections.emplace_back(timeDifferenceType, a0, a1, t, w);
 }
@@ -96,22 +96,22 @@ void RinexNavParser::ParseOrbitData(std::string line)
 
 	// check if string is long enough
 	if (line.length() >= 4 + 19)
-		data0 = parseDouble(line.substr(4, 19));	
+		data0 = util::astring::parseDouble(line.substr(4, 19));
 	else	
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
 	
 	if (line.length() >= 23 + 19)	
-		data1 = parseDouble(line.substr(23, 19));	
+		data1 = util::astring::parseDouble(line.substr(23, 19));
 	else	
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
 
 	if (line.length() >= 42 + 19)	
-		data2 = parseDouble(line.substr(42, 19));	
+		data2 = util::astring::parseDouble(line.substr(42, 19));
 	else	
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
 
 	if (line.length() >= 61 + 19)	
-		data3 = parseDouble(line.substr(61, 19));	
+		data3 = util::astring::parseDouble(line.substr(61, 19));
 	else	
 		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
 
@@ -135,17 +135,17 @@ void RinexNavParser::ParseEpoch(std::string line)
 	{		
 		// Parse Epochs
 		auto satellite = Satellite(line.substr(0, 3));
-		int year = parseInt(line.substr(4, 4));
-		int month = parseInt(line.substr(9, 2));
-		int day = parseInt(line.substr(12, 2));
-		int hour = parseInt(line.substr(15, 2));
-		int minute = parseInt(line.substr(18, 2));
-		double second = parseDouble(line.substr(21, 2));
+		int year = util::astring::parseInt(line.substr(4, 4));
+		int month = util::astring::parseInt(line.substr(9, 2));
+		int day = util::astring::parseInt(line.substr(12, 2));
+		int hour = util::astring::parseInt(line.substr(15, 2));
+		int minute = util::astring::parseInt(line.substr(18, 2));
+		double second = util::astring::parseDouble(line.substr(21, 2));
 		
 		// parse SV clock bias (seconds), SV clock drift (sec/sec) and SV clock drift rate (sec/sec2)
-		double clockBias = parseDouble(line.substr(23, 19));
-		double clockDrift = parseDouble(line.substr(42, 19));
-		double clockDriftRate = parseDouble(line.substr(61, 19));
+		double clockBias = util::astring::parseDouble(line.substr(23, 19));
+		double clockDrift = util::astring::parseDouble(line.substr(42, 19));
+		double clockDriftRate = util::astring::parseDouble(line.substr(61, 19));
 				
 		// GET CURRENT SATTELITE
 		this->FindCurrentSatellite(satellite);
