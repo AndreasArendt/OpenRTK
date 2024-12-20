@@ -7,6 +7,7 @@
 
 void SP3Parser::ParseHeader(std::string& line)
 {
+	// Specification version d https://files.igs.org/pub/data/format/sp3d.pdf
 	// #dP2024  7 18  0  0  0.00000000     289 ORBIT ITRF  BHN ESOC                    
 	std::string version  = line.substr(1, 1);
 	std::string fileType = line.substr(2, 1);
