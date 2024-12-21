@@ -5,7 +5,7 @@
 #include <nlohmann/json.hpp>
 
 #include "../Transformations/ECEF_Position.hpp"
-#include "../RinexParser/RinexTypes/Epoch/Epoch.hpp"
+#include "../Utils/Epoch.hpp"
 
 class GenericObservation
 {

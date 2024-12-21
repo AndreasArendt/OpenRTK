@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../RinexTypes/Epoch/Epoch.hpp"
 #include "../Observations/CodeObservation.hpp"
 #include "../Observations/PhaseObservation.hpp"
 #include "../Observations/DopplerObservation.hpp"
 #include "../Observations/SignalStrengthObservation.hpp"
 #include "../RinexTypes/ObservationBand.hpp"
 #include "../RinexData.hpp"
+#include "../../Utils/Epoch.hpp"
 
 #include <map>
 

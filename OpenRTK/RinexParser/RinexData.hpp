@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RinexTypes/Epoch/Epoch.hpp"
+#include "../Utils/Epoch.hpp"
 
 class RinexData
 {

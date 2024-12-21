@@ -2,6 +2,7 @@
 
 #include "SP3ParserState.hpp"
 #include "SP3Satellite.hpp"
+#include "../Utils/Epoch.hpp"
 
 #include <string>
 #include <vector>
@@ -14,10 +15,14 @@ private:
 	SP3ParserState _Sp3ParserState;
 	int _NumberSatellites;
 	std::vector<SP3Satellite> _Satellites;
+	Epoch _CurrentEpoch;
 
 	void ParseHeader(std::string& line);
 	void ParseDate(std::string& line);
 	void ParseSatellites(std::string& line);
+	void ParseSatellitesAccuracy(std::string& line, int& lines_count);
+	void ParseEpoch(std::string& line);
+	void ParseEphemeris(std::string& line);
 
 public:
 	void Parse(std::string& path);

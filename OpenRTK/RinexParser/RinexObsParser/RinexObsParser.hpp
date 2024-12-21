@@ -8,10 +8,10 @@
 #pragma once
 
 #include "../AbstractRinexParser.hpp"
-#include "../RinexTypes/Epoch/Epoch.hpp"
 #include "../RinexTypes/ObservationDefinition.hpp"
-#include "./RinexReaderState.hpp"
+#include "RinexReaderState.hpp"
 #include "../../Transformations/ECEF_Position.hpp"
+#include "../../Utils/Epoch.hpp"
 
 #include <string>
 #include <iostream>

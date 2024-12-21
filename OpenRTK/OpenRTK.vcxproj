@@ -159,7 +159,7 @@
     <ClCompile Include="RinexParser\NavData\Gps\GpsNavData.cpp" />
     <ClCompile Include="RinexParser\RinexNavParser\RinexNavParser.cpp" />
     <ClCompile Include="OpenRTK.cpp" />
-    <ClCompile Include="RinexParser\RinexTypes\Epoch\Epoch.cpp" />
+    <ClCompile Include="Utils\Epoch.cpp" />
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
     <ClCompile Include="SP3\SP3Satellite.cpp" />
@@ -207,7 +207,7 @@
     <ClInclude Include="RinexParser\RinexTypes\ObservationDefinition.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\ObservationType.hpp" />
     <ClInclude Include="RinexParser\Observations\PhaseObservation.hpp" />
-    <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp" />
+    <ClInclude Include="Utils\Epoch.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexReaderState.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexObsParser.hpp" />
     <ClInclude Include="Utils\SvSystem.hpp" />

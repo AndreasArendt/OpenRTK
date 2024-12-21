@@ -1,10 +1,10 @@
 #pragma once
 
+#include "time.hpp"
+
 #include <vector>
 #include <chrono>
 #include <compare>
-
-#include "../../../Utils/time.hpp"
 
 class Epoch
 {
@@ -30,7 +30,7 @@ public:
 	// functions
 	double const PosixEpochTime__s() const { return this->_EpochTime.time_since_epoch().count() / 1e7; }   // Time of Clock (TOC)
 
-	// ctor & Dtor                
+	// ctor & dtor                
 	Epoch();
 	Epoch(int year, int month, int day, int hour, int minute, double second);
 	~Epoch();
