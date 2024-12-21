@@ -54,12 +54,13 @@ void RinexObsParser::ReadEpochHeader(std::string line) {
     }
     catch (const std::exception& e)
     {
+        std::cerr << e.what() << std::endl;
         std::cerr << "Error: Invalid epoch header line: " << line << std::endl;
     }
 }
 
 void RinexObsParser::ReadEpochObservation(std::string line)
-{       
+{   
     auto satellite = Satellite(line.substr(0, 3));
     const auto& SvObsDefinitions = _ObservationDefinitions.at(satellite.SVSystem());
 
@@ -155,14 +156,14 @@ void RinexObsParser::ReadObservationTypes(std::string line)
 
 void RinexObsParser::ParseLine(std::string line)
 {
-    switch (_RinexReaderState)
+    switch (_RinexParserState)
     {
-        case RinexReaderState::PARSE_HEADER:
+        case RinexParserState::PARSE_HEADER:
         {
             // new Epoch Found
             if (line[0] == '>')
             {
-                _RinexReaderState = RinexReaderState::PARSE_EPOCH;
+                _RinexParserState = RinexParserState::PARSE_EPOCH;
                 this->ReadEpochHeader(line);
             }
             else if ((line.find(RINEX_VERSION_DEFINITION) != std::string::npos)) // read rinex file version
@@ -188,13 +189,13 @@ void RinexObsParser::ParseLine(std::string line)
             }
             else if( (line.find(RINEX_OBS_TYPE_DEFINITION) != std::string::npos) ) // read all observation types from rnx header
             {
-                _RinexReaderState = RinexReaderState::PARSE_OBS_TYPES;
+                _RinexParserState = RinexParserState::PARSE_OBS_TYPES;
                 this->ReadObservationTypes(line);
             }
 
             break;
         }        
-        case RinexReaderState::PARSE_OBS_TYPES:
+        case RinexParserState::PARSE_OBS_TYPES:
         {
             if ((line.find(RINEX_OBS_TYPE_DEFINITION) != std::string::npos)) // read all observation types from rnx header
             {
@@ -202,11 +203,11 @@ void RinexObsParser::ParseLine(std::string line)
             }
             else
             {
-                _RinexReaderState = RinexReaderState::PARSE_HEADER;
+                _RinexParserState = RinexParserState::PARSE_HEADER;
             }
             break;
         }
-        case RinexReaderState::PARSE_EPOCH:
+        case RinexParserState::PARSE_EPOCH:
         {
             // new Epoch Found
             if (line[0] == '>')
@@ -216,7 +217,7 @@ void RinexObsParser::ParseLine(std::string line)
                 // Check if current Epoch is Special Event
                 if (this->_CurrentEpochFlag > 1)
                 {
-                    _RinexReaderState = RinexReaderState::PARSE_HEADER; // TODO AA: currently no handling for special events!
+                    _RinexParserState = RinexParserState::PARSE_HEADER; // TODO AA: currently no handling for special events!
                 }
             }
             else
@@ -233,5 +234,5 @@ void RinexObsParser::ParseLine(std::string line)
 
 void RinexObsParser::InitParser()
 {    
-    this->_RinexReaderState = RinexReaderState::PARSE_HEADER;    
+    this->_RinexParserState = RinexParserState::PARSE_HEADER;    
 }

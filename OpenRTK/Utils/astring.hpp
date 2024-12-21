@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <cctype>
 #include <stdexcept>
-#include <ranges> // Required for ranges in C++20
+#include <ranges>
+#include <iostream>
 
 namespace util
 {
@@ -31,10 +32,12 @@ namespace util
 			}
 			catch (const std::invalid_argument& e)
 			{
+				std::cerr << e.what() << std::endl;
 				throw std::runtime_error("Invalid argument: Unable to convert string to double.");
 			}
 			catch (const std::out_of_range& e)
 			{
+				std::cerr << e.what() << std::endl;
 				throw std::runtime_error("Out of range: The double value is too large to represent.");
 			}
 		}
@@ -51,10 +54,12 @@ namespace util
 			}
 			catch (const std::invalid_argument& e)
 			{
+				std::cerr << e.what() << std::endl;
 				throw std::runtime_error("Invalid argument: Unable to convert string to int.");
 			}
 			catch (const std::out_of_range& e)
 			{
+				std::cerr << e.what() << std::endl;
 				throw std::runtime_error("Out of range: The int value is too large to represent.");
 			}
 		}

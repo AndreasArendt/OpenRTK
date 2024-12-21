@@ -87,6 +87,12 @@
     <ClCompile Include="SP3\SP3Parser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="SP3\SP3Satellite.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\AbstractSatellite.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp">
@@ -95,7 +101,7 @@
     <ClInclude Include="RinexParser\RinexTypes\ObservationDefinition.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
-    <ClInclude Include="RinexParser\RinexTypes\SvSystem.hpp">
+    <ClInclude Include="Utils\SvSystem.hpp">
       <Filter>Headerdateien\RinexReader\RinexObservations</Filter>
     </ClInclude>
     <ClInclude Include="RinexParser\RinexTypes\ObservationType.hpp">
@@ -234,6 +240,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="SP3\SP3Parser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SP3\SP3ParserState.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SP3\SP3Satellite.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\AbstractSatellite.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

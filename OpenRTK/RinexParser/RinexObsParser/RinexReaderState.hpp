@@ -1,6 +1,6 @@
 #pragma once
 
-enum class RinexReaderState
+enum class RinexParserState
 {	
 	PARSE_HEADER = 0,
 	PARSE_OBS_TYPES,

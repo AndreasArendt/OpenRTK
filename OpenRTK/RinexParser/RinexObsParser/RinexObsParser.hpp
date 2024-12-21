@@ -28,7 +28,7 @@ private:
     
     std::string _Version;    
     std::unordered_map<SvSystem, std::vector<ObservationDefinition>> _ObservationDefinitions;
-    RinexReaderState _RinexReaderState = RinexReaderState::PARSE_HEADER;
+    RinexParserState _RinexParserState = RinexParserState::PARSE_HEADER;
     ECEF_Position _ApproximateMarkerPosition;
     Position _AntennaOffset;
     Epoch _CurrentEpoch;

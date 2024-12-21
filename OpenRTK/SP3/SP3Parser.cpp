@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 void SP3Parser::ParseHeader(std::string& line)
 {
@@ -29,24 +30,89 @@ void SP3Parser::ParseHeader(std::string& line)
 	std::string agency = line.substr(56, 4);
 }
 
+void SP3Parser::ParseDate(std::string& line)
+{
+	// TODO: implement
+}
+
+void SP3Parser::ParseSatellites(std::string& line)
+{
+	//+  117   G13G22G21G07G05G20G31G17G15G16G29G12G19G02G25G30G24      
+
+	int idx_st = 9;
+
+	for (size_t i = 0; i < SP3Parser::NUMBER_SATELLITES_PER_HEADER_LINE; i++)
+	{	
+		std::string sv_str = line.substr(idx_st + i * 3, 3);
+
+		// stop when satellite empty
+		if (sv_str.compare("  0") == 0)
+			break;
+
+		auto sat = SP3Satellite(sv_str);
+		
+		this->_Satellites.push_back(sat);
+	}
+}
+
 void SP3Parser::Parse(std::string& path)
 {
 	std::ifstream infile(path);
 	if (!infile)
 		std::cout << "Could not open file.";
+	
+	int satellite_lines_cnt = 0;
 
-	std::string firstline;
-	std::getline(infile, firstline);
+	std::string line;
+	while (std::getline(infile, line))
+	{		
+		//std::cout << line << std::endl;
 
-	this->ParseHeader(firstline);
-}
+		switch (this->_Sp3ParserState)
+		{
+		case SP3ParserState::PARSE_HEADER:
+		{
+			this->ParseHeader(line);
+			this->_Sp3ParserState = SP3ParserState::PARSE_DATE;
+			break;
+		}
+		case SP3ParserState::PARSE_DATE:
+		{
+			this->_Sp3ParserState = SP3ParserState::PARSE_SATELLITES;
+			break;
+		}
+		case SP3ParserState::PARSE_SATELLITES:
+		{
+			// read first line
+			if (satellite_lines_cnt == 0)
+			{
+				this->_NumberSatellites = util::astring::parseInt(line.substr(3, 3));
+			}
 
-SP3Parser::SP3Parser()
-{
-}
+			// check if all lines read
+			if (std::ceil((double)this->_NumberSatellites / (double)SP3Parser::NUMBER_SATELLITES_PER_HEADER_LINE) == ++satellite_lines_cnt)
+			{
+				this->_Sp3ParserState = SP3ParserState::PARSE_SATELLITES_ACCURACY;
+				satellite_lines_cnt = 0;
+			}
 
-SP3Parser::~SP3Parser()
-{
+			this->ParseSatellites(line);
+
+			break;
+		}
+		case SP3ParserState::PARSE_SATELLITES_ACCURACY:
+		{
+			// check if all lines read
+			if (std::ceil((double)this->_NumberSatellites / (double)SP3Parser::NUMBER_SATELLITES_PER_HEADER_LINE) == ++satellite_lines_cnt)
+			{
+				this->_Sp3ParserState = SP3ParserState::PARSE_SATELLITES_ACCURACY;
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
 
 }
 

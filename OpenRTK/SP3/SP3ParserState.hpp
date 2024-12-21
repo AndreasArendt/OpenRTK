@@ -1,0 +1,9 @@
+#pragma once
+
+enum class SP3ParserState
+{	
+	PARSE_HEADER = 0,
+	PARSE_DATE,
+	PARSE_SATELLITES,
+	PARSE_SATELLITES_ACCURACY,
+};

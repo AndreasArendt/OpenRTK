@@ -6,50 +6,7 @@
 #include "../NavData/Gps/GpsNavData.hpp"
 #include "../../Transformations/Transformation.hpp"
 
-Satellite::Satellite() : _SvSystem(SvSystem::UNKNOWN), _SvNumber(-1)
-{
-}
-
-Satellite::Satellite(SvSystem svSystem, int svNumber) : _SvSystem(svSystem), _SvNumber(svNumber)
-{
-}
-
-Satellite::Satellite(std::string satStr)
-{
-	this->_SvSystem = static_cast<SvSystem>(satStr.at(0));
-	this->_SvNumber = util::astring::parseInt(satStr.substr(1, 2));
-}
-
-Satellite::Satellite(const Satellite& other) : _SvSystem(other._SvSystem), _SvNumber(other._SvNumber)
-{
-	// Create new unique pointers and copy the underlying objects
-	for (const auto& ptr : other._NavigationData)
-	{
-		this->_NavigationData.push_back(ptr->clone());
-	}
-
-	for (const auto& ptr : other._ObservationData)
-	{
-		this->_ObservationData.push_back(ptr);
-	}
-
-	for (const auto& pair : other._Ephemeris)
-	{
-		for (const auto& ephemerisPtr : pair.second)
-		{
-			this->InsertEphemeris(pair.first, ephemerisPtr->clone());
-		}
-	}
-}
-
-Satellite::~Satellite()
-{
-	this->_NavigationData.clear();
-	this->_ObservationData.clear();
-	this->_Ephemeris.clear();
-}
-
-void Satellite::InsertEphemeris(ObservationBand band, std::unique_ptr<Ephemeris> ephemeris)
+void Satellite::addEphemeris(ObservationBand band, std::unique_ptr<Ephemeris> ephemeris)
 {		
 	auto it = this->_Ephemeris.find(band);
 	if (it != this->_Ephemeris.end())
@@ -101,7 +58,7 @@ NavData* Satellite::findClosestTime(double targetTime)
 
 void Satellite::calcEphemeris()
 {
-	switch (this->_SvSystem)
+	switch (this->SVSystem())
 	{
 	case SvSystem::GALILEO:
 		for (auto& obs : this->_ObservationData)
@@ -125,7 +82,7 @@ void Satellite::calcEphemeris()
 					time = time - eph->CalcClockOffset(*nav, time);
 
 					eph->CalcEphemeris(*nav, time, obs.Epoche().PosixEpochTime__s());					
-					this->InsertEphemeris(band, std::move(eph));
+					this->addEphemeris(band, std::move(eph));
 				}
 			}
 		}			
@@ -152,7 +109,7 @@ void Satellite::calcEphemeris()
 					time = time - eph->CalcClockOffset(*nav, time);
 
 					eph->CalcEphemeris(*nav, time, obs.Epoche().PosixEpochTime__s());
-					this->InsertEphemeris(band, std::move(eph));
+					this->addEphemeris(band, std::move(eph));
 				}
 			}
 		}
@@ -163,11 +120,13 @@ void Satellite::calcEphemeris()
 }
 
 Satellite& Satellite::operator=(Satellite& other) noexcept
-{
+{	
 	if (this != &other)
 	{
-		this->_SvSystem = other._SvSystem;
-		this->_SvNumber = other._SvNumber;
+		AbstractSatellite::operator=(other);	
+
+		this->_SvSystem = other.SVSystem();
+		this->_SvNumber = other.SvNumber();
 
 		// Copy the vector of NavigationData
 		this->_NavigationData.clear(); // Clear current vector contents
@@ -177,25 +136,15 @@ Satellite& Satellite::operator=(Satellite& other) noexcept
 		}
 
 		this->_Ephemeris.clear(); // Clear current vector contents
-	
+
 		for (const auto& pair : other._Ephemeris)
 		{
 			for (const auto& ephemerisPtr : pair.second)
 			{
-				this->InsertEphemeris(pair.first, ephemerisPtr->clone());
+				this->addEphemeris(pair.first, ephemerisPtr->clone());
 			}
 		}
-
 	}
+
 	return *this;
-}
-
-bool Satellite::operator==(const Satellite& other) const
-{
-	return (_SvSystem == other.SVSystem()) && (_SvNumber == other.SvNumber());
-}
-
-bool Satellite::operator!=(const Satellite& other) const
-{
-	return (_SvSystem != other.SVSystem()) || (_SvNumber != other.SvNumber());
 }

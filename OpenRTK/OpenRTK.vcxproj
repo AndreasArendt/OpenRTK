@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Utils\AbstractSatellite.cpp" />
     <ClCompile Include="Export\JsonExport.cpp" />
     <ClCompile Include="PrecisePositioning\Postprocessor.cpp" />
     <ClCompile Include="PrecisePositioning\Ephemeris\GpsEphemeris.cpp" />
@@ -161,10 +162,12 @@
     <ClCompile Include="RinexParser\RinexTypes\Epoch\Epoch.cpp" />
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
+    <ClCompile Include="SP3\SP3Satellite.cpp" />
     <ClCompile Include="SP3\SP3Parser.cpp" />
     <ClCompile Include="Transformations\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Utils\AbstractSatellite.hpp" />
     <ClInclude Include="Export\JsonExport.hpp" />
     <ClInclude Include="PrecisePositioning\Postprocessor.hpp" />
     <ClInclude Include="PrecisePositioning\Ephemeris\GpsEphemeris.hpp" />
@@ -192,6 +195,8 @@
     <ClInclude Include="RinexParser\RinexTypes\TimeDifferenceType.hpp" />
     <ClInclude Include="RinexParser\RinexTypes\TimeSystemCorrection.hpp" />
     <ClInclude Include="Export\JsonExportData.hpp" />
+    <ClInclude Include="SP3\SP3Satellite.hpp" />
+    <ClInclude Include="SP3\SP3ParserState.hpp" />
     <ClInclude Include="SP3\SP3Parser.hpp" />
     <ClInclude Include="Transformations\Constants.hpp" />
     <ClInclude Include="Transformations\ECEF_Position.hpp" />
@@ -205,7 +210,7 @@
     <ClInclude Include="RinexParser\RinexTypes\Epoch\Epoch.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexReaderState.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexObsParser.hpp" />
-    <ClInclude Include="RinexParser\RinexTypes\SvSystem.hpp" />
+    <ClInclude Include="Utils\SvSystem.hpp" />
     <ClInclude Include="Transformations\ECEF_Velocity.hpp" />
     <ClInclude Include="Transformations\Kepler.hpp" />
     <ClInclude Include="Transformations\Position.hpp" />
