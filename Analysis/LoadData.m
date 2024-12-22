@@ -1,6 +1,7 @@
 clear; fclose all;
 
 SatelliteData = loadSatdata();
+PreciseEphemerisData = loadPephdata();
 
 % station_pos__m = [4164313.0000, 803525.9000, 4748474.9000]; %AUBG
 % station_pos__m = [4498451.8100  1708266.8300  4173591.7800]; %ORID
@@ -12,16 +13,14 @@ F_E1_Galileo__Hz  = 1575.420e6;
 F_E5a_Galileo__Hz = 1176.450e6;
 F_L2_GPS__Hz      = 1227.600e6;
 
-function SatelliteData = loadSatdata()
-    try
-        fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'satdata.json');
-        fid = fopen(fpath);
-        j_str = fscanf(fid, '%s');
-    catch
-        fclose(fid);
-    end
-    fclose(fid);
-    
-    s = jsondecode(j_str);
+function SatelliteData = loadSatdata()    
+    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'satdata.json');        
+    s = json.read(fpath);
     SatelliteData = s.SatelliteData;              
+end
+
+function PreciseEphemerisData = loadPephdata()  
+    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_satdata.json');        
+    peph = json.read(fpath);
+    PreciseEphemerisData = peph.PreciseEphemerisData;
 end
