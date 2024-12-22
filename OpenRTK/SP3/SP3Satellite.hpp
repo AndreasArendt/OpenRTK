@@ -36,7 +36,7 @@ public:
 
 	// ctor & dtor
 	SP3Satellite() : _Accuracy(-1) {}
-	SP3Satellite(SvSystem svSystem, int svNumber) : AbstractSatellite(svSystem, svNumber), _Accuracy(-1) {}
-	SP3Satellite(std::string satStr) : AbstractSatellite(satStr), _Accuracy(-1) {}
-	SP3Satellite(const SP3Satellite& other) : AbstractSatellite(other), _Accuracy(-1) {}
+	SP3Satellite(SvSystem svSystem, int svNumber) : AbstractSatellite(svSystem, svNumber), _Accuracy(0) {}
+	SP3Satellite(std::string satStr) : AbstractSatellite(satStr), _Accuracy(0) {}
+	SP3Satellite(const SP3Satellite& other) : AbstractSatellite(other), _Accuracy(0) {}
 };
