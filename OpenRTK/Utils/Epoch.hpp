@@ -33,6 +33,7 @@ public:
 	// ctor & dtor                
 	Epoch();
 	Epoch(int year, int month, int day, int hour, int minute, double second);
+	Epoch(double posixEpochTime__s);
 	~Epoch();
 
 	// operator overloading

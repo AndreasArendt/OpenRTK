@@ -1,4 +1,5 @@
 #include "Epoch.hpp"
+#include <ctime>
 
 Epoch::Epoch()
 {
@@ -39,26 +40,28 @@ Epoch::Epoch(int year, int month, int day, int hour, int minute, double second)
     this->_second = second;    
 }
 
-typedef struct
+Epoch::Epoch(double posixEpochTime__s) 
 {
-    int time;
-    double sec;
-}gtime_t;
+    // Split seconds into integer and fractional parts
+    auto seconds_since_epoch = std::chrono::seconds(static_cast<int64_t>(posixEpochTime__s));
+    auto fractional_seconds = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::duration<double>(posixEpochTime__s - seconds_since_epoch.count())
+    );
 
-static gtime_t epoch2time(const double* ep)
-{
-    const int doy[] = { 1,32,60,91,121,152,182,213,244,274,305,335 };
-    gtime_t time = { 0 };
-    int days, sec, year = (int)ep[0], mon = (int)ep[1], day = (int)ep[2];
+    // Use system_clock to create a time_point
+    auto epoch_time_point = std::chrono::system_clock::time_point(seconds_since_epoch);
 
-    if (year < 1970 || 2099 < year || mon < 1 || 12 < mon) return time;
+    auto dp = floor<std::chrono::days>(epoch_time_point);
+    std::chrono::year_month_day ymd{ dp };
+    std::chrono::hh_mm_ss time{ floor<std::chrono::milliseconds>(epoch_time_point - dp) };
 
-    /* leap year if year%4==0 in 1901-2099 */
-    days = (year - 1970) * 365 + (year - 1969) / 4 + doy[mon - 1] + day - 2 + (year % 4 == 0 && mon >= 3 ? 1 : 0);
-    sec = (int)floor(ep[5]);
-    time.time = (time_t)days * 86400 + (int)ep[3] * 3600 + (int)ep[4] * 60 + sec;
-    time.sec = ep[5] - sec;
-    return time;
+    this->_year = static_cast<int>(ymd.year());
+    this->_month = static_cast<unsigned>(ymd.month());
+    this->_day = static_cast<unsigned>(ymd.day());
+    this->_hour = time.hours().count();
+    this->_minute = time.minutes().count();
+    this->_second = time.seconds().count() + fractional_seconds.count() * 1.0e-3;    
+    this->_EpochTime = epoch_time_point + fractional_seconds; // Add the milliseconds duration
 }
 
 bool Epoch::operator==(const Epoch& other) const
