@@ -81,7 +81,7 @@ void SP3Parser::ParseEpoch(std::string& line)
 	int day = util::astring::parseInt(line.substr(11, 2));
 	int hour = util::astring::parseInt(line.substr(14, 2));
 	int min = util::astring::parseInt(line.substr(17, 2));
-	int sec = util::astring::parseDouble(line.substr(20, 11));
+	double sec = util::astring::parseDouble(line.substr(20, 11));
 
 	this->_CurrentEpoch = Epoch(year, month, day, hour, min, sec);
 }

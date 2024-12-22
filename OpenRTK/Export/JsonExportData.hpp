@@ -7,6 +7,28 @@
 #include "../Transformations/ECEF_Position.hpp"
 #include "../Utils/Epoch.hpp"
 
+class PreciseEphemeris
+{
+public: 
+	std::string SatelliteSystem;
+	ECEF_Position ECEF_Position;
+	double SatelliteClockError__us;
+	double Accuracy;
+	
+	nlohmann::json to_json()
+	{
+		return
+		{
+			{"SatelliteSystem", this->SatelliteSystem},
+			{"Position_E", {{"x", this->ECEF_Position.x()}, {"y", this->ECEF_Position.y()}, {"z", this->ECEF_Position.z()}}},
+			{"SatelliteClockError__us", this->SatelliteClockError__us},
+			{"Accuracy", this->Accuracy}
+		};
+	}
+
+	PreciseEphemeris() : SatelliteSystem(""), ECEF_Position(0, 0, 0), SatelliteClockError__us(0), Accuracy(0) { }
+};
+
 class GenericObservation
 {
 public:
@@ -42,7 +64,7 @@ public:
 	GenericObservation Carrier;
 	GenericObservation Doppler;
 	GenericObservation Snr;
-
+		
 	nlohmann::json to_json()
 	{
 		return {
@@ -67,3 +89,9 @@ public:
 	std::vector<SatelliteObservation> Observations;		
 };
 
+class PreciseEphemerisData
+{
+public:
+	double PosixEpochTime__s;
+	std::vector<PreciseEphemeris> PreciseEphemeris;	
+};

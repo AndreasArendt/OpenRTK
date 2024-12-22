@@ -25,6 +25,10 @@ private:
 	void ParseEphemeris(std::string& line);
 
 public:
+	// getters
+	std::vector<SP3Satellite> const& Satellites() const { return this->_Satellites; }
+
+	// functions
 	void Parse(std::string& path);
 
 	// ctor & dtor                

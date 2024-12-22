@@ -46,7 +46,6 @@ double JsonExport::GetSnrObservationIfExist(ObsData obs, ObservationBand band)
 	return 0;
 }
 
-
 SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const ObsData& obs, const Ephemeris& ephemeris)
 {
 	SatelliteObservation satObs;
@@ -77,11 +76,11 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 	satObs.Snr.Band_1 = this->GetSnrObservationIfExist(obs, ObservationBand::Band_1);
 	satObs.Snr.Band_2 = this->GetSnrObservationIfExist(obs, ObservationBand::Band_2);
 	satObs.Snr.Band_5 = this->GetSnrObservationIfExist(obs, ObservationBand::Band_5);
-
+		
 	return satObs;
 }
 
-void JsonExport::CollectData(std::vector<Satellite>& satellites)
+void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 {
 	auto epochDataMap = std::unordered_map<Epoch, SatelliteData>();
 
@@ -118,29 +117,73 @@ void JsonExport::CollectData(std::vector<Satellite>& satellites)
 		}		
 	}
 
-	this->_SatelliteData.clear();
-	this->_SatelliteData.reserve(epochDataMap.size());
+	this->_RinexSatelliteData.clear();
+	this->_RinexSatelliteData.reserve(epochDataMap.size());
 	for (const auto& [epoch, data] : epochDataMap)
 	{
-		this->_SatelliteData.push_back(data);
+		this->_RinexSatelliteData.push_back(data);
 	}
 
 	// sorting
-	std::sort(this->_SatelliteData.begin(), this->_SatelliteData.end(),
+	std::sort(this->_RinexSatelliteData.begin(), this->_RinexSatelliteData.end(),
 		[](const SatelliteData& a, const SatelliteData& b) {
 			return a.PosixEpochTime__s < b.PosixEpochTime__s;
 		});
 }
 
-void JsonExport::Export(std::vector<Satellite>& satellites, std::filesystem::path path)
+void JsonExport::CollectPreciseEphemerisData(const std::vector<SP3Satellite>& satellites)
 {
-	this->CollectData(satellites);
+	auto epochDataMap = std::unordered_map<Epoch, PreciseEphemerisData>();
+
+	for (auto& sv : satellites)
+	{
+		for (auto& cdata : sv.CorrectionData())
+		{
+			auto pephData = PreciseEphemerisData();
+
+			PreciseEphemeris peph;
+			peph.ECEF_Position = cdata.second.Position_E__m;
+			peph.SatelliteClockError__us = cdata.second.Posixtime__us;
+			peph.SatelliteSystem = sv.SvString();
+			peph.Accuracy = sv.Accuracy();
+
+			Epoch epoch = Epoch(cdata.first);
+
+			if (epochDataMap.contains(epoch))
+			{
+				epochDataMap.at(epoch).PreciseEphemeris.push_back(peph);
+			}
+			else
+			{
+				pephData.PosixEpochTime__s = epoch.PosixEpochTime__s();
+				pephData.PreciseEphemeris.push_back(peph);
+				epochDataMap.insert(std::pair<Epoch, PreciseEphemerisData>(epoch, pephData));
+			}
+		}
+	}
+
+	this->_PreciseEphemerisData.clear();
+	this->_PreciseEphemerisData.reserve(epochDataMap.size());
+	for (const auto& [epoch, data] : epochDataMap)
+	{
+		this->_PreciseEphemerisData.push_back(data);
+	}
+
+	// sorting
+	std::sort(this->_PreciseEphemerisData.begin(), this->_PreciseEphemerisData.end(),
+		[](const PreciseEphemerisData& a, const PreciseEphemerisData& b) {
+			return a.PosixEpochTime__s < b.PosixEpochTime__s;
+		});
+}
+
+void JsonExport::ExportObservations(std::vector<Satellite>& satellites, std::filesystem::path path)
+{	
+	this->CollectRinexData(satellites);
 
 	json j;
-
 	j["SatelliteData"] = json::array();
 
-	for (auto& sv : this->_SatelliteData)
+	for (auto& sv : this->_RinexSatelliteData)
 	{
 		json satJson;
 		satJson["PosixEpochTime__s"] = sv.PosixEpochTime__s;
@@ -154,6 +197,33 @@ void JsonExport::Export(std::vector<Satellite>& satellites, std::filesystem::pat
 
 		satJson["Observations"] = std::move(observationsJson);
 		j["SatelliteData"].push_back(std::move(satJson));
+	}
+
+	std::ofstream file(path);
+	file << j;
+}
+
+void JsonExport::ExportPreciseEphemeris(const std::vector<SP3Satellite>& satellites, std::filesystem::path path)
+{
+	this->CollectPreciseEphemerisData(satellites);
+
+	json j;
+	j["PreciseEphemerisData"] = json::array();
+
+	for (auto& data : this->_PreciseEphemerisData)
+	{
+		json satJson;
+		satJson["PosixEpochTime__s"] = data.PosixEpochTime__s;
+
+		json ephemerisJson = json::array();
+
+		for (auto& eph : data.PreciseEphemeris)
+		{
+			ephemerisJson.push_back(eph.to_json());
+		}
+
+		satJson["Ephemeris"] = std::move(ephemerisJson);
+		j["PreciseEphemerisData"].push_back(std::move(satJson));
 	}
 
 	std::ofstream file(path);

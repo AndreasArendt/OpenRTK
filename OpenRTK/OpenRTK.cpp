@@ -10,9 +10,6 @@
 #include <vector>
 #include <memory>
 
-using namespace std;
-
-
 int main()
 {	
 	auto rnxParser = RinexParser();
@@ -23,10 +20,12 @@ int main()
 	std::string sp3Path = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_05M_ORB.SP3";
 		
 	sp3Parser.Parse(sp3Path);
+	auto jExport = JsonExport();
+	jExport.ExportPreciseEphemeris(sp3Parser.Satellites(), "D:/Projekte/OpenRTK/data/precise_satdata.json");
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
 
-	auto spp = SPP();
+	//auto spp = SPP();
 
 	std::vector<Satellite> Satellites;
 	std::copy_if(rnxParser.Satellites().begin(), rnxParser.Satellites().end(), std::back_inserter(Satellites), [](const auto& sv)
@@ -39,11 +38,11 @@ int main()
 		sv.calcEphemeris();				
 	}
 
-	// Single Point Processing
-	spp.Calculate(Satellites);
+	//// Single Point Processing
+	//spp.Calculate(Satellites);
 
-	auto jExport = JsonExport();
-	jExport.Export(Satellites, "D:/Projekte/OpenRTK/data/satdata.json");
+	//auto jExport = JsonExport();
+	jExport.ExportObservations(Satellites, "D:/Projekte/OpenRTK/data/satdata.json");
 
 	return 0;
 }

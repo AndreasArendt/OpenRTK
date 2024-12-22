@@ -8,13 +8,14 @@
 #include <vector>
 #include <map>
 
+struct SP3Data 
+{
+	ECEF_Position Position_E__m;
+	double Posixtime__us;
+};
+
 class SP3Satellite : public AbstractSatellite
 {
-	struct SP3Data 
-	{
-		ECEF_Position Position_E__m;
-		double Posixtime__us;
-	};
 
 private:
 	int _Accuracy;
