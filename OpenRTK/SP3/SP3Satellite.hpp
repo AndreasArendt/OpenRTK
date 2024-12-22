@@ -10,21 +10,28 @@
 
 class SP3Satellite : public AbstractSatellite
 {
+	struct SP3Data 
+	{
+		ECEF_Position Position_E__m;
+		double Posixtime__us;
+	};
+
 private:
 	int _Accuracy;
-	std::map<Epoch, std::vector<std::tuple<ECEF_Position, double>>> _CorrectionData;	//position is in Kilometers, time is in microseconds
+	std::map<Epoch, SP3Data> _CorrectionData;
 
 public:	
 	// getters
 	int const& Accuracy() const { return this->_Accuracy; }
+	std::map<Epoch, SP3Data> const& CorrectionData() const { return this->_CorrectionData; }
 
 	//setter
 	void Accuracy(int accuracy) { this->_Accuracy = accuracy; }
 
 	// functions
 	void AddCorrectionData(Epoch epoch, ECEF_Position position, double clockCorrection) 
-	{ 
-		this->_CorrectionData[epoch].emplace_back(position, clockCorrection);
+	{ 		
+		this->_CorrectionData[epoch] = SP3Data{ position, clockCorrection };
 	}
 
 	// ctor & dtor
