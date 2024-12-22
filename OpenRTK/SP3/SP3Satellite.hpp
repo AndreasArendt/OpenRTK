@@ -8,7 +8,7 @@
 #include <vector>
 #include <map>
 
-struct SP3Data 
+struct SP3Data
 {
 	ECEF_Position Position_E__m;
 	double Posixtime__us;
@@ -16,12 +16,11 @@ struct SP3Data
 
 class SP3Satellite : public AbstractSatellite
 {
-
 private:
 	int _Accuracy;
 	std::map<Epoch, SP3Data> _CorrectionData;
 
-public:	
+public:
 	// getters
 	int const& Accuracy() const { return this->_Accuracy; }
 	std::map<Epoch, SP3Data> const& CorrectionData() const { return this->_CorrectionData; }
@@ -30,8 +29,8 @@ public:
 	void Accuracy(int accuracy) { this->_Accuracy = accuracy; }
 
 	// functions
-	void AddCorrectionData(Epoch epoch, ECEF_Position position, double clockCorrection) 
-	{ 		
+	void AddCorrectionData(Epoch epoch, ECEF_Position position, double clockCorrection)
+	{
 		this->_CorrectionData[epoch] = SP3Data{ position, clockCorrection };
 	}
 

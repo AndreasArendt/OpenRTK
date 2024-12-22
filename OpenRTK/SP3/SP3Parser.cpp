@@ -38,7 +38,6 @@ void SP3Parser::ParseDate(std::string& line)
 void SP3Parser::ParseSatellites(std::string& line)
 {
 	//+  117   G13G22G21G07G05G20G31G17G15G16G29G12G19G02G25G30G24      
-
 	int idx_st = 9;
 
 	for (size_t i = 0; i < SP3Parser::NUMBER_SATELLITES_PER_HEADER_LINE; i++)
@@ -95,9 +94,10 @@ void SP3Parser::ParseEphemeris(std::string& line)
 	// position data - "V" would be velocity data
 	if (type.compare("P") == 0)
 	{
-		double x = util::astring::parseDouble(line.substr(4, 14));
-		double y = util::astring::parseDouble(line.substr(18, 14));
-		double z = util::astring::parseDouble(line.substr(32, 14));
+		// convert xyz to meters
+		double x = util::astring::parseDouble(line.substr(4, 14)) * 1.0e3;
+		double y = util::astring::parseDouble(line.substr(18, 14)) * 1.0e3;
+		double z = util::astring::parseDouble(line.substr(32, 14)) * 1.0e3;
 
 		double time = util::astring::parseDouble(line.substr(46, 15));
 
