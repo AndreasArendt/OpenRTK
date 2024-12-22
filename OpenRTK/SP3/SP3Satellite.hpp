@@ -17,13 +17,13 @@ struct SP3Data
 class SP3Satellite : public AbstractSatellite
 {
 private:
-	int _Accuracy;
-	std::map<Epoch, SP3Data> _CorrectionData;
+	int _Accuracy; //error is 2^Accuracy [mm]
+	std::map<Epoch, SP3Data> _PreciseData;
 
 public:
 	// getters
 	int const& Accuracy() const { return this->_Accuracy; }
-	std::map<Epoch, SP3Data> const& CorrectionData() const { return this->_CorrectionData; }
+	std::map<Epoch, SP3Data> const& CorrectionData() const { return this->_PreciseData; }
 
 	//setter
 	void Accuracy(int accuracy) { this->_Accuracy = accuracy; }
@@ -31,7 +31,7 @@ public:
 	// functions
 	void AddCorrectionData(Epoch epoch, ECEF_Position position, double clockCorrection)
 	{
-		this->_CorrectionData[epoch] = SP3Data{ position, clockCorrection };
+		this->_PreciseData[epoch] = SP3Data{ position, clockCorrection };
 	}
 
 	// ctor & dtor
