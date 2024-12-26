@@ -33,10 +33,6 @@ void GpsEphemeris::CalcEphemeris(NavData& navData, double time, double obstime)
 {
 	auto nav = dynamic_cast<GpsNavData&>(navData);
 
-	// Satellite Clock Offset Correction
-	this->CalcClockOffset(navData, time);
-	time = time - this->_SatelliteClockError__s;
-
 	KeplerOrbitData orbitData =
 	{
 		.SqrtA___sqrtm = nav.SqrtA___sqrtm(),

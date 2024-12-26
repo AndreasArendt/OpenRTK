@@ -39,10 +39,6 @@ double GalileoEphemeris::CalcClockOffset(NavData& navData, double time)
 void GalileoEphemeris::CalcEphemeris(NavData& navData, double time, double obstime)
 {
 	auto nav = dynamic_cast<GalileoNavData&>(navData);
-
-	// Satellite Clock Offset Correction
-	this->CalcClockOffset(navData, time);
-	time = time - this->_SatelliteClockError__s;
 	
 	KeplerOrbitData orbitData =
 	{
