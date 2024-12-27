@@ -12,8 +12,8 @@ for ii = 1:numel(SatelliteData)
     %% Pre-Processing
     Observations = SatelliteData(ii).Observations;
 
-    idx_gps = cellfun(@(x)startsWith(x, 'G'), {Observations.SatelliteSystem});
-    idx_gal = cellfun(@(x)startsWith(x, 'E'), {Observations.SatelliteSystem});
+    idx_gps = startsWith({Observations.SatelliteSystem}, 'G');
+    idx_gal = startsWith({Observations.SatelliteSystem}, 'E');
     
     Code    = [Observations.Code];
 
@@ -74,7 +74,7 @@ for ii = 1:numel(SatelliteData)
         y = dist_est - geo_dist;
 
         % Apply elevation filter only if more than 4SVs available
-        idx_el = elevation > (5/180*pi) & elevation < (175/180*pi);
+        idx_el = elevation > deg2rad(15) & elevation < deg2rad(165);
         if nnz(idx_el) > 4
             A = A(idx_el,:);
             y = y(idx_el);
