@@ -107,34 +107,34 @@ af = afigure(42);
 subplot(4,2,1);
 hold on; grid on;
 yline(refpos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
-plot(pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
+plot(pos_E__m(:,1), 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,2);
 hold on; grid on;
-plot(refpos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (4 States)')
+plot(refpos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,3);
 hold on; grid on;
 yline(refpos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
-plot(pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
+plot(pos_E__m(:,2), 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,4);
 hold on; grid on;
-plot(refpos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (4 States)')
+plot(refpos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,5);
 hold on; grid on;
 yline(refpos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
-plot(pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
+plot(pos_E__m(:,3), 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,6);
 hold on; grid on;
-plot(refpos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (4 States)')
+plot(refpos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,7);
 hold on; grid on;
 title('dt_r')
-plot(rx_clock_offset__m ./ Transformation.SpeedOfLight__mDs, 'DisplayName', 'LSQ (4 States)')
+plot(rx_clock_offset__m ./ Transformation.SpeedOfLight__mDs, 'DisplayName', 'LSQ (5 States)')
 
 subplot(4,2,8);
 hold on; grid on;
