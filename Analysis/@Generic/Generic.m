@@ -7,6 +7,8 @@ classdef Generic < handle
         azimuth__rad   = CalcAzimuth(x_rx, y_rx, z_rx, dx, dy, dz);
 
         r_ionofree = CalcIonoFreeLinearCombination(x_1, x_2, F1, F2);
+
+        DictPeph = GetPreciseEphemeris(PreciseEphemeris, Satellite, time__s, options);
     end
 end
 
