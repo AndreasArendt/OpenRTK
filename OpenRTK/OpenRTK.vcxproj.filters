@@ -93,6 +93,9 @@
     <ClCompile Include="Utils\AbstractSatellite.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="CLK\ClkParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\Epoch.hpp">
@@ -249,6 +252,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Utils\AbstractSatellite.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CLK\ClkParser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CLK\ClkParserState.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

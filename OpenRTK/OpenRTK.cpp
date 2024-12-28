@@ -3,6 +3,7 @@
 
 #include "RinexParser/RinexParser.hpp"
 #include "SP3/SP3Parser.hpp"
+#include "CLK/ClkParser.hpp"
 
 #include "PrecisePositioning/SPP.hpp"
 #include "Export/JsonExport.hpp"
@@ -13,15 +14,19 @@
 int main()
 {	
 	auto rnxParser = RinexParser();
-	
-	//std::string obsPath = "D:/Projekte/OpenRTK/data/sampledata/obs/ORID00MKD_R_20230090000_01D_30S_MO.obs";
-	//std::string navPath = "D:/Projekte/OpenRTK/data/sampledata/nav/ORID00MKD_R_20230090000_01D_MN.nav";
 	auto sp3Parser = SP3Parser();
+	auto clkParser = ClkParser();
+
 	std::string sp3Path = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_05M_ORB.SP3";
-		
+	std::string clkPath = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_30S_CLK.CLK";
+
+	clkParser.Parse(clkPath);
+
 	sp3Parser.Parse(sp3Path);
+
 	auto jExport = JsonExport();
 	jExport.ExportPreciseEphemeris(sp3Parser.Satellites(), "D:/Projekte/OpenRTK/data/precise_satdata.json");
+
 	rnxParser.Parse(obsPath);
 	rnxParser.Parse(navPath);
 
