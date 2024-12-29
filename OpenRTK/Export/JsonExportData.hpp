@@ -7,6 +7,24 @@
 #include "../Transformations/ECEF_Position.hpp"
 #include "../Utils/Epoch.hpp"
 
+class PreciseClock
+{
+public:
+	std::string SatelliteSystem;
+	double SatelliteClockError__s;
+
+	nlohmann::json to_json()
+	{
+		return
+		{
+			{"SatelliteSystem", this->SatelliteSystem},
+			{"SatelliteClockError__s", this->SatelliteClockError__s}			
+		};
+	}
+
+	PreciseClock() : SatelliteSystem(""), SatelliteClockError__s(0) { }
+};
+
 class PreciseEphemeris
 {
 public: 
@@ -94,4 +112,11 @@ class PreciseEphemerisData
 public:
 	double PosixEpochTime__s;
 	std::vector<PreciseEphemeris> PreciseEphemeris;	
+};
+
+class PreciseClockData
+{
+public:
+	double PosixEpochTime__s;
+	std::vector<PreciseClock> PreciseClock;
 };

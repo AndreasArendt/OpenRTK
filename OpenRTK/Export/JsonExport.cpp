@@ -112,7 +112,7 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 			}
 			else
 			{
-				epochDataMap.insert(std::pair<Epoch, SatelliteData>(obs.Epoche(), satData));
+				epochDataMap.emplace(obs.Epoche(), satData);				
 			}
 		}		
 	}
@@ -138,9 +138,7 @@ void JsonExport::CollectPreciseEphemerisData(const std::vector<SP3Satellite>& sa
 	for (auto& sv : satellites)
 	{
 		for (auto& cdata : sv.CorrectionData())
-		{
-			auto pephData = PreciseEphemerisData();
-
+		{			
 			PreciseEphemeris peph;
 			peph.ECEF_Position = cdata.second.Position_E__m;
 			peph.SatelliteClockError__us = cdata.second.ClockCorrection__us;
@@ -155,9 +153,11 @@ void JsonExport::CollectPreciseEphemerisData(const std::vector<SP3Satellite>& sa
 			}
 			else
 			{
+				auto pephData = PreciseEphemerisData();
 				pephData.PosixEpochTime__s = epoch.PosixEpochTime__s();
 				pephData.PreciseEphemeris.push_back(peph);
-				epochDataMap.insert(std::pair<Epoch, PreciseEphemerisData>(epoch, pephData));
+
+				epochDataMap.emplace(epoch, pephData);
 			}
 		}
 	}
@@ -172,6 +172,49 @@ void JsonExport::CollectPreciseEphemerisData(const std::vector<SP3Satellite>& sa
 	// sorting
 	std::sort(this->_PreciseEphemerisData.begin(), this->_PreciseEphemerisData.end(),
 		[](const PreciseEphemerisData& a, const PreciseEphemerisData& b) {
+			return a.PosixEpochTime__s < b.PosixEpochTime__s;
+		});
+}
+
+void JsonExport::CollectPreciseClockData(const std::vector<ClkSatellite>& clocks)
+{
+	auto epochDataMap = std::unordered_map<Epoch, PreciseClockData>();
+
+	for (auto& clk : clocks)
+	{
+		for (auto& cdata : clk.ClockCorrectionData())
+		{
+			PreciseClock pclk;					
+			pclk.SatelliteSystem = clk.SvString();
+			pclk.SatelliteClockError__s = cdata.second; // SatelliteClockError__s
+
+			Epoch epoch = Epoch(cdata.first);
+
+			if (epochDataMap.contains(epoch))
+			{
+				epochDataMap.at(epoch).PreciseClock.push_back(pclk);
+			}
+			else
+			{
+				auto clkData = PreciseClockData();
+				clkData.PosixEpochTime__s = epoch.PosixEpochTime__s();
+				clkData.PreciseClock.push_back(pclk);				
+				
+				epochDataMap.emplace(epoch, clkData);
+			}
+		}
+	}
+
+	this->_PreciseClockData.clear();
+	this->_PreciseClockData.reserve(epochDataMap.size());
+	for (const auto& [epoch, data] : epochDataMap)
+	{
+		this->_PreciseClockData.push_back(data);
+	}
+
+	// sorting
+	std::sort(this->_PreciseClockData.begin(), this->_PreciseClockData.end(),
+		[](const PreciseClockData& a, const PreciseClockData& b) {
 			return a.PosixEpochTime__s < b.PosixEpochTime__s;
 		});
 }
@@ -231,30 +274,30 @@ void JsonExport::ExportPreciseEphemeris(const std::vector<SP3Satellite>& satelli
 	file << j;
 }
 
+void JsonExport::ExportPreciseClock(const std::vector<ClkSatellite>& clocks, std::filesystem::path path)
+{
+	this->CollectPreciseClockData(clocks);
 
-//void JsonExport::ExportPreciseEphemeris(const std::vector<SP3Satellite>& satellites, std::filesystem::path path)
-//{
-//	this->CollectPreciseEphemerisData(satellites);
-//
-//	json j;
-//	j["PreciseEphemerisData"] = json::array();
-//
-//	for (auto& data : this->_PreciseEphemerisData)
-//	{
-//		json satJson;
-//		satJson["PosixEpochTime__s"] = data.PosixEpochTime__s;
-//
-//		json ephemerisJson = json::array();
-//
-//		for (auto& eph : data.PreciseEphemeris)
-//		{
-//			ephemerisJson.push_back(eph.to_json());
-//		}
-//
-//		satJson["Ephemeris"] = std::move(ephemerisJson);
-//		j["PreciseEphemerisData"].push_back(std::move(satJson));		
-//	}
-//
-//	std::ofstream file(path);
-//	file << j;
-//}
+	json j;
+	j["PreciseClockData"] = json::array();
+
+	for (auto& data : this->_PreciseClockData)
+	{
+		json clockJson = json::array();
+
+		for (auto& eph : data.PreciseClock)
+		{
+			clockJson.push_back(eph.to_json());
+		}
+
+		json satJson;
+		satJson["PosixEpochTime__s"] = data.PosixEpochTime__s;
+		satJson["Clock"] = std::move(clockJson);
+
+		// Add each satellite data directly to PreciseEphemerisData
+		j["PreciseClockData"].push_back(std::move(satJson));
+	}
+
+	std::ofstream file(path);
+	file << j;
+}

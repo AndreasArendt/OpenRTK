@@ -8,16 +8,16 @@
 class ClkSatellite : public AbstractSatellite
 {
 private:
-	std::map<Epoch, double> _ClockCorrectionData;
+	std::map<Epoch, double> _ClockCorrectionData; // clock correction in seconds
 
 public:	
 	// getters
 	std::map<Epoch, double> const& ClockCorrectionData() const { return this->_ClockCorrectionData; }
 
 	// functions
-	void AddClockCorrectionData(Epoch epoch, double clockCorrection)
+	void AddClockCorrectionData(Epoch epoch, double clockCorrection__s)
 	{
-		this->_ClockCorrectionData[epoch] = clockCorrection;
+		this->_ClockCorrectionData[epoch] = clockCorrection__s;
 	}
 
 	// ctor & dtor

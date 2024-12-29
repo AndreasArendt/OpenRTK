@@ -17,14 +17,15 @@ int main()
 	auto sp3Parser = SP3Parser();
 	auto clkParser = ClkParser();
 
+	auto jExport = JsonExport();
+
 	std::string sp3Path = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_05M_ORB.SP3";
 	std::string clkPath = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_30S_CLK.CLK";
 
 	clkParser.Parse(clkPath);
+	jExport.ExportPreciseClock(clkParser.Satellites(), "D:/Projekte/OpenRTK/data/precise_clkdata.json");
 
-	sp3Parser.Parse(sp3Path);
-
-	auto jExport = JsonExport();
+	sp3Parser.Parse(sp3Path);		
 	jExport.ExportPreciseEphemeris(sp3Parser.Satellites(), "D:/Projekte/OpenRTK/data/precise_satdata.json");
 
 	rnxParser.Parse(obsPath);
