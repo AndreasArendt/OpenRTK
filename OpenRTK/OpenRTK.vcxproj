@@ -163,13 +163,13 @@
     <ClCompile Include="Utils\Epoch.cpp" />
     <ClCompile Include="RinexParser\RinexObsParser\RinexObsParser.cpp" />
     <ClCompile Include="RinexParser\RinexTypes\Satellite.cpp" />
-    <ClCompile Include="SP3\SP3Satellite.cpp" />
     <ClCompile Include="SP3\SP3Parser.cpp" />
     <ClCompile Include="Transformations\Transformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLK\ClkParser.hpp" />
     <ClInclude Include="CLK\ClkParserState.hpp" />
+    <ClInclude Include="CLK\ClkSatellite.hpp" />
     <ClInclude Include="Utils\AbstractSatellite.hpp" />
     <ClInclude Include="Export\JsonExport.hpp" />
     <ClInclude Include="PrecisePositioning\Postprocessor.hpp" />

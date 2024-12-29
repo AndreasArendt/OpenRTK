@@ -87,9 +87,6 @@
     <ClCompile Include="SP3\SP3Parser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="SP3\SP3Satellite.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Utils\AbstractSatellite.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -258,6 +255,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="CLK\ClkParserState.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="CLK\ClkSatellite.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
