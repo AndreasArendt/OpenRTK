@@ -18,6 +18,7 @@ This project focuses on implementing Precise Point Positioning (PPP), Single Poi
 - Basic RINEX file reader in C++ and json export
 - Drafts of SPP and PPP alrogithms in MATLAB. These will be translated and merged into the C++ main project
 - Precise Ephemeris data (SP3) files parser (version d) and json export
+- Precise Clock data (CLK) files parser (version 3.00 and later) and json export
 
 ## Installation
 
