@@ -143,7 +143,7 @@ void JsonExport::CollectPreciseEphemerisData(const std::vector<SP3Satellite>& sa
 
 			PreciseEphemeris peph;
 			peph.ECEF_Position = cdata.second.Position_E__m;
-			peph.SatelliteClockError__us = cdata.second.Posixtime__us;
+			peph.SatelliteClockError__us = cdata.second.ClockCorrection__us;
 			peph.SatelliteSystem = sv.SvString();
 			peph.Accuracy = sv.Accuracy();
 

@@ -11,7 +11,7 @@
 struct SP3Data
 {
 	ECEF_Position Position_E__m;
-	double Posixtime__us;
+	double ClockCorrection__us;
 };
 
 class SP3Satellite : public AbstractSatellite
@@ -35,8 +35,12 @@ public:
 	}
 
 	// ctor & dtor
-	SP3Satellite() : _Accuracy(-1) {}
+	SP3Satellite() : _Accuracy(0) {}
 	SP3Satellite(SvSystem svSystem, int svNumber) : AbstractSatellite(svSystem, svNumber), _Accuracy(0) {}
 	SP3Satellite(std::string satStr) : AbstractSatellite(satStr), _Accuracy(0) {}
-	SP3Satellite(const SP3Satellite& other) : AbstractSatellite(other), _Accuracy(0) {}
+	SP3Satellite(const SP3Satellite& other) : AbstractSatellite(other), _Accuracy(0) 
+	{
+		this->_PreciseData = other._PreciseData;
+		this->_Accuracy = other._Accuracy;
+	}
 };

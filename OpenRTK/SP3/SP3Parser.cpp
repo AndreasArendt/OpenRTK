@@ -101,11 +101,13 @@ void SP3Parser::ParseEphemeris(std::string& line)
 
 		double time = util::astring::parseDouble(line.substr(46, 15));
 
+		// check if satellite already exists
 		auto it = std::find_if(this->_Satellites.begin(), this->_Satellites.end(), [&](SP3Satellite& sv)
 			{
 				return sv == sat;
 			});
 
+		// if already exist, extend precise ephermeris data
 		if (it != this->_Satellites.end())
 		{
 			it->AddCorrectionData(this->_CurrentEpoch, ECEF_Position(x, y, z), time);
