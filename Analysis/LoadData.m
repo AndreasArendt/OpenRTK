@@ -2,6 +2,7 @@ clear; fclose all;
 
 SatelliteData = loadSatdata();
 PreciseEphemerisData = loadPephdata();
+PreciseClockData = loadPclkdata();
 
 % station_pos__m = [4164313.0000, 803525.9000, 4748474.9000]; %AUBG
 % station_pos__m = [4498451.8100  1708266.8300  4173591.7800]; %ORID
@@ -23,4 +24,10 @@ function PreciseEphemerisData = loadPephdata()
     fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_satdata.json');        
     peph = json.read(fpath);
     PreciseEphemerisData = peph.PreciseEphemerisData;
+end
+
+function PreciseClockData = loadPclkdata()
+    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_clkdata.json');        
+    pclk = json.read(fpath);
+    PreciseClockData = pclk.PreciseClockData;
 end

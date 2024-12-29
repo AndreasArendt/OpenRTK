@@ -1,6 +1,5 @@
 % LoadData;
-
-usePreciseEph = true;
+usePreciseEph = false;
 
 refpos__m = [NaN, NaN, NaN];
 
@@ -72,6 +71,10 @@ for ii = 1:numel(SatelliteData)
         
         dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset;        
         y = dist_est - geo_dist;
+
+        if (SatelliteData(ii).PosixEpochTime__s - SatelliteData(1).PosixEpochTime__s) >= 191.4            
+            a = 1;
+        end
 
         % Apply elevation filter only if more than 4SVs available
         idx_el = elevation > deg2rad(15) & elevation < deg2rad(165);
