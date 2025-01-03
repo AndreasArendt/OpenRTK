@@ -9,6 +9,7 @@ classdef Generic < handle
         r_ionofree = CalcIonoFreeLinearCombination(x_1, x_2, F1, F2);
 
         DictPeph = GetPreciseEphemeris(PreciseEphemeris, Satellite, time__s, options);
+        DictPclk = GetPreciseClock(PreciseCloick, Satellite, time__s);
     end
 end
 

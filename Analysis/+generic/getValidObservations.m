@@ -1,4 +1,9 @@
-function Observations = getValidObservations(Observations)
+function Observations = getValidObservations(Observations, options)
+
+arguments
+    Observations 
+    options.excludeSv = {''} 
+end
 
     idx_gps = startsWith({Observations.SatelliteSystem}, 'G');
     idx_gal = startsWith({Observations.SatelliteSystem}, 'E');
@@ -11,7 +16,14 @@ function Observations = getValidObservations(Observations)
 
     idx_healthy = [Observations.IsHealthy];
 
-    idx = idx_gps & idx_code_1 & idx_code_2 & idx_healthy;
+    % exclude satellites
+    [~, ib] = ismember(options.excludeSv, {Observations.SatelliteSystem});
+    idx_exclude = true(1, numel(Observations));
+    if any(ib)
+        idx_exclude(ib) = false;
+    end
+
+    idx = idx_gps & idx_code_1 & idx_code_2 & idx_healthy & idx_exclude;
     
     Observations = Observations(idx);
 end

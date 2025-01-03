@@ -1,8 +1,8 @@
-LoadData;
+% LoadData;
 
 plotCov = false;
 
-usePreciseEph = false;
+usePreciseEph = true;
 
 refpos__m = [NaN, NaN, NaN];
 
@@ -14,7 +14,7 @@ P_pos = NaN(numel(SatelliteData), 3); % covariance for position
 
 for ii = 1:numel(SatelliteData)
     %% Pre-Processing
-    Observations = generic.getValidObservations(SatelliteData(ii).Observations);
+    Observations = generic.getValidObservations(SatelliteData(ii).Observations, 'excludeSv', {'G4'});
     
     if usePreciseEph == true
         % TODO: SV order is implicitly used here
@@ -23,6 +23,11 @@ for ii = 1:numel(SatelliteData)
         ECEF_x = [v.x].';
         ECEF_y = [v.y].';
         ECEF_z = [v.z].';
+
+        d = Generic.GetPreciseClock(PreciseClockData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
+        v = [d.entries('Struct').Value];
+
+        dt_sv__m = v.' .* const.c__mDs .* 0;
     else
         ECEF_Position = [Observations.ECEF_Position];
         ECEF_x = [ECEF_Position.x]';
@@ -63,18 +68,17 @@ for ii = 1:numel(SatelliteData)
         Mw = Troposphere.MappingFunction.Chao_MW(elevation);
         A = [-e, ones(numel(e(:,1)),1), Mw];                
         
-        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset;        
+        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset + dt_sv__m;        
         y = dist_est - geo_dist;
-
-        if (SatelliteData(ii).PosixEpochTime__s - SatelliteData(1).PosixEpochTime__s) >= 191.4            
-            a = 1;
-        end
-
+  
         % Apply elevation filter only if more than 4SVs available
         idx_el = elevation > deg2rad(15) & elevation < deg2rad(165);
         if nnz(idx_el) > 4
             A = A(idx_el,:);
             y = y(idx_el);
+        else
+            % warning('Not enough satellites after applying elevation mask at iteration %d', ii')
+            % continue;
         end 
         
         [x_hat, P] = estimation.lls(A, y);
