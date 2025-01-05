@@ -26,9 +26,9 @@ for ii = 1:numel(SatelliteData)
         % TODO: SV order is implicitly used here
         d = Generic.GetPreciseEphemeris(PreciseEphemerisData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
         v = [d.entries('Struct').Value];
-        ECEF_x = [v.x].';
-        ECEF_y = [v.y].';
-        ECEF_z = [v.z].';
+        eph_x_E__m = [v.x].';
+        eph_y_E__m = [v.y].';
+        eph_z_E__m = [v.z].';
 
         d = Generic.GetPreciseClock(PreciseClockData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
         v = [d.entries('Struct').Value];
@@ -36,9 +36,9 @@ for ii = 1:numel(SatelliteData)
         sv_clock_offset__m = v.' .* const.c__mDs;
     else
         ECEF_Position = [Observations.ECEF_Position];
-        ECEF_x = [ECEF_Position.x]';
-        ECEF_y = [ECEF_Position.y]';
-        ECEF_z = [ECEF_Position.z]';
+        eph_x_E__m = [ECEF_Position.x]';
+        eph_y_E__m = [ECEF_Position.y]';
+        eph_z_E__m = [ECEF_Position.z]';
 
         sv_clock_offset__m = Transformation.SpeedOfLight__mDs * [Observations.ClockOffset]';    
     end
@@ -47,35 +47,15 @@ for ii = 1:numel(SatelliteData)
     POS_E__M           = pos_E__m(ii,:);
     RX_CLOCK_OFFSET__M = rx_clock_offset__m(ii);
     ZWD__m             = zwd__m(ii);
-    for jj = 1:10
-        % Calc Distance 
-        dist = Vector.EuclidianDistance_3D(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));
+    for jj = 1:10 
+        % Apply Pseudoranges
+        [A, y] = generic.PseudorangeUpdate( POS_E__M(1), POS_E__M(2), POS_E__M(3), ...
+                                            RX_CLOCK_OFFSET__M, ...
+                                            ZWD__m, ...
+                                            [Observations.Code], ...
+                                            eph_x_E__m, eph_y_E__m, eph_z_E__m, ...
+                                            sv_clock_offset__m, sv_relativistic__m);
 
-        % Sagnac Correction
-        sag = Transformation.CalcSagnac( [ECEF_x, ECEF_y, ECEF_z], [POS_E__M(1), POS_E__M(2), POS_E__M(3)]);
-
-        % correct geographic distance of earth rotation
-        geo_dist = dist + sag;
-        
-        % elevation mask
-        elevation = Generic.CalcElevation(POS_E__M(1), POS_E__M(2), POS_E__M(3), ECEF_x, ECEF_y, ECEF_z);
-        
-        % Troposphere Model
-        [lat__rad, ~, alt__m] = Transformation.ecef2wgs84(POS_E__M(1), POS_E__M(2), POS_E__M(3));    
-        tropo_offset = Troposphere.Saastamoinen_TropoModel(lat__rad, alt__m, elevation, ZWD__m);     
-
-        % Iono-Free LC
-        Code = [Observations.Code];
-        rho_iono_free = Generic.CalcIonoFreeLinearCombination([Code.Band_1]', [Code.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
-               
-        % Design Matrix
-        e = Vector.NormalizedDistanceVector(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));    
-        Mw = Troposphere.MappingFunction.Chao_MW(elevation);
-        A = [-e, ones(numel(e(:,1)),1), Mw];                
-        
-        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset;
-        y = dist_est - geo_dist;
-  
         % Apply elevation filter only if more than 4SVs available
         idx_el = elevation > deg2rad(15) & elevation < deg2rad(165);
         if nnz(idx_el) > 4
