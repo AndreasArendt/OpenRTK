@@ -3,6 +3,7 @@
 plotCov = false;
 
 usePreciseEph = true;
+% usePreciseEph = false;
 
 refpos__m = [NaN, NaN, NaN];
 
@@ -16,10 +17,9 @@ elevation_out = NaN(numel(SatelliteData), meta.NumberSatellites);
 
 for ii = 1:numel(SatelliteData)
     %% Pre-Processing
-    Observations = generic.getValidObservations(SatelliteData(ii).Observations, 'excludeSv', {'G4'});
+    Observations = generic.getValidObservations(SatelliteData(ii).Observations, 'excludeSv', {'G30'});
     
-    % get additional offsets
-    sv_clock_offset__m = Transformation.SpeedOfLight__mDs * [Observations.ClockOffset]';    
+    % get additional offsets    
     sv_relativistic__m = Transformation.SpeedOfLight__mDs * [Observations.RelativisticError]';
 
     if usePreciseEph == true
@@ -33,19 +33,21 @@ for ii = 1:numel(SatelliteData)
         d = Generic.GetPreciseClock(PreciseClockData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
         v = [d.entries('Struct').Value];
 
-        dt_sv__m = v.' .* const.c__mDs .* 0;
+        sv_clock_offset__m = v.' .* const.c__mDs;
     else
         ECEF_Position = [Observations.ECEF_Position];
         ECEF_x = [ECEF_Position.x]';
         ECEF_y = [ECEF_Position.y]';
         ECEF_z = [ECEF_Position.z]';
+
+        sv_clock_offset__m = Transformation.SpeedOfLight__mDs * [Observations.ClockOffset]';    
     end
 
     %% Algorithm    
     POS_E__M           = pos_E__m(ii,:);
     RX_CLOCK_OFFSET__M = rx_clock_offset__m(ii);
     ZWD__m             = zwd__m(ii);
-    for jj = 1:10           
+    for jj = 1:10
         % Calc Distance 
         dist = Vector.EuclidianDistance_3D(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));
 
@@ -71,7 +73,7 @@ for ii = 1:numel(SatelliteData)
         Mw = Troposphere.MappingFunction.Chao_MW(elevation);
         A = [-e, ones(numel(e(:,1)),1), Mw];                
         
-        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset + dt_sv__m;        
+        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset;
         y = dist_est - geo_dist;
   
         % Apply elevation filter only if more than 4SVs available
