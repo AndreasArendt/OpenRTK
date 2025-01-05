@@ -5,15 +5,26 @@ arguments
     options.excludeSv = {''} 
 end
 
+    %%
     idx_gps = startsWith({Observations.SatelliteSystem}, 'G');
     idx_gal = startsWith({Observations.SatelliteSystem}, 'E');
     
     Code    = [Observations.Code];
+    Carrier = [Observations.Carrier];
 
+    %%
     idx_code_1 = [Code.Band_1] > 0;
     idx_code_2 = [Code.Band_2] > 0;
-    idx_code_5 = [Code.Band_5] > 0;
 
+    idx_code = idx_code_1 & idx_code_2;
+
+    %%
+    idx_carrier_1 = [Carrier.Band_1] > 0;
+    idx_carrier_2 = [Carrier.Band_2] > 0;
+
+    idx_carrier = idx_carrier_1 & idx_carrier_2;
+
+    %%
     idx_healthy = [Observations.IsHealthy];
 
     % exclude satellites
@@ -23,7 +34,7 @@ end
         idx_exclude(ib) = false;
     end
 
-    idx = idx_gps & idx_code_1 & idx_code_2 & idx_healthy & idx_exclude;
+    idx = idx_gps & idx_code & idx_carrier & idx_healthy & idx_exclude;
     
     Observations = Observations(idx);
 end

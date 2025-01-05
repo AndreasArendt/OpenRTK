@@ -10,15 +10,19 @@ refpos__m = [NaN, NaN, NaN];
 pos_E__m           = zeros(numel(SatelliteData), 3);
 rx_clock_offset__m = zeros(numel(SatelliteData), 1);
 zwd__m             = zeros(numel(SatelliteData), 1); %zenith wet delay
+ambig              = zeros(numel(SatelliteData), meta.NumberSatellites); % float ambiguities
 
 P_pos         = NaN(numel(SatelliteData), 3); % covariance for position
 n_sat         = NaN(numel(SatelliteData), 1); % number of satellites used
 elevation_out = NaN(numel(SatelliteData), meta.NumberSatellites);
 
-for ii = 1:numel(SatelliteData)
+for ii = 1:numel(SatelliteData)/4
     %% Pre-Processing
     Observations = generic.getValidObservations(SatelliteData(ii).Observations, 'excludeSv', {'G30'});
-    
+
+    % index of current satellites
+    [~, idx_sv] = ismember({Observations.SatelliteSystem}, meta.AvailableSatelliteSystems);
+
     % get additional offsets    
     sv_relativistic__m = Transformation.SpeedOfLight__mDs * [Observations.RelativisticError]';
 
@@ -47,36 +51,57 @@ for ii = 1:numel(SatelliteData)
     POS_E__M           = pos_E__m(ii,:);
     RX_CLOCK_OFFSET__M = rx_clock_offset__m(ii);
     ZWD__m             = zwd__m(ii);
+    AMBIG              = ambig(ii,idx_sv);
     for jj = 1:10 
         % Apply Pseudoranges
-        [A, y] = generic.PseudorangeUpdate( POS_E__M(1), POS_E__M(2), POS_E__M(3), ...
+        [A_rho, y_rho] = generic.PseudorangeUpdate( POS_E__M(1), POS_E__M(2), POS_E__M(3), ...
                                             RX_CLOCK_OFFSET__M, ...
                                             ZWD__m, ...
                                             [Observations.Code], ...
                                             eph_x_E__m, eph_y_E__m, eph_z_E__m, ...
                                             sv_clock_offset__m, sv_relativistic__m);
+        
+        [A_phi, y_phi] = generic.CarrierPhaseUpdate( POS_E__M(1), POS_E__M(2), POS_E__M(3), ...
+                                             RX_CLOCK_OFFSET__M, ...
+                                             ZWD__m, ...
+                                             AMBIG, ...
+                                             [Observations.Carrier], ...
+                                             eph_x_E__m, eph_y_E__m, eph_z_E__m, ...
+                                             sv_clock_offset__m, sv_relativistic__m);
+
+        % calculate satellites elevation
+        elevation = Generic.CalcElevation(POS_E__M(1), POS_E__M(2), POS_E__M(3), eph_x_E__m, eph_y_E__m, eph_z_E__m);
 
         % Apply elevation filter only if more than 4SVs available
         idx_el = elevation > deg2rad(15) & elevation < deg2rad(165);
-        if nnz(idx_el) > 4
-            A = A(idx_el,:);
-            y = y(idx_el);
+        if nnz(idx_el) > 4 
+            idx_col = [true(5,1);idx_el]; % columns are dependent on available satellites
+
+            A_rho = A_rho(idx_el,idx_col);
+            y_rho = y_rho(idx_el);
+            
+            A_phi = A_phi(idx_el, idx_col);
+            y_phi = y_phi(idx_el);
         else
-            % warning('Not enough satellites after applying elevation mask at iteration %d', ii')
-            % POS_E__M            = NaN;
-            % RX_CLOCK_OFFSET__M  = NaN;
-            % ZWD__m              = NaN;
-        
-            % break;
+            break;
         end 
         
-        [x_hat, P] = estimation.lls(A, y);
+        THETA = [A_rho; A_phi];
+        Z = [y_rho; y_phi];
+
+        [x_hat, P] = estimation.lls(THETA, Z);
 
         % State update
         POS_E__M           = POS_E__M + x_hat(1:3)';        
         RX_CLOCK_OFFSET__M = RX_CLOCK_OFFSET__M + x_hat(4);
         ZWD__m             = ZWD__m + x_hat(5);
-    
+
+        if nnz(idx_el) > 4 
+            AMBIG(idx_el) = AMBIG(idx_el) + x_hat(6:end)';
+        else
+            AMBIG = AMBIG + x_hat(6:end)';
+        end
+
         if all(abs(x_hat(1:3)) < 1e-3)
             break;
         end
@@ -85,6 +110,7 @@ for ii = 1:numel(SatelliteData)
     pos_E__m(ii+1,:)          = POS_E__M;
     rx_clock_offset__m(ii+1)  = RX_CLOCK_OFFSET__M;
     zwd__m(ii+1)              = ZWD__m;
+    ambig(ii+1,idx_sv)        = AMBIG;
 
     n_sat(ii+1)   = nnz(idx_el);
     P_pos(ii+1,:) = diag(P(1:3, 1:3));
