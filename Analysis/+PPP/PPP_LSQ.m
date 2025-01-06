@@ -16,9 +16,13 @@ P_pos         = NaN(numel(SatelliteData), 3); % covariance for position
 n_sat         = NaN(numel(SatelliteData), 1); % number of satellites used
 elevation_out = NaN(numel(SatelliteData), meta.NumberSatellites);
 
-for ii = 1:numel(SatelliteData)/4
+for ii = 1:numel(SatelliteData)
     %% Pre-Processing
     Observations = generic.getValidObservations(SatelliteData(ii).Observations, 'excludeSv', {'G30'});
+
+    if isempty(Observations)
+        continue;
+    end
 
     % index of current satellites
     [~, idx_sv] = ismember({Observations.SatelliteSystem}, meta.AvailableSatelliteSystems);

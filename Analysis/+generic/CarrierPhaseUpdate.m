@@ -14,7 +14,7 @@ function [A, y] = CarrierPhaseUpdate(x_est_E, y_est_E, z_est_E, rx_clock_offset_
     phi_iono_free = Generic.CalcIonoFreeLinearCombination([Carrierphases.Band_1]', [Carrierphases.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
 
     % Wavelength
-    lambda = generic.getCarrierPhaseWavelength(gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
+    lambda = Generic.CalcIonoFreeLinearCombination(const.c__mDs / gnss.F_L1_GPS__Hz, const.c__mDs / gnss.F_L2_GPS__Hz, gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
 
     e = Vector.NormalizedDistanceVector(eph_x_E__m, eph_y_E__m, eph_z_E__m, x_est_E, y_est_E, z_est_E);    
     Mw = Troposphere.MappingFunction.Chao_MW(elevation);
