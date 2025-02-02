@@ -21,6 +21,6 @@ function [A, y] = CarrierPhaseUpdate(x_est_E, y_est_E, z_est_E, rx_clock_offset_
     L = eye(numel(phi_iono_free)) * lambda;
     A = [-e, ones(numel(e(:,1)),1), Mw, L];                
     
-    dist_est = phi_iono_free + sv_clock_offset__m + sv_relativistic__m - rx_clock_offset_est__m - tropo_offset - lambda * ambig_est.';
+    dist_est = phi_iono_free * lambda + sv_clock_offset__m + sv_relativistic__m - rx_clock_offset_est__m - tropo_offset - lambda * ambig_est.';
     y = dist_est - dist_svrx__m;
 end
