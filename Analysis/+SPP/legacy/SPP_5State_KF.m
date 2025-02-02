@@ -95,7 +95,7 @@ for tt = timestamps.'
         tropo_offset = (d_dry + d_wet) .* M_E;
                
         % Iono-Free LC
-        rho_iono_free = Generic.CalcIonoFreeLinearCombination(S.Code_1(code_1_idx), S.Code_5(code_5_idx), F_E1_Galileo__Hz, F_E5a_Galileo__Hz);
+        rho_iono_free = Generic.CalcIonoFreeLinearCombination(S.Code_1(code_1_idx), S.Code_5(code_5_idx), gnss.F_E1_Galileo__Hz, gnss.F_E5a_Galileo__Hz);
              
         pseudorange_est = rho_iono_free + cdt_sv + cdt_rel - CDTR - tropo_offset;        
         

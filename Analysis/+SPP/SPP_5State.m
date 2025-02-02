@@ -63,7 +63,7 @@ for ii = 1:numel(SatelliteData)
         tropo_offset = (d_dry + d_wet) .* M_E;
 
         % Iono-Free LC
-        rho_iono_free = Generic.CalcIonoFreeLinearCombination([Code(idx).Band_1]', [Code(idx).Band_2]', F_E1_Galileo__Hz, F_L2_GPS__Hz);
+        rho_iono_free = Generic.CalcIonoFreeLinearCombination([Code(idx).Band_1]', [Code(idx).Band_2]', gnss.F_E1_Galileo__Hz, gnss.F_L2_GPS__Hz);
                 
         e = Vector.NormalizedDistanceVector(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));                       
         A = [-e, ones(numel(e(:,1)),1), M_E];
