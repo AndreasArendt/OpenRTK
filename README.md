@@ -2,21 +2,21 @@
 
 ## Description
 
-This project focuses on implementing Precise Point Positioning (PPP), Single Point Positioning (SPP), and Real-Time Kinematic (RTK) algorithms for postprocessing GNSS data. The main goal of this project is having a collection of high precision GNSS algorithms that are documented and implemented sustainably. Also, the main implementation will be in C++ for best performance.
+This project focuses on implementing Precise Point Positioning (PPP), Single Point Positioning (SPP), and Real-Time Kinematic (RTK) algorithms for postprocessing GNSS data. The main goal of this project is having a collection of high precision GNSS algorithms that are documented and implemented sustainably. The main implementation will be in C++ for best performance at a later point in this project.
 
 ## Table of Contents
 
 - [OpenRTK Precise GNSS](#openrtk-precise-gnss)
   - [Description](#description)
   - [Table of Contents](#table-of-contents)
-  - [Status](#status)
+  - [Status (v0.1)](#status-v01)
   - [Installation](#installation)
   - [Documentation](#documentation)
 
-## Status
+## Status (v0.1)
 
 - Basic RINEX file reader in C++ and json export
-- Drafts of SPP and PPP alrogithms in MATLAB. These will be translated and merged into the C++ main project
+- LSQ version of SPP and PPP alrogithms in MATLAB running. They will be translated and merged into the C++ main project later.
 - Precise Ephemeris data (SP3) files parser (version d) and json export
 - Precise Clock data (CLK) files parser (version 3.00 and later) and json export
 
