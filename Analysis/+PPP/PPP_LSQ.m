@@ -12,7 +12,7 @@ rx_clock_offset__m = zeros(numel(SatelliteData), 1);
 zwd__m             = zeros(numel(SatelliteData), 1); %zenith wet delay
 ambig              = zeros(numel(SatelliteData), meta.NumberSatellites); % float ambiguities
 
-P_pos         = NaN(numel(SatelliteData), 3); % covariance for position
+P             = NaN(meta.NumberSatellites + 5, meta.NumberSatellites + 5, numel(SatelliteData)); % covariance for position
 n_sat         = NaN(numel(SatelliteData), 1); % number of satellites used
 elevation_out = NaN(numel(SatelliteData), meta.NumberSatellites);
 
@@ -106,7 +106,7 @@ for ii = 1:numel(SatelliteData)
         THETA = [A_rho; A_phi];
         Z = [y_rho; y_phi];
 
-        [x_hat, P] = estimation.lls(THETA, Z);
+        [x_hat, P_ii] = estimation.lls(THETA, Z);
 
         % State update
         POS_E__M           = POS_E__M + x_hat(1:3)';        
@@ -129,8 +129,8 @@ for ii = 1:numel(SatelliteData)
     zwd__m(ii+1)              = ZWD__m;
     ambig(ii+1,idx_sv)        = AMBIG;
 
-    n_sat(ii+1)   = nnz(idx_el);
-    P_pos(ii+1,:) = diag(P(1:3, 1:3));
+    n_sat(ii+1)             = nnz(idx_el);
+    P(idx_col,idx_col,ii+1) = P_ii;
 
     [~, ib] = ismember({Observations.SatelliteSystem}, meta.AvailableSatelliteSystems);
     elevation_out(ii+1,ib(idx_el)) = elevation(idx_el)';
@@ -141,7 +141,9 @@ pos_E__m           = pos_E__m(2:end,:);
 rx_clock_offset__m = rx_clock_offset__m(2:end);
 zwd__m             = zwd__m(2:end);
 
+P_pos = reshape([P(1,1,:), P(2,2,:), P(3,3,:)], [], size(P,3))';
 P_pos = P_pos(2:end,:);
+
 n_sat = n_sat(2:end);
 
 %%
