@@ -15,14 +15,16 @@ end
     %%
     idx_code_1 = [Code.Band_1] > 0;
     idx_code_2 = [Code.Band_2] > 0;
+    idx_code_5 = [Code.Band_5] > 0;
 
-    idx_code = idx_code_1 & idx_code_2;
+    idx_code = idx_code_1 & (idx_code_2 | idx_code_5);
 
     %%
     idx_carrier_1 = [Carrier.Band_1] > 0;
     idx_carrier_2 = [Carrier.Band_2] > 0;
+    idx_carrier_5 = [Carrier.Band_5] > 0;
 
-    idx_carrier = idx_carrier_1 & idx_carrier_2;
+    idx_carrier = idx_carrier_1 & (idx_carrier_2 | idx_carrier_5);
 
     %%
     idx_healthy = [Observations.IsHealthy];
@@ -34,7 +36,7 @@ end
         idx_exclude(ib) = false;
     end
 
-    idx = idx_gps & idx_code & idx_carrier & idx_healthy & idx_exclude;
+    idx = (idx_gps | idx_gal) & idx_code & idx_carrier & idx_healthy & idx_exclude;
     
     Observations = Observations(idx);
 end

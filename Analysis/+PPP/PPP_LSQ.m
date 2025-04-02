@@ -144,7 +144,7 @@ af = afigure(42);
 subplot(5,2,1);
 hold on; grid on;
 yline(refpos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
-plot(pos_E__m(:,1), 'DisplayName', 'LSQ (5 States)')
+plot(pos_E__m(:,1), 'DisplayName', 'LSQ (5 States, PPP)')
 if plotCov
     plot(pos_E__m(:,1) + sqrt(P_pos(:,1)), 'Color', Color.RED, 'DisplayName', 'Cov');
     plot(pos_E__m(:,1) - sqrt(P_pos(:,1)), 'Color', Color.RED, 'DisplayName', 'Cov');
@@ -152,12 +152,12 @@ end
 
 subplot(5,2,2);
 hold on; grid on;
-plot(refpos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (5 States)')
+plot(refpos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (5 States, PPP)')
 
 subplot(5,2,3);
 hold on; grid on;
 yline(refpos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
-plot(pos_E__m(:,2), 'DisplayName', 'LSQ (5 States)')
+plot(pos_E__m(:,2), 'DisplayName', 'LSQ (5 States, PPP)')
 if plotCov
     plot(pos_E__m(:,2) + sqrt(P_pos(:,2)), 'Color', Color.RED, 'DisplayName', 'Cov');
     plot(pos_E__m(:,2) - sqrt(P_pos(:,2)), 'Color', Color.RED, 'DisplayName', 'Cov');
@@ -165,12 +165,12 @@ end
 
 subplot(5,2,4);
 hold on; grid on;
-plot(refpos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (5 States)')
+plot(refpos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (5 States, PPP)')
 
 subplot(5,2,5);
 hold on; grid on;
 yline(refpos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
-plot(pos_E__m(:,3), 'DisplayName', 'LSQ (5 States)')
+plot(pos_E__m(:,3), 'DisplayName', 'LSQ (5 States, PPP)')
 if plotCov
     plot(pos_E__m(:,3) + sqrt(P_pos(:,3)), 'Color', Color.RED, 'DisplayName', 'Cov');
     plot(pos_E__m(:,3) - sqrt(P_pos(:,3)), 'Color', Color.RED, 'DisplayName', 'Cov');
@@ -178,12 +178,12 @@ end
 
 subplot(5,2,6);
 hold on; grid on;
-plot(refpos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (5 States)')
+plot(refpos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (5 States, PPP)')
 
 subplot(5,2,7);
 hold on; grid on;
 title('dt_r')
-plot(rx_clock_offset__m ./ Transformation.SpeedOfLight__mDs, 'DisplayName', 'LSQ (5 States)')
+plot(rx_clock_offset__m ./ Transformation.SpeedOfLight__mDs, 'DisplayName', 'LSQ (5 States, PPP)')
 
 subplot(5,2,8);
 hold on; grid on;
@@ -193,12 +193,12 @@ plot(zwd__m, 'DisplayName','zwd__m')
 subplot(5,2,9);
 hold on; grid on;
 title('nSat')
-plot(n_sat, 'DisplayName', 'nsat');
+plot(n_sat, 'DisplayName', 'nsat (5 States, PPP)');
 
 subplot(5,2,10);
 hold on; grid on;
 title('elevations')
-plot(rad2deg(elevation_out), 'DisplayName', 'elevation');
+plot(rad2deg(elevation_out), 'DisplayName', 'elevation (5 States, PPP)');
 
 af.linkaxes('x');
 af.showlegend();
