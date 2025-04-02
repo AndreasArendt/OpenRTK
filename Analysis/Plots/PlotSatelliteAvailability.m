@@ -5,13 +5,13 @@ for ii = 1:numel(SatelliteData)
     svs = unique([svs(:)', {Observations.SatelliteSystem}]);
 end
 
-% create struct with empty sv health vector
+% create struct with empty sv availability vector
 s = struct();
 for sv = svs
     s.(sv{:}) = nan(numel(SatelliteData),1);
 end
 
-% fill health vector
+% fill availability vector
 for ii = 1:numel(SatelliteData)   
     Observations = generic.getValidObservations(SatelliteData(ii).Observations);
 
