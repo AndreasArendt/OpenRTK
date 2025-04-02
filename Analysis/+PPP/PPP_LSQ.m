@@ -62,13 +62,6 @@ for ii = 1:numel(SatelliteData)
     Code = [Observations.Code];
     rho_iono_free = Generic.CalcIonoFreeLinearCombination([Code.Band_1]', [Code.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
 
-    dist_svrx__m = generic.calcDistanceSvRx(eph_x_E__m, eph_y_E__m, eph_z_E__m, POS_E__M(1), POS_E__M(2), POS_E__M(3));
-    N_initial = (rho_iono_free - dist_svrx__m) / 0.1070;
-    
-    if any(idx)
-        AMBIG(idx) = N_initial(idx);
-    end
-
     for jj = 1:10 
         % Apply Pseudoranges
         [A_rho, y_rho] = generic.PseudorangeUpdate( POS_E__M(1), POS_E__M(2), POS_E__M(3), ...
