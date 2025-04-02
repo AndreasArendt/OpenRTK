@@ -1,4 +1,4 @@
-function DictPclk = GetPreciseClock(PreciseClock, Satellite, time__s)
+function DictPclk = getPreciseClock(PreciseClock, Satellite, time__s)
 %G Summary of this function goes here
 %   Detailed explanation goes here
 

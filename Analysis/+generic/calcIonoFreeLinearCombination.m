@@ -1,4 +1,4 @@
-function [r_ionofree] = CalcIonoFreeLinearCombination(x_1, x_2, F1, F2)
+function [r_ionofree] = calcIonoFreeLinearCombination(x_1, x_2, F1, F2)
 %CalcIonoFreeLinearCombination Summary of this function goes here
 %   Detailed explanation goes here
 

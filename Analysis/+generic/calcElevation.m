@@ -1,4 +1,4 @@
-function elevation__rad = CalcElevation(x_rx, y_rx, z_rx, x_sv, y_sv, z_sv)
+function elevation__rad = calcElevation(x_rx, y_rx, z_rx, x_sv, y_sv, z_sv)
     e = Vector.NormalizedDistanceVector(x_sv, y_sv, z_sv, x_rx, y_rx, z_rx);
 
     [lat__rad, lon__rad, ~] = Transformation.ecef2wgs84(x_rx, y_rx, z_rx);

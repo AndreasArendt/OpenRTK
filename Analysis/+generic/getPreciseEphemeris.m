@@ -1,4 +1,4 @@
-function DictPeph = GetPreciseEphemeris(PreciseEphemeris, Satellite, time__s, options)
+function DictPeph = getPreciseEphemeris(PreciseEphemeris, Satellite, time__s, options)
 %G Summary of this function goes here
 %   Detailed explanation goes here
 

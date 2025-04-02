@@ -4,17 +4,17 @@ function [A, y] = CarrierPhaseUpdate(x_est_E, y_est_E, z_est_E, rx_clock_offset_
     dist_svrx__m = generic.calcDistanceSvRx(eph_x_E__m, eph_y_E__m, eph_z_E__m, x_est_E, y_est_E, z_est_E);
 
     % elevation mask
-    elevation = Generic.CalcElevation(x_est_E, y_est_E, z_est_E, eph_x_E__m, eph_y_E__m, eph_z_E__m);
+    elevation = generic.calcElevation(x_est_E, y_est_E, z_est_E, eph_x_E__m, eph_y_E__m, eph_z_E__m);
     
     % Troposphere Model
     [lat__rad, ~, alt__m] = Transformation.ecef2wgs84(x_est_E, y_est_E, z_est_E);    
     tropo_offset = Troposphere.Saastamoinen_TropoModel(lat__rad, alt__m, elevation, zwd_est__m);  
 
     % Iono-Free LC
-    phi_iono_free = Generic.CalcIonoFreeLinearCombination([Carrierphases.Band_1]', [Carrierphases.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
+    phi_iono_free = generic.calcIonoFreeLinearCombination([Carrierphases.Band_1]', [Carrierphases.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
 
     % Wavelength
-    lambda = Generic.CalcIonoFreeLinearCombination(const.c__mDs / gnss.F_L1_GPS__Hz, const.c__mDs / gnss.F_L2_GPS__Hz, gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
+    lambda = generic.calcIonoFreeLinearCombination(const.c__mDs / gnss.F_L1_GPS__Hz, const.c__mDs / gnss.F_L2_GPS__Hz, gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
 
     e = Vector.NormalizedDistanceVector(eph_x_E__m, eph_y_E__m, eph_z_E__m, x_est_E, y_est_E, z_est_E);    
     Mw = Troposphere.MappingFunction.Chao_MW(elevation);

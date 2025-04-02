@@ -32,13 +32,13 @@ for ii = 1:numel(SatelliteData)
 
     if usePreciseEph == true
         % TODO: SV order is implicitly used here
-        d = Generic.GetPreciseEphemeris(PreciseEphemerisData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
+        d = generic.getPreciseEphemeris(PreciseEphemerisData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
         v = [d.entries('Struct').Value];
         eph_x_E__m = [v.x].';
         eph_y_E__m = [v.y].';
         eph_z_E__m = [v.z].';
 
-        d = Generic.GetPreciseClock(PreciseClockData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
+        d = generic.getPreciseClock(PreciseClockData, {Observations.SatelliteSystem}, SatelliteData(ii).PosixEpochTime__s);
         v = [d.entries('Struct').Value];
 
         sv_clock_offset__m = v.' .* const.c__mDs;
@@ -60,7 +60,7 @@ for ii = 1:numel(SatelliteData)
     % initialize ambiguities
     idx = AMBIG == 0;
     Code = [Observations.Code];
-    rho_iono_free = Generic.CalcIonoFreeLinearCombination([Code.Band_1]', [Code.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
+    rho_iono_free = generic.calcIonoFreeLinearCombination([Code.Band_1]', [Code.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
 
     for jj = 1:10 
         % Apply Pseudoranges
@@ -80,7 +80,7 @@ for ii = 1:numel(SatelliteData)
                                              sv_clock_offset__m, sv_relativistic__m);
 
         % calculate satellites elevation
-        elevation = Generic.CalcElevation(POS_E__M(1), POS_E__M(2), POS_E__M(3), eph_x_E__m, eph_y_E__m, eph_z_E__m);
+        elevation = generic.calcElevation(POS_E__M(1), POS_E__M(2), POS_E__M(3), eph_x_E__m, eph_y_E__m, eph_z_E__m);
 
         % Apply elevation filter only if more than 4SVs available
         idx_el = elevation > deg2rad(15) & elevation < deg2rad(165);
