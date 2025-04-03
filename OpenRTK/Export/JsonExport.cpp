@@ -4,6 +4,8 @@
 #include <fstream>
 #include <unordered_map>
 
+#include "../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
+
 using json = nlohmann::json;
 
 double JsonExport::GetCodeObservationIfExist(ObsData obs, ObservationBand band)
@@ -88,7 +90,7 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 	for (const auto& sv : satellites)
 	{
 		// iterate over all observations of current satellite
-		for (int i = 0; i < sv.ObservationData().size(); i++)
+		for (size_t i = 0; i < sv.ObservationData().size(); i++)
 		{
 			auto obs = sv.ObservationData().at(i);	
 
@@ -98,8 +100,19 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 				break;
 			}
 
-			const auto& ephemeris = *sv.SatelliteEphemeris().at(ObservationBand::Band_1).at(i).get();
-			SatelliteObservation satObs = this->CreateSatObservation(sv, obs, ephemeris);
+			SatelliteObservation satObs;
+			const auto& sat_eph_l1 = sv.SatelliteEphemeris().at(ObservationBand::Band_1);
+			if (i < sat_eph_l1.size())
+			{
+				const auto& ephemeris = *sat_eph_l1.at(i).get();
+				satObs = this->CreateSatObservation(sv, obs, ephemeris);
+			}
+			else
+			{				
+				auto dummy_ephemeris = GalileoEphemeris(GalileoSvHealth());
+				satObs = this->CreateSatObservation(sv, obs, dummy_ephemeris);
+			}
+
 
 			// prepare data to be inserted
 			auto satData = SatelliteData();				
