@@ -16,11 +16,11 @@ The following states are estimated:
 
 .. math::
     \begin{pmatrix}
-    x_\text{ECEF} \\
-    y_\text{ECEF} \\
-    z_\text{ECEF} \\
-    \text{rx\_clock\_offset} \\
-    \text{zenith\_tropo\_delay}
+    x_\text{ECEF__m} \\
+    y_\text{ECEF__m} \\
+    z_\text{ECEF__m} \\
+    \text{rx_clock_offset__m} \\
+    \text{zenith_tropo_delay__m}
     \end{pmatrix}
     
 
@@ -35,11 +35,11 @@ The following states are estimated:
 
 .. math::
     \begin{pmatrix}
-    x_\text{ECEF} \\
-    y_\text{ECEF} \\
-    z_\text{ECEF} \\
-    \text{rx\_clock\_offset} \\
-    \text{zenith\_wet\_delay} \\
+    x_\text{ECEF__m} \\
+    y_\text{ECEF__m} \\
+    z_\text{ECEF__m} \\
+    \text{rx_clock_offset__m} \\
+    \text{zenith_wet_delay__m} \\
     \text{ambiguities} \\
     \end{pmatrix}
 
