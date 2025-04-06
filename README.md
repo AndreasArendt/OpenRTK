@@ -9,16 +9,17 @@ This project focuses on implementing Precise Point Positioning (PPP), Single Poi
 - [OpenRTK Precise GNSS](#openrtk-precise-gnss)
   - [Description](#description)
   - [Table of Contents](#table-of-contents)
-  - [Status (v0.1)](#status-v01)
+  - [Status (v0.2)](#status-v02)
   - [Installation](#installation)
   - [Documentation](#documentation)
 
-## Status (v0.1)
+## Status (v0.2)
 
 - Basic RINEX file reader in C++ and json export
 - LSQ version of SPP and PPP alrogithms in MATLAB running. They will be translated and merged into the C++ main project later.
 - Precise Ephemeris data (SP3) files parser (version d) and json export
 - Precise Clock data (CLK) files parser (version 3.00 and later) and json export
+- Standalone Console Application to convert OBS, NAV, CLK and SP3 to json format
 
 ## Installation
 
