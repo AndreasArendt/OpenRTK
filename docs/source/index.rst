@@ -13,3 +13,5 @@ Contents
 :ref:`introduction`.
 
 :ref:`errormodel`.
+
+:ref:`software`.
