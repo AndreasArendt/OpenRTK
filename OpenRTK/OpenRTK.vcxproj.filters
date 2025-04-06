@@ -93,6 +93,9 @@
     <ClCompile Include="CLK\ClkParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="InputParser\InputParser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\Epoch.hpp">
@@ -258,6 +261,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="CLK\ClkSatellite.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="InputParser\InputParser.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

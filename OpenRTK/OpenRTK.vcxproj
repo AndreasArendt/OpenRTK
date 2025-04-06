@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CLK\ClkParser.cpp" />
+    <ClCompile Include="InputParser\InputParser.cpp" />
     <ClCompile Include="Utils\AbstractSatellite.cpp" />
     <ClCompile Include="Export\JsonExport.cpp" />
     <ClCompile Include="PrecisePositioning\Postprocessor.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="CLK\ClkParser.hpp" />
     <ClInclude Include="CLK\ClkParserState.hpp" />
     <ClInclude Include="CLK\ClkSatellite.hpp" />
+    <ClInclude Include="InputParser\InputParser.hpp" />
     <ClInclude Include="Utils\AbstractSatellite.hpp" />
     <ClInclude Include="Export\JsonExport.hpp" />
     <ClInclude Include="PrecisePositioning\Postprocessor.hpp" />

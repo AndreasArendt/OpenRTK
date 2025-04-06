@@ -7,48 +7,104 @@
 
 #include "PrecisePositioning/SPP.hpp"
 #include "Export/JsonExport.hpp"
+#include "InputParser/InputParser.hpp"
 
 #include <vector>
 #include <memory>
+#include <iostream>
+#include <filesystem>
 
-int main()
-{	
-	auto rnxParser = RinexParser();
-	auto sp3Parser = SP3Parser();
-	auto clkParser = ClkParser();
+RinexParser rnxParser;
+ClkParser clkParser;
+SP3Parser sp3Parser;
+InputParser inputParser;
+
+void exportData(const std::vector<std::string> outdir)
+{
+	// create if not existing
+	std::filesystem::create_directory(outdir.front());
+	std::filesystem::path jsonFile = "";
 
 	auto jExport = JsonExport();
 
-	std::string sp3Path = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_05M_ORB.SP3";
-	std::string clkPath = "D:/Projekte/OpenRTK/data/ESA0MGNFIN_20242000000_01D_30S_CLK.CLK";
-
-	clkParser.Parse(clkPath);
-	jExport.ExportPreciseClock(clkParser.Satellites(), "D:/Projekte/OpenRTK/data/precise_clkdata.json");
-
-	sp3Parser.Parse(sp3Path);		
-	jExport.ExportPreciseEphemeris(sp3Parser.Satellites(), "D:/Projekte/OpenRTK/data/precise_satdata.json");
-
-	rnxParser.Parse(obsPath);
-	rnxParser.Parse(navPath);
-
-	//auto spp = SPP();
-
-	std::vector<Satellite> Satellites;
-	std::copy_if(rnxParser.Satellites().begin(), rnxParser.Satellites().end(), std::back_inserter(Satellites), [](const auto& sv)
-		{
-			return (sv.SVSystem() == SvSystem::GALILEO) || (sv.SVSystem() == SvSystem::GPS);
-		});
-
-	for (Satellite& sv : Satellites)
+	// Export Rinex observations if available
+	if (inputParser.hasParameter("obs") && inputParser.hasParameter("nav"))
 	{
-		sv.calcEphemeris();				
+		jsonFile = std::filesystem::path(outdir.front()) / "satdata.json";
+
+		std::vector<Satellite> Satellites;
+		std::copy_if(rnxParser.Satellites().begin(), rnxParser.Satellites().end(), std::back_inserter(Satellites), [](const auto& sv)
+			{
+				return (sv.SVSystem() == SvSystem::GALILEO) || (sv.SVSystem() == SvSystem::GPS);
+			});
+
+		for (Satellite& sv : Satellites)
+		{
+			sv.calcEphemeris();
+		}
+
+		jExport.ExportObservations(Satellites, jsonFile);
 	}
 
-	//// Single Point Processing
-	//spp.Calculate(Satellites);
+	// Export Precise Clock data if available
+	if (inputParser.hasParameter("clk"))
+	{
+		jsonFile = std::filesystem::path(outdir.front()) / "precise_clkdata.json";
+		jExport.ExportPreciseClock(clkParser.Satellites(), jsonFile);
+	}
 
-	//auto jExport = JsonExport();
-	jExport.ExportObservations(Satellites, "D:/Projekte/OpenRTK/data/satdata.json");
+	// Export Precise Ephemeris data if available
+	if (inputParser.hasParameter("sp3"))
+	{
+		jsonFile = std::filesystem::path(outdir.front()) / "precise_satdata.json";
+		jExport.ExportPreciseEphemeris(sp3Parser.Satellites(), jsonFile);
+	}
+}
 
-	return 0;
+int main(int argc, char* argv[])
+{
+	inputParser.addParameter("obs", "Parse Rinex obs data [.obs]", [](std::optional<std::vector<std::string>> args)
+		{
+			if (args && !args->empty())
+			{
+				rnxParser.Parse(args.value().front());
+			}
+		});
+	inputParser.addParameter("nav", "Parse Rinex nav data [.nav]", [](std::optional<std::vector<std::string>> args)
+		{
+			if (args && !args->empty())
+			{
+				rnxParser.Parse(args.value().front());
+			}
+		});
+	inputParser.addParameter("clk", "Parse Precise Clock data [.clk]", [](std::optional<std::vector<std::string>> args)
+		{
+			if (args && !args->empty())
+			{
+				clkParser.Parse(args.value().front());
+			}
+		});
+	inputParser.addParameter("sp3", "Parse Precise Satellite Ephemerides data [.sp3]", [](std::optional<std::vector<std::string>> args)
+		{
+			if (args && !args->empty())
+			{
+				sp3Parser.Parse(args.value().front());
+			}
+		});
+
+	inputParser.addParameter("outdir", "Output data directory", [](std::optional<std::vector<std::string>> args)
+		{
+			if (args && !args->empty())
+			{
+				exportData(args.value());
+			}
+		});
+
+
+	std::string combinedArgs;
+	for (int i = 1; i < argc; ++i) 
+	{
+		combinedArgs += std::string(argv[i]) + " ";
+	}
+	inputParser.parse(combinedArgs);
 }
