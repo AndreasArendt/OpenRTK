@@ -6,26 +6,37 @@ PreciseClockData = loadPclkdata();
 
 meta = generic.getMeta(SatelliteData);
 
-% station_pos__m = [4164313.0000, 803525.9000, 4748474.9000]; %AUBG
-% station_pos__m = [4498451.8100  1708266.8300  4173591.7800]; %ORID
-% station_pos__m = [  3814004.8279   361287.8653  5082327.1526  ]; %HARL
-
-% station_pos__m = [ -4716238.5966  2613288.5223 -3396264.3755];
-
 function SatelliteData = loadSatdata()    
-    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'satdata.json');        
-    s = json.read(fpath);
-    SatelliteData = s.SatelliteData;              
+    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', '2025_009', '204', 'satdata.json');        
+    fpath = path.canonicalPath(fpath);
+    SatelliteData = [];
+
+    if exist(fpath, "file") == 2
+        s = json.read(fpath);
+        SatelliteData = s.SatelliteData;              
+    end
 end
 
 function PreciseEphemerisData = loadPephdata()  
-    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_satdata.json');        
-    peph = json.read(fpath);
-    PreciseEphemerisData = peph.PreciseEphemerisData;
+    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_satdata.json');            
+    fpath = path.canonicalPath(fpath);
+
+    PreciseEphemerisData = [];
+
+    if exist(fpath, "file") == 2
+        peph = json.read(fpath);
+        PreciseEphemerisData = peph.PreciseEphemerisData;
+    end
 end
 
 function PreciseClockData = loadPclkdata()
     fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_clkdata.json');        
-    pclk = json.read(fpath);
-    PreciseClockData = pclk.PreciseClockData;
+    fpath = path.canonicalPath(fpath);
+
+    PreciseClockData = [];
+
+    if exist(fpath, "file") == 2
+        pclk = json.read(fpath);
+        PreciseClockData = pclk.PreciseClockData;
+    end
 end
