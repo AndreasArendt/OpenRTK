@@ -1,9 +1,7 @@
 % get all healthy satellites
 svs = {};
-for ii = 1:numel(SatelliteData)   
-    Observations = generic.getValidObservations(SatelliteData(ii).Observations);
-    svs = unique([svs(:)', {Observations.SatelliteSystem}]);
-end
+Observations = generic.getValidObservations(vertcat(SatelliteData.Observations));
+svs = unique([svs(:)', {Observations.SatelliteSystem}]);
 
 % create struct with empty sv availability vector
 s = struct();
@@ -30,7 +28,8 @@ hold on; grid on;
 
 fns = fieldnames(s);
 for ii = 1:numel(fns)
-    plot(s.(fns{ii}) * 0.5 + ii - 0.5)
+    plot(s.(fns{ii}) * 0.5 + ii -0.25)
 end
 
 yticklabels(fns)
+yticks(1:numel(fns))
