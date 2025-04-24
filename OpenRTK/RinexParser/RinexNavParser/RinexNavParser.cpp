@@ -120,10 +120,20 @@ void RinexNavParser::ParseOrbitData(std::string line)
 
 void RinexNavParser::ParseEpoch(std::string line)
 {
+	// Abort parsing in case new satellite begins
+	if (line.at(0) != ' ')
+	{
+		if (this->_CurrentNavData != nullptr)
+		{
+			this->CurrentSatellite()->addNavData(std::move(this->_CurrentNavData));
+		}
+		_NavEpochParsingState = NavEpochParsingState_CLOCK_ERROR;
+	}
+
 	switch (_NavEpochParsingState)
 	{
 	case NavEPochParsingState_SKIP:
-	{
+	{		
 		// stay in SKIP state until line start is non-empty
 		if (line.at(0) == ' ')
 		{
@@ -132,10 +142,12 @@ void RinexNavParser::ParseEpoch(std::string line)
 	}
 	case NavEpochParsingState_IDLE:
 	case NavEpochParsingState_CLOCK_ERROR:
-	{		
-		// Parse Epochs
+	{
+		this->_CurrentOrbitNumber = ENavOrbitNumber::ORBIT_UNKNOWN;
+		
+		// Parse Epochs		
 		auto satellite = Satellite(line.substr(0, 3));
-		int year = util::astring::parseInt(line.substr(4, 4));
+		int year = util::astring::parseInt(line.substr(4, 4));		
 		int month = util::astring::parseInt(line.substr(9, 2));
 		int day = util::astring::parseInt(line.substr(12, 2));
 		int hour = util::astring::parseInt(line.substr(15, 2));
@@ -191,6 +203,7 @@ void RinexNavParser::ParseEpoch(std::string line)
 		if (this->_CurrentOrbitNumber == ENavOrbitNumber::ORBIT_UNKNOWN)
 		{
 			this->CurrentSatellite()->addNavData(std::move(this->_CurrentNavData));
+			this->_CurrentNavData.reset();
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 		}
 		break;
