@@ -21,21 +21,48 @@ void AbstractRinexParser::FindCurrentSatellite(Satellite satellite)
 	}
 }
 
-void AbstractRinexParser::Parse(std::string path)
+void AbstractRinexParser::Parse(std::string path, bool verbose)
 {
-	std::ifstream infile(path);
-	if (!infile)
+	std::ifstream file(path);
+	if (!file)
 		std::cout << "Could not open file.";
 
-	std::string firstline;
-	std::getline(infile, firstline);
-		
 	this->InitParser();
-
+		
+	std::streampos totalSize = 0;
+	if (verbose)
+	{		
+		file.seekg(0, std::ios::end);
+		totalSize = file.tellg();
+		file.seekg(0, std::ios::beg);
+	}
+		
+	int lastReportedPercent = 0;
 	std::string line;
-	while (std::getline(infile, line))
+	std::streampos lastPos = file.tellg();
+	while (std::getline(file, line))
 	{
 		this->ParseLine(line);
 		//std::cout << line << std::endl;
+
+		std::streampos currentPos = file.tellg();
+		if (currentPos == -1)
+		{
+			currentPos = totalSize;
+		}
+		if (verbose)
+		{
+			int percent = 100 * static_cast<double>(currentPos) / totalSize;
+			if (percent - lastReportedPercent >= 1) 
+			{
+				std::cout << "\rParsing file: " << path << " - " << std::fixed << std::setprecision(0) << percent << "% completed" << std::flush;
+				lastReportedPercent = percent;
+			}
+		}
+	}
+
+	if (verbose)
+	{
+		std::cout << std::endl;
 	}
 }

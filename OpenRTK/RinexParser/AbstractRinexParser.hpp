@@ -22,7 +22,7 @@ private:
 	virtual void ParseLine(std::string line) = 0;
 
 public:
-	void Parse(std::string path);
+	void Parse(std::string path, bool verbose=true);
 		
 	AbstractRinexParser(std::vector<Satellite>& satellites) : _Satellites(satellites) {};
 	virtual ~AbstractRinexParser() = default;		

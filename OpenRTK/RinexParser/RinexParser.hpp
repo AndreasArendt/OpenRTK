@@ -21,7 +21,7 @@ public:
 	std::vector<Satellite> const& Satellites() const { return this->_Satellites; }
 
 	// public functions
-	void Parse(std::string path, bool verbose=true);
+	void Parse(std::string path);
 
 	//ctor & dtor
 	~RinexParser() {}
