@@ -1,6 +1,7 @@
 #include "InputParser.hpp"
 
 #include <sstream>
+#include <algorithm>
 
 InputParser::InputParser()
 {
@@ -16,9 +17,9 @@ void InputParser::printHelp()
 	}
 }
 
-void InputParser::addParameter(const std::string& param, const std::string& description, Callback callback)
+void InputParser::addParameter(const std::string& param, const std::string& description, Callback callback, int executionOrder)
 {
-	this->callbacks[param] = callback;
+    this->callbacks[param] = std::pair(callback, executionOrder);
 	this->descriptions[param] = description;
 }
 
@@ -28,32 +29,49 @@ void InputParser::parse(const std::string& input)
     std::string token;
     std::string currentParam;
 
-    while (iss >> token) 
+    while (iss >> token)
     {
-        if (token.starts_with("--")) 
+        if (token.starts_with("--"))
         {
             currentParam = token.substr(2);
             this->parameter[currentParam] = {};  // initialize empty vector
         }
-        else if (!currentParam.empty()) 
+        else if (!currentParam.empty())
         {
             this->parameter[currentParam].push_back(token);
         }
     }
 
     // if parse error or no elements parsed, display help
-    if (this->parameter.size() == 0)
+    if (this->parameter.empty())
     {
         this->printHelp();
         return;
     }
 
-    // Call callbacks if registered
+    // Collect callbacks to be called
+    std::vector<std::tuple<int, Callback, std::vector<std::string>>> orderedCallbacks;
+
     for (const auto& [param, values] : this->parameter)
     {
-        if (callbacks.find(param) != callbacks.end()) 
-        {            
-            this->callbacks[param](values);
+        auto it = callbacks.find(param);
+        if (it != callbacks.end())
+        {
+            int order = it->second.second;
+            const Callback& cb = it->second.first;
+            orderedCallbacks.emplace_back(order, cb, values);
         }
+    }
+
+    // Sort callbacks by execution order
+    std::sort(orderedCallbacks.begin(), orderedCallbacks.end(),
+        [](const auto& a, const auto& b) {
+            return std::get<0>(a) < std::get<0>(b);
+        });
+
+    // Execute callbacks in sorted order
+    for (const auto& [order, cb, values] : orderedCallbacks)
+    {
+        cb(values);
     }
 }

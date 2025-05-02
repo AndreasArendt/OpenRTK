@@ -27,8 +27,12 @@ std::unique_ptr<AbstractRinexParser> RinexParser::GetParser(std::string path)
 	}
 }
 
-void RinexParser::Parse(std::string path)
+void RinexParser::Parse(std::string path, bool verbose)
 {
+	if (verbose)
+	{
+		std::cout << "Parsing file: " << path << std::endl;
+	}
 	this->_RinexParser = this->GetParser(path);
 	this->_RinexParser->Parse(path);
 }

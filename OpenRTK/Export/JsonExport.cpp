@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
+#include "../PrecisePositioning/Ephemeris/GpsEphemeris.hpp"
 
 using json = nlohmann::json;
 
@@ -54,6 +55,7 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 	satObs.SatelliteSystem = sv.SvString();
 
 	satObs.ECEF_Position	 = ephemeris.Position_E();
+		
 	satObs.ClockOffset		 = ephemeris.SatelliteClockError__s();
 	satObs.ClockDrift		 = ephemeris.SatelliteClockDrift__1Ds();
 	satObs.RelativisticError = ephemeris.RelativisticError__s();

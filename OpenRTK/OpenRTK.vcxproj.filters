@@ -96,6 +96,9 @@
     <ClCompile Include="InputParser\InputParser.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Export\ExportHelper.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\Epoch.hpp">
@@ -264,6 +267,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="InputParser\InputParser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Export\ExportHelper.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
