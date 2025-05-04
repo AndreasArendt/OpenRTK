@@ -13,7 +13,7 @@ private:
 	std::string _outdir;
 
 public:
-	void exportObservations(const std::vector<Satellite>& const satellites);
+	void exportCombinedObsNav(const std::vector<Satellite>& const satellites);
 	void exportPreciseClock(const std::vector<ClkSatellite>& const satellites);
 	void exportSP3(const std::vector<SP3Satellite>& const satellites);
 

@@ -7,4 +7,5 @@ int main(int argc, char* argv[])
 {
 	InputParserHelper inputParser = InputParserHelper();	
 	inputParser.parseArguments(argc, argv);
+	inputParser.runApplication();
 }

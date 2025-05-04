@@ -29,7 +29,7 @@ void ExportHelper::exportPreciseClock(const std::vector<ClkSatellite>& const sat
 	jExport.ExportPreciseClock(satellites, jsonFile);
 }
 
-void ExportHelper::exportObservations(const std::vector<Satellite>& const satellites)
+void ExportHelper::exportCombinedObsNav(const std::vector<Satellite>& const satellites)
 {
 	// create if not existing
 	std::filesystem::create_directory(this->_outdir);
