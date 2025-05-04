@@ -6,8 +6,8 @@
 #include <functional>
 #include <optional>
 
-class InputParser 
-{	
+class InputParser
+{
 	using Callback = std::function<void(std::optional<const std::vector<std::string>>)>;
 
 private:
@@ -17,8 +17,8 @@ private:
 
 	void printHelp();
 
-public:	
-	void addParameter(const std::string& param, const std::string& description, Callback callback, int executionOrder=INT32_MAX);
+public:
+	void addParameter(const std::string& param, const std::string& description, Callback callback, int executionOrder = INT32_MAX);
 	bool const& hasParameter(const std::string& param) const { return this->parameter.find(param) != this->parameter.end(); }
 	void parse(const std::string& input);
 
