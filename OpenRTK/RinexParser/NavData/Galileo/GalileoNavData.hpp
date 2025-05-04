@@ -96,6 +96,7 @@ public:
 	double const& Idot__radDs() const { return _Idot__radDs; }
 	double const& DataSources() const { return _DataSources; }
 	double const& GalWeek() const { return _GalWeek; }
+	double const& Spare0() const { return _Spare0; }
 	
 	// Orbit 6
 	double const& SigAccuracy__m() const { return _SigAccuracy__m; }
@@ -105,7 +106,10 @@ public:
 
 	// Orbit 7
 	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; } //TOT
-		
+	double const& Spare1() const { return _Spare1; }
+	double const& Spare2() const { return _Spare2; }
+	double const& Spare3() const { return _Spare3; }
+
 	// functions
 	void AddClockErrors(double data0, double data1, double data2);	
 	double getGST();

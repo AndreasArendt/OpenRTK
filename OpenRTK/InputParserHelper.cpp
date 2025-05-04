@@ -109,7 +109,9 @@ void InputParserHelper::runApplication()
 	// Combined Export
 	if (this->_hasObs && this->_hasNav && this->_exportCombined)
 	{
+		std::cout << "Exporting combined obs and nav data";
 		this->_exportHelper.exportCombinedObsNav(this->_rnxParser.Satellites());
+		std::cout << " - done " << std::endl;
 	}
 
 	// Obs Export
@@ -121,7 +123,9 @@ void InputParserHelper::runApplication()
 	// Nav Export
 	if (this->_hasNav && this->_exportNav)
 	{
-
+		std::cout << "Exporting nav data";
+		this->_exportHelper.exportNav(this->_rnxParser.Satellites());
+		std::cout << " - done " << std::endl;
 	}
 
 	// Sp3 Export

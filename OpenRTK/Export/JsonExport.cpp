@@ -7,6 +7,8 @@
 #include "../PrecisePositioning/Ephemeris/GalileoEphemeris.hpp"
 #include "../PrecisePositioning/Ephemeris/GpsEphemeris.hpp"
 
+#include "../RinexParser/NavData/Galileo/GalileoNavData.hpp"
+
 using json = nlohmann::json;
 
 double JsonExport::GetCodeObservationIfExist(ObsData obs, ObservationBand band)
@@ -54,12 +56,12 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 	SatelliteObservation satObs;
 	satObs.SatelliteSystem = sv.SvString();
 
-	satObs.ECEF_Position	 = ephemeris.Position_E();
-		
-	satObs.ClockOffset		 = ephemeris.SatelliteClockError__s();
-	satObs.ClockDrift		 = ephemeris.SatelliteClockDrift__1Ds();
+	satObs.ECEF_Position = ephemeris.Position_E();
+
+	satObs.ClockOffset = ephemeris.SatelliteClockError__s();
+	satObs.ClockDrift = ephemeris.SatelliteClockDrift__1Ds();
 	satObs.RelativisticError = ephemeris.RelativisticError__s();
-	satObs.IsHealthy		 = ephemeris.SatelliteHealth().Health() == 0; // should work for now!
+	satObs.IsHealthy = ephemeris.SatelliteHealth().Health() == 0; // should work for now!
 
 	satObs.Code = GenericObservation();
 	satObs.Code.Band_1 = this->GetCodeObservationIfExist(obs, ObservationBand::Band_1);
@@ -80,7 +82,7 @@ SatelliteObservation JsonExport::CreateSatObservation(const Satellite& sv, const
 	satObs.Snr.Band_1 = this->GetSnrObservationIfExist(obs, ObservationBand::Band_1);
 	satObs.Snr.Band_2 = this->GetSnrObservationIfExist(obs, ObservationBand::Band_2);
 	satObs.Snr.Band_5 = this->GetSnrObservationIfExist(obs, ObservationBand::Band_5);
-		
+
 	return satObs;
 }
 
@@ -94,7 +96,7 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 		// iterate over all observations of current satellite
 		for (size_t i = 0; i < sv.ObservationData().size(); i++)
 		{
-			auto obs = sv.ObservationData().at(i);	
+			auto obs = sv.ObservationData().at(i);
 
 			// check if Ephemeris data available
 			if (!sv.SatelliteEphemeris().contains(ObservationBand::Band_1))
@@ -110,14 +112,14 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 				satObs = this->CreateSatObservation(sv, obs, ephemeris);
 			}
 			else
-			{				
+			{
 				auto dummy_ephemeris = GalileoEphemeris(GalileoSvHealth());
 				satObs = this->CreateSatObservation(sv, obs, dummy_ephemeris);
 			}
 
 
 			// prepare data to be inserted
-			auto satData = SatelliteData();				
+			auto satData = SatelliteData();
 			satData.PosixEpochTime__s = obs.Epoche().PosixEpochTime__s();
 			satData.Observations.push_back(satObs);
 
@@ -127,9 +129,9 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 			}
 			else
 			{
-				epochDataMap.emplace(obs.Epoche(), satData);				
+				epochDataMap.emplace(obs.Epoche(), satData);
 			}
-		}		
+		}
 	}
 
 	this->_RinexSatelliteData.clear();
@@ -153,7 +155,7 @@ void JsonExport::CollectPreciseEphemerisData(const std::vector<SP3Satellite>& sa
 	for (auto& sv : satellites)
 	{
 		for (auto& cdata : sv.CorrectionData())
-		{			
+		{
 			PreciseEphemeris peph;
 			peph.ECEF_Position = cdata.second.Position_E__m;
 			peph.SatelliteClockError__us = cdata.second.ClockCorrection__us;
@@ -199,7 +201,7 @@ void JsonExport::CollectPreciseClockData(const std::vector<ClkSatellite>& clocks
 	{
 		for (auto& cdata : clk.ClockCorrectionData())
 		{
-			PreciseClock pclk;					
+			PreciseClock pclk;
 			pclk.SatelliteSystem = clk.SvString();
 			pclk.SatelliteClockError__s = cdata.second; // SatelliteClockError__s
 
@@ -213,8 +215,8 @@ void JsonExport::CollectPreciseClockData(const std::vector<ClkSatellite>& clocks
 			{
 				auto clkData = PreciseClockData();
 				clkData.PosixEpochTime__s = epoch.PosixEpochTime__s();
-				clkData.PreciseClock.push_back(pclk);				
-				
+				clkData.PreciseClock.push_back(pclk);
+
 				epochDataMap.emplace(epoch, clkData);
 			}
 		}
@@ -234,8 +236,8 @@ void JsonExport::CollectPreciseClockData(const std::vector<ClkSatellite>& clocks
 		});
 }
 
-void JsonExport::ExportObservations(std::vector<Satellite>& satellites, std::filesystem::path path)
-{	
+void JsonExport::ExportCombined(std::vector<Satellite>& satellites, std::filesystem::path path)
+{
 	this->CollectRinexData(satellites);
 
 	json j;
@@ -245,15 +247,66 @@ void JsonExport::ExportObservations(std::vector<Satellite>& satellites, std::fil
 	{
 		json satJson;
 		satJson["PosixEpochTime__s"] = sv.PosixEpochTime__s;
-				
+
 		json observationsJson = json::array();
-		
+
 		for (auto& obs : sv.Observations)
 		{
 			observationsJson.push_back(obs.to_json());
 		}
 
 		satJson["Observations"] = std::move(observationsJson);
+		j["SatelliteData"].push_back(std::move(satJson));
+	}
+
+	std::ofstream file(path);
+	file << j;
+}
+
+void JsonExport::ExportNav(const std::vector<Satellite>& const satellites, std::filesystem::path path)
+{
+	json j;
+	j["SatelliteData"] = json::array();
+
+	for (const Satellite& sv : satellites)
+	{
+		json satJson;
+		satJson["Satellite"] = sv.SvString();
+		json navJson = json::array();
+
+		switch (sv.SVSystem())
+		{
+		case SvSystem::GALILEO:
+		{
+			for (const std::unique_ptr<NavData>& nav : sv.NavigationData())
+			{
+				if (auto galNavData = dynamic_cast<GalileoNavData*>(nav.get()))
+				{
+					navJson.push_back(JGalileoNavDataConvert::to_json(*galNavData));
+				}
+			}
+
+			break;
+		}
+		case SvSystem::GPS:
+			for (const std::unique_ptr<NavData>& nav : sv.NavigationData())
+			{				
+				if (auto gpsNavData = dynamic_cast<GpsNavData*>(nav.get()))
+				{
+					navJson.push_back(JGpsNavDataConvert::to_json(*gpsNavData));
+				}				
+			}
+			break;
+		case SvSystem::BEIDOU:
+			break;
+		case SvSystem::GLONASS:
+			break;
+		default:
+			break;
+		}
+
+		// Array of Satellite data
+		satJson["Nav"] = std::move(navJson);
 		j["SatelliteData"].push_back(std::move(satJson));
 	}
 
@@ -315,4 +368,16 @@ void JsonExport::ExportPreciseClock(const std::vector<ClkSatellite>& clocks, std
 
 	std::ofstream file(path);
 	file << j;
+}
+
+JsonExport::JsonExport()
+{
+
+}
+
+JsonExport::~JsonExport()
+{
+	this->_RinexSatelliteData.clear();
+	this->_PreciseEphemerisData.clear();
+	this->_PreciseClockData.clear();
 }

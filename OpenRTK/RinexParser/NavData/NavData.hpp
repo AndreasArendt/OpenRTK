@@ -18,10 +18,7 @@ protected:
 	virtual void AddOrbit_6(double data0, double data1, double data2, double data3) = 0;
 	virtual void AddOrbit_7(double data0, double data1, double data2, double data3) = 0;
 
-public:
-	// getters	
-	//double const Toc__s() { return this->_Epoch.Toc__s(); }
-	
+public:	
 	// functions
 	virtual void AddClockErrors(double data0, double data1, double data2) = 0;
 	

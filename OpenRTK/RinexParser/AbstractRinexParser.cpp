@@ -52,7 +52,7 @@ void AbstractRinexParser::Parse(std::string path, bool verbose)
 		}
 		if (verbose)
 		{
-			int percent = 100 * static_cast<double>(currentPos) / totalSize;
+			int percent = 100.0 * static_cast<double>(currentPos) / totalSize;
 			if (percent - lastReportedPercent >= 1) 
 			{
 				std::cout << "\rParsing file: " << path << " - " << std::fixed << std::setprecision(0) << percent << "% completed" << std::flush;

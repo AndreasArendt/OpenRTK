@@ -29,17 +29,13 @@ private:
 	void CollectPreciseClockData(const std::vector<ClkSatellite>& clocks);
 
 public:	
-	void ExportObservations(std::vector<Satellite>& satellites, std::filesystem::path path);	
+	void ExportCombined(std::vector<Satellite>& satellites, std::filesystem::path path);	
+	void ExportNav(const std::vector<Satellite>& const satellites, std::filesystem::path path);
 	void ExportPreciseEphemeris(const std::vector<SP3Satellite>& satellites, std::filesystem::path path);
 	void ExportPreciseClock(const std::vector<ClkSatellite>& clocks, std::filesystem::path path);
 
 	// ctor & dtor
-	JsonExport() {};
-	~JsonExport()
-	{ 
-		this->_RinexSatelliteData.clear(); 
-		this->_PreciseEphemerisData.clear();
-		this->_PreciseClockData.clear();
-	}	
+	JsonExport();
+	~JsonExport();
 };
 

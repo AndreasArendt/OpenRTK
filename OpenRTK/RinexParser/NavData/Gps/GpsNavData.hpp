@@ -97,6 +97,7 @@ public:
 	double const& Idot__radDs() const { return _Idot__radDs; }
 	double const& CodesOnL2() const { return _CodesOnL2; }
 	double const& GpsWeek() const { return _GpsWeek; }
+	double const& L2P_DataFlag() const { return _L2P_DataFlag; }
 
 	// Orbit 6
 	double const& SvAccuracy__m() const { return _SvAccuracy__m; }
@@ -107,7 +108,9 @@ public:
 	// Orbit 7
 	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; } //TOT
 	double FitInterval__hrs() const { return _FitInterval__hrs; }
-	
+	double Spare0() const { return _Spare0; }
+	double Spare1() const { return _Spare1; }
+
 	//functions
 	void AddClockErrors(double data0, double data1, double data2);
 	double ToeEpoch();
