@@ -44,8 +44,8 @@ private:
 	// Orbit 6
 	double _SigAccuracy__m = 0.0;
 	double _SvHealth = 0.0;
-	double _BDG_E5a_E1 = 0.0;
-	double _BDG_E5b_E1 = 0.0;
+	double _BGD_E5a_E1 = 0.0;
+	double _BGD_E5b_E1 = 0.0;
 
 	// Orbit 7		
 	double _TransmissiontimeOfMessage = 0.0;
@@ -101,8 +101,8 @@ public:
 	// Orbit 6
 	double const& SigAccuracy__m() const { return _SigAccuracy__m; }
 	double const& SvHealth() const { return _SvHealth; }
-	double const& BDG_E5a_E1() const { return _BDG_E5a_E1; }
-	double const& BDG_E5b_E1() const { return _BDG_E5b_E1; }
+	double const& BGD_E5a_E1() const { return _BGD_E5a_E1; }
+	double const& BGD_E5b_E1() const { return _BGD_E5b_E1; }
 
 	// Orbit 7
 	double TransmissiontimeOfMessage() const { return _TransmissiontimeOfMessage; } //TOT

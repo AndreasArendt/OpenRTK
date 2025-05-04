@@ -65,8 +65,8 @@ void GalileoNavData::AddOrbit_6(double data0, double data1, double data2, double
 {
 	_SigAccuracy__m = data0;
 	_SvHealth = data1;
-	_BDG_E5a_E1 = data2;
-	_BDG_E5b_E1 = data3;
+	_BGD_E5a_E1 = data2;
+	_BGD_E5b_E1 = data3;
 }
 
 void GalileoNavData::AddOrbit_7(double data0, double data1, double data2, double data3)
