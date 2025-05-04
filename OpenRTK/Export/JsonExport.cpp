@@ -270,8 +270,7 @@ void JsonExport::ExportNav(const std::vector<Satellite>& const satellites, std::
 
 	for (const Satellite& sv : satellites)
 	{
-		json satJson;
-		satJson["Satellite"] = sv.SvString();
+		json satJson;		
 		json navJson = json::array();
 
 		switch (sv.SVSystem())
@@ -282,7 +281,7 @@ void JsonExport::ExportNav(const std::vector<Satellite>& const satellites, std::
 			{
 				if (auto galNavData = dynamic_cast<GalileoNavData*>(nav.get()))
 				{
-					navJson.push_back(JGalileoNavDataConvert::to_json(*galNavData));
+					navJson.push_back(JGalileoNavDataConvert::to_json(*galNavData, sv.SvString()));
 				}
 			}
 
@@ -293,7 +292,7 @@ void JsonExport::ExportNav(const std::vector<Satellite>& const satellites, std::
 			{				
 				if (auto gpsNavData = dynamic_cast<GpsNavData*>(nav.get()))
 				{
-					navJson.push_back(JGpsNavDataConvert::to_json(*gpsNavData));
+					navJson.push_back(JGpsNavDataConvert::to_json(*gpsNavData, sv.SvString()));
 				}				
 			}
 			break;

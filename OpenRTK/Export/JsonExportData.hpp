@@ -126,9 +126,10 @@ public:
 static class JGpsNavDataConvert
 {
 public:
-	static nlohmann::json to_json(const GpsNavData& const navData)
+	static nlohmann::json to_json(const GpsNavData& const navData, std::string svSystem)
 	{
 		return {
+			{"Satellite", svSystem},
 			{"PosixEpochTime__s", navData.Epoche().PosixEpochTime__s()},
 			{"SV_ClockBias__s", navData.SV_ClockBias__s()},
 			{"SV_ClockDrift__sDs", navData.SV_ClockDrift__sDs()},
@@ -168,9 +169,10 @@ public:
 static class JGalileoNavDataConvert
 {
 public:
-	static nlohmann::json to_json(const GalileoNavData& const navData)
+	static nlohmann::json to_json(const GalileoNavData& const navData, std::string svSystem)
 	{
 		return {
+			{"Satellite", svSystem},
 			{"PosixEpochTime__s", navData.Epoche().PosixEpochTime__s()},
 			{"SV_ClockBias__s", navData.SV_ClockBias__s()},
 			{"SV_ClockDrift__sDs", navData.SV_ClockDrift__sDs()},
