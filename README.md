@@ -11,6 +11,7 @@ This project focuses on implementing Precise Point Positioning (PPP), Single Poi
   - [Table of Contents](#table-of-contents)
   - [Status (v0.2)](#status-v02)
   - [Installation](#installation)
+  - [CLI](#cli)
   - [Documentation](#documentation)
 
 ## Status (v0.2)
@@ -29,6 +30,22 @@ Clone the repository:
    git clone https://github.com/AndreasArendt/OpenRTK.git
    cd OpenRTK
    ```
+
+## CLI
+Usage of Command Line Interface `CLI`
+```
+	--dir <directory>  Parse Rinex data in directory, also sets output directory [--outdir]
+	--obs <file> Parse Rinex obs data [.obs]
+	--nav <file> Parse Rinex nav data [.nav]
+	--clk <file> Parse Precise Clock data [.clk]
+	--sp3 <file> Parse Precise Satellite Ephemerides data [.sp3]
+	--export <type> Export File Type [c (combined); n (nav); o (obs)]
+	--outdir <directory> Output data directory
+```
+
+Example:
+`OpenRTK.exe --dir <Path> --export cn
+This exports the combined and navigation `json` file if `.obs` and `.nav` file exists in the given folder.
 
 ## Documentation                                                               
 The full documentation is available at [Read the Docs](https://docopenrtk.readthedocs.io).
