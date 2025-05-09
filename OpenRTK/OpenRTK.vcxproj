@@ -219,6 +219,7 @@
     <ClInclude Include="Utils\Epoch.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexReaderState.hpp" />
     <ClInclude Include="RinexParser\RinexObsParser\RinexObsParser.hpp" />
+    <ClInclude Include="Utils\path.hpp" />
     <ClInclude Include="Utils\SvSystem.hpp" />
     <ClInclude Include="Transformations\ECEF_Velocity.hpp" />
     <ClInclude Include="Transformations\Kepler.hpp" />

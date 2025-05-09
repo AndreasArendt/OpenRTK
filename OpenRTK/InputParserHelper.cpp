@@ -1,4 +1,5 @@
 #include "InputParserHelper.hpp"
+#include "Utils/path.hpp"
 
 #include <filesystem>
 #include <numeric>
@@ -6,8 +7,54 @@
 InputParserHelper::InputParserHelper()
 {
 	// Register parameters
-	this->registerArguments();		
+	this->registerArguments();
 	this->_exportHelper = ExportHelper();
+}
+
+void InputParserHelper::parseDir(std::optional<std::vector<std::string>> args)
+{
+	if (!args || args->empty())
+		return;
+
+	this->_outputDir = args.value().front();
+
+	try
+	{
+		for (const auto& entry : fs::directory_iterator(args.value().front()))
+		{
+			if (fs::is_regular_file(entry.status()))
+			{
+				std::vector<std::string> file = { entry.path().string() };
+
+				// SP3
+				if (hasExtension(entry.path(), ".SP3"))
+				{
+					this->parseSp3(file);
+				}
+
+				// OBS
+				if (hasExtension(entry.path(), ".obs"))
+				{					
+					this->parseObs(file);
+				}
+
+				// OBS
+				if (hasExtension(entry.path(), ".nav"))
+				{
+					this->parseNav(file);
+				}
+
+				// CLK
+				if (hasExtension(entry.path(), ".CLK"))
+				{
+					this->parseNav(file);
+				}
+			}
+		}
+	}
+	catch (const fs::filesystem_error& e) {
+		std::cerr << "Filesystem error: " << e.what() << '\n';
+	}
 }
 
 void InputParserHelper::parseObs(std::optional<std::vector<std::string>> args)
@@ -15,7 +62,7 @@ void InputParserHelper::parseObs(std::optional<std::vector<std::string>> args)
 	if (args && !args->empty())
 	{
 		this->_rnxParser.Parse(args.value().front());
-		this->_hasObs = true;		
+		this->_hasObs = true;
 	}
 }
 
@@ -24,7 +71,7 @@ void InputParserHelper::parseNav(std::optional<std::vector<std::string>> args)
 	if (args && !args->empty())
 	{
 		this->_rnxParser.Parse(args.value().front());
-		this->_hasNav = true;		
+		this->_hasNav = true;
 	}
 }
 
@@ -59,13 +106,13 @@ void InputParserHelper::setOutputFileType(std::optional<std::vector<std::string>
 	if (args && !args->empty())
 	{
 		std::string arguments = std::accumulate(args.value().begin(), args.value().end(), std::string(""));
-		
+
 		// export combined file
 		if (arguments.find("c") != std::string::npos)
 		{
-			this->_exportCombined = true;			
+			this->_exportCombined = true;
 		}
-		
+
 		// export nav only file
 		if (arguments.find("n") != std::string::npos)
 		{
@@ -82,6 +129,7 @@ void InputParserHelper::setOutputFileType(std::optional<std::vector<std::string>
 
 void InputParserHelper::registerArguments()
 {
+	this->_inputParser.addParameter("dir", "Parse Rinex data in directory, also sets output directory [--outdir]", [this](std::optional<std::vector<std::string>> args) { parseDir(args); });
 	this->_inputParser.addParameter("obs", "Parse Rinex obs data [.obs]", [this](std::optional<std::vector<std::string>> args) { parseObs(args); });
 	this->_inputParser.addParameter("nav", "Parse Rinex nav data [.nav]", [this](std::optional<std::vector<std::string>> args) { parseNav(args);	});
 	this->_inputParser.addParameter("clk", "Parse Precise Clock data [.clk]", [this](std::optional<std::vector<std::string>> args) { parseClk(args);	});
@@ -105,7 +153,7 @@ void InputParserHelper::runApplication()
 {
 	// initialize exportHelper
 	this->_exportHelper.setOutDir(this->_outputDir);
-	 
+
 	// Combined Export
 	if (this->_hasObs && this->_hasNav && this->_exportCombined)
 	{

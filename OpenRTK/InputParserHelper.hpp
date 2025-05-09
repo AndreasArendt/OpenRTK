@@ -36,6 +36,7 @@ private:
 	// Input Parser Function
 	void registerArguments();
 
+	void parseDir(std::optional<std::vector<std::string>> args);
 	void parseObs(std::optional<std::vector<std::string>> args);
 	void parseNav(std::optional<std::vector<std::string>> args);
 	void parseClk(std::optional<std::vector<std::string>> args);
