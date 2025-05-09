@@ -1,10 +1,7 @@
 % LoadData;
 
-refpos__m = [NaN, NaN, NaN];
-
 pos_E__m              = zeros(numel(SatelliteData), 3);
 rx_clock_offset__m    = zeros(numel(SatelliteData), 1);
-zenith_tropo_delay__m = zeros(numel(SatelliteData), 1);
 
 n_sat         = NaN(numel(SatelliteData), 1); % number of satellites used
 elevation_out = NaN(numel(SatelliteData), meta.NumberSatellites);
@@ -29,13 +26,19 @@ for ii = 1:numel(SatelliteData)
     %% Algorithm    
     POS_E__M              = pos_E__m(ii,:);
     RX_CLOCK_OFFSET__M    = rx_clock_offset__m(ii);
-    ZENITH_TROPO_DELAY__M = zenith_tropo_delay__m(ii);
 
     ECEF_Position = [Observations.ECEF_Position];
     ECEF_x = [ECEF_Position(idx).x]';
     ECEF_y = [ECEF_Position(idx).y]';
     ECEF_z = [ECEF_Position(idx).z]';
     
+    if nnz(idx) < 4
+        pos_E__m(ii+1,:)         = POS_E__M;
+        rx_clock_offset__m(ii+1) = RX_CLOCK_OFFSET__M;
+        n_sat(ii+1)              = nnz(idx);
+        continue;
+    end
+
     for jj = 1:10           
         % Calc Distance 
         dist = Vector.EuclidianDistance_3D(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));
@@ -52,26 +55,13 @@ for ii = 1:numel(SatelliteData)
         % elevation mask
         elevation = generic.calcElevation(POS_E__M(1), POS_E__M(2), POS_E__M(3), ECEF_x, ECEF_y, ECEF_z);
         
-        % Troposphere model - wet component estimated
-        [~, ~, alt__m] = Transformation.ecef2wgs84(POS_E__M(1), POS_E__M(2), POS_E__M(3));
-
-        d_dry = 2.3 .* exp(-0.116e-3 .* alt__m);
-    
-        if isinf(d_dry)
-            d_dry = 1e9;
-        end
-          
-        d_wet = 0.1 + ZENITH_TROPO_DELAY__M;        
-        M_E = 1.001./sqrt(0.002001 + sin(elevation).^2);                        
-        tropo_offset = (d_dry + d_wet) .* M_E;
-
         % Iono-Free LC
         rho_iono_free = generic.calcIonoFreeLinearCombination([Code(idx).Band_1]', [Code(idx).Band_2]', gnss.F_E1_Galileo__Hz, gnss.F_L2_GPS__Hz);
                 
         e = Vector.NormalizedDistanceVector(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));                       
-        A = [-e, ones(numel(e(:,1)),1), M_E];
+        A = [-e, ones(numel(e(:,1)),1)];
        
-        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M - tropo_offset;        
+        dist_est = rho_iono_free + sv_clock_offset__m + sv_relativistic__m - RX_CLOCK_OFFSET__M;        
         y = dist_est - geo_dist;
        
         % Apply elevation filter only if more than 4SVs available
@@ -86,7 +76,6 @@ for ii = 1:numel(SatelliteData)
         % State update
         POS_E__M              = POS_E__M + x_hat(1:3)';        
         RX_CLOCK_OFFSET__M    = RX_CLOCK_OFFSET__M + x_hat(4);
-        ZENITH_TROPO_DELAY__M = ZENITH_TROPO_DELAY__M + x_hat(5);
 
         if all(abs(x_hat(1:3)) < 1e-5)
             break;
@@ -95,7 +84,6 @@ for ii = 1:numel(SatelliteData)
         
     pos_E__m(ii+1,:)            = POS_E__M;
     rx_clock_offset__m(ii+1)    = RX_CLOCK_OFFSET__M;
-    zenith_tropo_delay__m(ii+1) = ZENITH_TROPO_DELAY__M;
 
     n_sat(ii+1)             = nnz(idx_el);
 end
@@ -103,7 +91,6 @@ end
 % adjust off-by-one index
 pos_E__m              = pos_E__m(2:end,:);
 rx_clock_offset__m    = rx_clock_offset__m(2:end);
-zenith_tropo_delay__m = zenith_tropo_delay__m(2:end);
 
 %%
 af = afigure(42);
@@ -148,8 +135,6 @@ legend('show')
 
 subplot(5,2,8);
 hold on; grid on;
-title('ZTD_w', 'DisplayName', 'LSQ (5 States, SPP)')
-plot(zenith_tropo_delay__m, 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,9);
