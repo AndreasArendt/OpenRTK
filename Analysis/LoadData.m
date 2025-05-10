@@ -1,13 +1,27 @@
 clear; fclose all;
 
-SatelliteData = loadSatdata();
-PreciseEphemerisData = loadPephdata();
-PreciseClockData = loadPclkdata();
+folderpath = 'D:\Projekte\OpenRTK\data\2024_200';
+
+SatelliteData = loadSatdata(folderpath);
+PreciseEphemerisData = loadPephdata(folderpath);
+PreciseClockData = loadPclkdata(folderpath);
+NavData = loadNavdata(folderpath);
 
 meta = generic.getMeta(SatelliteData);
 
-function SatelliteData = loadSatdata()    
-    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', '2025_009', '204', 'satdata.json');        
+function NavData = loadNavdata(folderpath)    
+    fpath = fullfile(folderpath, 'navdata.json');
+    fpath = path.canonicalPath(fpath);
+    NavData = [];
+
+    if exist(fpath, "file") == 2
+        s = json.read(fpath);
+        NavData = s.SatelliteData;              
+    end
+end
+
+function SatelliteData = loadSatdata(folderpath)    
+    fpath = fullfile(folderpath, 'satdata.json');
     fpath = path.canonicalPath(fpath);
     SatelliteData = [];
 
@@ -17,8 +31,8 @@ function SatelliteData = loadSatdata()
     end
 end
 
-function PreciseEphemerisData = loadPephdata()  
-    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_satdata.json');            
+function PreciseEphemerisData = loadPephdata(folderpath)      
+    fpath = fullfile(folderpath, 'precise_satdata.json');
     fpath = path.canonicalPath(fpath);
 
     PreciseEphemerisData = [];
@@ -29,8 +43,8 @@ function PreciseEphemerisData = loadPephdata()
     end
 end
 
-function PreciseClockData = loadPclkdata()
-    fpath = fullfile(mfilename('fullpath'), '..', '..', 'data', 'precise_clkdata.json');        
+function PreciseClockData = loadPclkdata(folderpath)        
+    fpath = fullfile(folderpath, 'precise_clkdata.json');
     fpath = path.canonicalPath(fpath);
 
     PreciseClockData = [];
