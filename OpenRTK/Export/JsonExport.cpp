@@ -91,8 +91,10 @@ void JsonExport::CollectRinexData(std::vector<Satellite>& satellites)
 	auto epochDataMap = std::unordered_map<Epoch, SatelliteData>();
 
 	// iterate over all satellites
-	for (const auto& sv : satellites)
+	for (Satellite& sv : satellites)
 	{
+		sv.calcEphemeris();
+
 		// iterate over all observations of current satellite
 		for (size_t i = 0; i < sv.ObservationData().size(); i++)
 		{

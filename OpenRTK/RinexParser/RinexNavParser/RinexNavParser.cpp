@@ -203,7 +203,6 @@ void RinexNavParser::ParseEpoch(std::string line)
 		if (this->_CurrentOrbitNumber == ENavOrbitNumber::ORBIT_UNKNOWN)
 		{
 			this->CurrentSatellite()->addNavData(std::move(this->_CurrentNavData));
-			this->CurrentSatellite()->calcEphemeris();
 			this->_CurrentNavData.reset();
 			this->_NavEpochParsingState = NavEpochParsingState::NavEpochParsingState_IDLE;
 		}
