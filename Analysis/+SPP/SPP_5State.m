@@ -1,7 +1,5 @@
 % LoadData;
 
-refpos__m = [NaN, NaN, NaN];
-
 pos_E__m              = zeros(numel(SatelliteData), 3);
 rx_clock_offset__m    = zeros(numel(SatelliteData), 1);
 zenith_tropo_delay__m = zeros(numel(SatelliteData), 1);
@@ -10,21 +8,19 @@ n_sat         = NaN(numel(SatelliteData), 1); % number of satellites used
 elevation_out = NaN(numel(SatelliteData), meta.NumberSatellites);
 
 for ii = 1:numel(SatelliteData)
-    %% Pre-Processing
-    Observations = SatelliteData(ii).Observations;
+    %% Pre-Processing       
+    Observations = generic.getValidObservations(SatelliteData(ii).Observations);
 
-    idx_gps = cellfun(@(x)startsWith(x, 'G'), {Observations.SatelliteSystem});
-    idx_gal = cellfun(@(x)startsWith(x, 'E'), {Observations.SatelliteSystem});
-    
-    Code    = [Observations.Code];
+    if numel(Observations) < 4
+        pos_E__m(ii+1,:)         = POS_E__M;
+        rx_clock_offset__m(ii+1) = RX_CLOCK_OFFSET__M;
+        n_sat(ii+1)              = numel(Observations);
+        continue;
+    end
 
-    idx_code_1 = [Code.Band_1] > 0;
-    idx_code_2 = [Code.Band_2] > 0;
-    idx_code_5 = [Code.Band_5] > 0;
-
-    idx_healthy = [Observations.IsHealthy];
-
-    idx = idx_gps & idx_code_1 & idx_code_2 & idx_healthy;
+    if ii >= 119
+        a = 1;
+    end
 
     %% Algorithm    
     POS_E__M              = pos_E__m(ii,:);
@@ -32,9 +28,9 @@ for ii = 1:numel(SatelliteData)
     ZENITH_TROPO_DELAY__M = zenith_tropo_delay__m(ii);
 
     ECEF_Position = [Observations.ECEF_Position];
-    ECEF_x = [ECEF_Position(idx).x]';
-    ECEF_y = [ECEF_Position(idx).y]';
-    ECEF_z = [ECEF_Position(idx).z]';
+    ECEF_x = [ECEF_Position.x]';
+    ECEF_y = [ECEF_Position.y]';
+    ECEF_z = [ECEF_Position.z]';
     
     for jj = 1:10           
         % Calc Distance 
@@ -46,8 +42,8 @@ for ii = 1:numel(SatelliteData)
         % correct geographic distance of earth rotation
         geo_dist = dist + sag;
         
-        sv_clock_offset__m = Transformation.SpeedOfLight__mDs * [Observations(idx).ClockOffset]';    
-        sv_relativistic__m = Transformation.SpeedOfLight__mDs * [Observations(idx).RelativisticError]';
+        sv_clock_offset__m = Transformation.SpeedOfLight__mDs * [Observations.ClockOffset]';    
+        sv_relativistic__m = Transformation.SpeedOfLight__mDs * [Observations.RelativisticError]';
     
         % elevation mask
         elevation = generic.calcElevation(POS_E__M(1), POS_E__M(2), POS_E__M(3), ECEF_x, ECEF_y, ECEF_z);
@@ -66,7 +62,8 @@ for ii = 1:numel(SatelliteData)
         tropo_offset = (d_dry + d_wet) .* M_E;
 
         % Iono-Free LC
-        rho_iono_free = generic.calcIonoFreeLinearCombination([Code(idx).Band_1]', [Code(idx).Band_2]', gnss.F_E1_Galileo__Hz, gnss.F_L2_GPS__Hz);
+        Code = [Observations.Code];
+        rho_iono_free = generic.calcIonoFreeLinearCombination([Code.Band_1]', [Code.Band_2]', gnss.F_L1_GPS__Hz, gnss.F_L2_GPS__Hz);
                 
         e = Vector.NormalizedDistanceVector(ECEF_x, ECEF_y, ECEF_z, POS_E__M(1), POS_E__M(2), POS_E__M(3));                       
         A = [-e, ones(numel(e(:,1)),1), M_E];
