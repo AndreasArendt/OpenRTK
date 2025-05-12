@@ -20,14 +20,14 @@ This project focuses on implementing Precise Point Positioning (PPP), Single Poi
 - LSQ version of SPP and PPP alrogithms in MATLAB running. They will be translated and merged into the C++ main project later.
 - Precise Ephemeris data (SP3) files parser (version d) and json export
 - Precise Clock data (CLK) files parser (version 3.00 and later) and json export
-- CLI Application to convert OBS, NAV, CLK and SP3 to json format
+- CLI Application to convert `.obs`, `.nav`, `.clk` and `.sp3` to json format
 
 ## Installation
 
 Clone the repository:
 
    ```bash
-   git clone https://github.com/AndreasArendt/OpenRTK.git
+   git clone --recursive https://github.com/AndreasArendt/OpenRTK.git
    cd OpenRTK
    ```
 
