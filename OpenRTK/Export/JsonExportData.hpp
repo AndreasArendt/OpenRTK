@@ -8,6 +8,7 @@
 #include "../Utils/Epoch.hpp"
 #include "../RinexParser/NavData/Galileo/GalileoNavData.hpp"
 #include "../RinexParser/NavData/Gps/GpsNavData.hpp"
+#include "../RinexParser/ObsData/ObsData.hpp"
 
 class PreciseClock
 {
@@ -206,5 +207,43 @@ public:
 			{"Spare2", navData.Spare2() },
 			{"Spare3", navData.Spare3() }
 		};
+	}
+};
+
+static class JObsDataConvert
+{
+public:
+	static nlohmann::json to_json(const ObsData& obsData, std::string svSystem)
+	{
+		nlohmann::json j;
+		j["Satellite"] = svSystem;		
+		j["PosixEpochTime__s"] = obsData.Epoche().PosixEpochTime__s();
+
+		auto add_if_exists = [&j](auto&& map, ObservationBand band, const std::string& key, auto&& accessor) 
+			{
+				auto it = map.find(band);
+				if (it != map.end())
+				{
+					j[key] = accessor(it->second);
+				}
+			};
+
+		add_if_exists(obsData.CodeObservations(), ObservationBand::Band_1, "Code_1", [](const auto& o) { return o.Pseudorange__m(); });
+		add_if_exists(obsData.CodeObservations(), ObservationBand::Band_2, "Code_2", [](const auto& o) { return o.Pseudorange__m(); });
+		add_if_exists(obsData.CodeObservations(), ObservationBand::Band_5, "Code_5", [](const auto& o) { return o.Pseudorange__m(); });
+
+		add_if_exists(obsData.PhaseObservations(), ObservationBand::Band_1, "Phase_1", [](const auto& o) { return o.Carrierphase__Cycles(); });
+		add_if_exists(obsData.PhaseObservations(), ObservationBand::Band_2, "Phase_2", [](const auto& o) { return o.Carrierphase__Cycles(); });
+		add_if_exists(obsData.PhaseObservations(), ObservationBand::Band_5, "Phase_5", [](const auto& o) { return o.Carrierphase__Cycles(); });
+
+		add_if_exists(obsData.DopplerObservations(), ObservationBand::Band_1, "Doppler_1", [](const auto& o) { return o.Doppler__Hz(); });
+		add_if_exists(obsData.DopplerObservations(), ObservationBand::Band_2, "Doppler_2", [](const auto& o) { return o.Doppler__Hz(); });
+		add_if_exists(obsData.DopplerObservations(), ObservationBand::Band_5, "Doppler_5", [](const auto& o) { return o.Doppler__Hz(); });
+
+		add_if_exists(obsData.SnrObservations(), ObservationBand::Band_1, "Snr_1", [](const auto& o) { return o.SNR(); });
+		add_if_exists(obsData.SnrObservations(), ObservationBand::Band_2, "Snr_2", [](const auto& o) { return o.SNR(); });
+		add_if_exists(obsData.SnrObservations(), ObservationBand::Band_5, "Snr_5", [](const auto& o) { return o.SNR(); });
+
+		return j;
 	}
 };

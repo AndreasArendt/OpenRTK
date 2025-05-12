@@ -265,6 +265,30 @@ void JsonExport::ExportCombined(std::vector<Satellite>& satellites, std::filesys
 	file << j;
 }
 
+void JsonExport::ExportObs(const std::vector<Satellite>& const satellites, std::filesystem::path path)
+{
+	json j;
+	j["SatelliteData"] = json::array();
+
+	for (const Satellite& sv : satellites)
+	{
+		json satJson;
+		json obsJson = json::array();
+				
+		for (const ObsData& obs : sv.ObservationData())
+		{							
+			obsJson.push_back(JObsDataConvert::to_json(obs, sv.SvString()));				
+		}
+				
+		// Array of Satellite observation data
+		satJson["Obs"] = std::move(obsJson);
+		j["SatelliteData"].push_back(std::move(satJson));
+	}
+
+	std::ofstream file(path);
+	file << j;
+}
+
 void JsonExport::ExportNav(const std::vector<Satellite>& const satellites, std::filesystem::path path)
 {
 	json j;

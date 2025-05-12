@@ -165,7 +165,9 @@ void InputParserHelper::runApplication()
 	// Obs Export
 	if (this->_hasObs && this->_exportObs)
 	{
-
+		std::cout << "Exporting obs data";
+		this->_exportHelper.exportObs(this->_rnxParser.Satellites());
+		std::cout << " - done " << std::endl;
 	}
 
 	// Nav Export

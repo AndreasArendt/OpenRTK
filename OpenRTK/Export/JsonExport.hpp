@@ -30,6 +30,7 @@ private:
 
 public:	
 	void ExportCombined(std::vector<Satellite>& satellites, std::filesystem::path path);	
+	void ExportObs(const std::vector<Satellite>& const satellites, std::filesystem::path path);
 	void ExportNav(const std::vector<Satellite>& const satellites, std::filesystem::path path);
 	void ExportPreciseEphemeris(const std::vector<SP3Satellite>& satellites, std::filesystem::path path);
 	void ExportPreciseClock(const std::vector<ClkSatellite>& clocks, std::filesystem::path path);

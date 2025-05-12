@@ -7,7 +7,6 @@ void ExportHelper::exportSP3(const std::vector<SP3Satellite>& const satellites)
 {
 	// create if not existing
 	std::filesystem::create_directory(this->_outdir);
-
 	std::filesystem::path jsonFile = "";
 	
 	// Export Precise Ephemeris data if available	
@@ -19,8 +18,6 @@ void ExportHelper::exportPreciseClock(const std::vector<ClkSatellite>& const sat
 {
 	// create if not existing
 	std::filesystem::create_directory(this->_outdir);
-
-	// Export Precise Clock data if available	
 	std::filesystem::path jsonFile = "";
 
 	jsonFile = std::filesystem::path(this->_outdir) / "precise_clkdata.json";
@@ -31,7 +28,6 @@ void ExportHelper::exportCombinedObsNav(const std::vector<Satellite>& const sate
 {
 	// create if not existing
 	std::filesystem::create_directory(this->_outdir);
-
 	std::filesystem::path jsonFile = "";
 		
 	// Export Rinex observations if available	
@@ -41,14 +37,21 @@ void ExportHelper::exportCombinedObsNav(const std::vector<Satellite>& const sate
 	JsonExport().ExportCombined(Satellites, jsonFile);
 }
 
+void ExportHelper::exportObs(const std::vector<Satellite>& const satellites)
+{
+	// create if not existing
+	std::filesystem::create_directory(this->_outdir);
+	std::filesystem::path jsonFile = "";
+
+	jsonFile = std::filesystem::path(this->_outdir) / "obsdata.json";
+	JsonExport().ExportObs(satellites, jsonFile);
+}
+
 void ExportHelper::exportNav(const std::vector<Satellite>& const satellites)
 {	
 	// create if not existing
 	std::filesystem::create_directory(this->_outdir);
-
 	std::filesystem::path jsonFile = "";
-
-	auto jExport = JsonExport();
 
 	jsonFile = std::filesystem::path(this->_outdir) / "navdata.json";	
 	JsonExport().ExportNav(satellites, jsonFile);

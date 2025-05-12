@@ -44,8 +44,8 @@ Usage of Command Line Interface `CLI`
 ```
 
 Example:
-`OpenRTK.exe --dir <Path> --export cn`
-This exports the combined and navigation `json` file if `.obs` and `.nav` file exists in the given folder.
+`OpenRTK.exe --dir <Path> --export cno`
+This exports the combined and navigation `json` file if `.obs` and `.nav` file exists in the given folder and their observation and navigation file seperately.
 
 ## Documentation                                                               
 The full documentation is available at [Read the Docs](https://docopenrtk.readthedocs.io).
