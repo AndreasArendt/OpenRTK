@@ -96,35 +96,29 @@ rx_clock_offset__m    = rx_clock_offset__m(2:end);
 af = afigure(42);
 subplot(5,2,1);
 hold on; grid on;
-yline(refpos__m(1), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,1), 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,2);
 hold on; grid on;
-plot(refpos__m(1) - pos_E__m(:,1), 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,3);
 hold on; grid on;
-yline(refpos__m(2), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,2), 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,4);
 hold on; grid on;
-plot(refpos__m(2) - pos_E__m(:,2), 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,5);
 hold on; grid on;
-yline(refpos__m(3), 'Color', Color.BLACK, 'HandleVisibility','off')
 plot(pos_E__m(:,3), 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,6);
 hold on; grid on;
-plot(refpos__m(3) - pos_E__m(:,3), 'DisplayName', 'LSQ (5 States, SPP)')
 legend('show')
 
 subplot(5,2,7);
