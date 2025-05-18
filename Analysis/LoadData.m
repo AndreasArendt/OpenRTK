@@ -1,13 +1,13 @@
-clear; fclose all;
-
-folderpath = 'D:\Projekte\OpenRTK\data\2024_200';
-
-SatelliteData = loadSatdata(folderpath);
-PreciseEphemerisData = loadPephdata(folderpath);
-PreciseClockData = loadPclkdata(folderpath);
-NavData = loadNavdata(folderpath);
-
-meta = generic.getMeta(SatelliteData);
+function [NavData, SatelliteData, PreciseEphemerisData, PreciseClockData, meta] = LoadData(folderpath)
+    % folderpath = 'D:\spoof_dataset\rnd\00bbaf1439124529afc84508933e3bfd';
+    
+    SatelliteData = loadSatdata(folderpath);
+    PreciseEphemerisData = loadPephdata(folderpath);
+    PreciseClockData = loadPclkdata(folderpath);
+    NavData = loadNavdata(folderpath);
+    
+    meta = generic.getMeta(SatelliteData);
+end
 
 function NavData = loadNavdata(folderpath)    
     fpath = fullfile(folderpath, 'navdata.json');
