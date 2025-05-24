@@ -1,4 +1,4 @@
-% LoadData;
+[NavData, SatelliteData, PreciseEphemerisData, PreciseClockData, meta] = LoadData('D:\spoof_dataset\rnd\e309285ce89643fcaa597fb75482b089');
 
 pos_E__m              = zeros(numel(SatelliteData), 3);
 rx_clock_offset__m    = zeros(numel(SatelliteData), 1);
@@ -142,3 +142,8 @@ title('elevations')
 
 af.linkaxes('x');
 af.showlegend();
+
+%%
+[lat,lon,alt] = Transformation.ecef2wgs84(pos_E__m(:,1), pos_E__m(:,2), pos_E__m(:,3));
+figure;
+plot(lon, lat);
